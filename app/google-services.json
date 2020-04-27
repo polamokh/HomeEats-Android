@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "80933997349",
+    "firebase_url": "https://home-eats-c2c26.firebaseio.com",
+    "project_id": "home-eats-c2c26",
+    "storage_bucket": "home-eats-c2c26.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:80933997349:android:083f97dd2c7a615c97e8cc",
+        "android_client_info": {
+          "package_name": "com.example.homeeats"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "80933997349-l8fa201ihinvfpbpjvsut8mv4uaq9nte.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5L8gfFkIQ0DsyRZqq_zVuXQ1cv5onphw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "80933997349-l8fa201ihinvfpbpjvsut8mv4uaq9nte.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
