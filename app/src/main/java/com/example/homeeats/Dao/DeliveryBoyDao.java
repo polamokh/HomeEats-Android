@@ -28,7 +28,7 @@ public class DeliveryBoyDao extends Dao<DeliveryBoy> {
         double latitude = Double.parseDouble(dataSnapshot.child("location").child("latitude").getValue().toString());
         double longitude = Double.parseDouble(dataSnapshot.child("location").child("longitude").getValue().toString());
         deliveryBoy.location = new LatLng(latitude, longitude);
-        deliveryBoy.lastSeen = Long.parseLong(dataSnapshot.child("lastSeenTimeStamp").getValue().toString());
+        deliveryBoy.lastSeen = Long.parseLong(dataSnapshot.child("lastSeen").getValue().toString());
         retrievalEventListener.OnDataRetrieved(deliveryBoy);
     }
 

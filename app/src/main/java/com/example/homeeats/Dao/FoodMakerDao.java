@@ -1,6 +1,7 @@
 package com.example.homeeats.Dao;
 
 import com.example.homeeats.Models.FoodMaker;
+import com.example.homeeats.Models.OrderStatus;
 import com.example.homeeats.RetrievalEventListener;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;

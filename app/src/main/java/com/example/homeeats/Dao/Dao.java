@@ -15,7 +15,6 @@ import java.util.List;
 public abstract class Dao<T> {
     protected static final DatabaseReference dbReference = FirebaseDatabase.getInstance().getReference();
     protected String tableName;
-
     public Dao(String tableName)
     {
         this.tableName = tableName;

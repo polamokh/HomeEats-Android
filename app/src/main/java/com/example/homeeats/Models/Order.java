@@ -7,17 +7,24 @@ import java.util.List;
 
 public class Order {
     @Exclude
-    String id;
-    public LatLng buyerLocation;
+    public String id;
+    @Exclude
     public FoodMaker foodMaker;
+    public String foodMakerId;
+    @Exclude
     public FoodBuyer foodBuyer;
+    public String foodBuyerId;
+    @Exclude
     public DeliveryBoy deliveryBoy;
+    public String deliveryBoyId;
     public List<OrderItem> orderItems;
     public String review;
     public Integer rating;
     public Double totalPrice;
     public OrderStatus orderStatus;
+    public LatLng buyerLocation;
 
+    public Order(){}
     public Order(String id, LatLng buyerLocation, FoodMaker foodMaker, FoodBuyer foodBuyer, DeliveryBoy deliveryBoy, List<OrderItem> orderItems, String review, Integer rating, Double totalPrice, OrderStatus orderStatus) {
         this.id = id;
         this.buyerLocation = buyerLocation;
@@ -29,6 +36,18 @@ public class Order {
         this.rating = rating;
         this.totalPrice = totalPrice;
         this.orderStatus = orderStatus;
+    }
+
+    public String getFoodMakerId() {
+        return foodMaker.id;
+    }
+
+    public String getFoodBuyerId() {
+        return foodBuyer.id;
+    }
+
+    public String getDeliveryBoyId() {
+        return deliveryBoy.id;
     }
 
     public double getTotalPrice() {

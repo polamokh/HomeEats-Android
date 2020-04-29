@@ -1,7 +1,11 @@
 package com.example.homeeats.Models;
 
+import com.google.firebase.database.Exclude;
+
 public class OrderItem {
+    @Exclude
     public MealItem mealItem;
+    public String mealItemId;
     public Integer quantity;
     public String notes;
     public Integer rating;
@@ -11,6 +15,10 @@ public class OrderItem {
         this.quantity = quantity;
         this.notes = notes;
         this.rating = rating;
+    }
+
+    public String getMealItemId() {
+        return mealItem.id;
     }
 
     public double getItemPrice()
