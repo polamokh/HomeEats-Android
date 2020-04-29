@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -28,18 +29,11 @@ public class SignUpActivity extends AppCompatActivity {
     Spinner spinnerSignUpType;
     Button buttonSignUp;
 
-    private static final String TAG = "EmailPassword";
-
-    private FirebaseAuth mAuth;
-    private DatabaseReference mDatabase;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        mAuth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         editTextSignUpName = findViewById(R.id.editTextSignUpName);
         editTextSignUpEmail = findViewById(R.id.editTextSignUpEmail);
@@ -59,38 +53,9 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void signUp(final String name, String email, String password, String type) {
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    Log.d(TAG, "createUserWithEmail:success");
-                    final FirebaseUser user = mAuth.getCurrentUser();
-                    UserProfileChangeRequest userProfileChangeRequest = new UserProfileChangeRequest.Builder()
-                            .setDisplayName(name).build();
-                    user.updateProfile(userProfileChangeRequest).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful()) {
-                                Log.d(TAG, "User profile updated.");
-                                writeUserToDatabase(user.getUid(), user.getDisplayName(), user.getEmail());
-                                Toast.makeText(SignUpActivity.this, "Signed up successfully",
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-
-                }
-                else {
-                    Log.w(TAG, "createUserWithEmail::failure", task.getException());
-                    Toast.makeText(SignUpActivity.this, task.getException().getMessage(),
-                            Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-    }
-
-    private void writeUserToDatabase(String UID, String name, String email) {
-        FoodBuyer buyer = new FoodBuyer(UID, name, null, email, null, null);
-        mDatabase.child("users").child(UID).setValue(buyer);
+        UserAuthenticationDatabase userAuthenticationDatabase = UserAuthenticationDatabase.GetInstance();
+        userAuthenticationDatabase.SignUpFoodBuyer(this, new FoodBuyer(null, name, "male", email, "011", new LatLng(1, 1)),
+                password);
+        ;
     }
 }

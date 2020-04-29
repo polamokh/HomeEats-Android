@@ -2,6 +2,8 @@ package com.example.homeeats;
 
 import com.google.firebase.database.Exclude;
 
+import java.io.Serializable;
+
 public abstract class Client {
     @Exclude
     public String id;
@@ -17,4 +19,5 @@ public abstract class Client {
         this.emailAddress = emailAddress;
         this.phone = phone;
     }
+    public Client(){}
 }

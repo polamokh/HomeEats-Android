@@ -9,4 +9,5 @@ public class FoodBuyer extends Client {
         super(id, name, gender, emailAddress, phone);
         this.location = location;
     }
+    public FoodBuyer(){super();}
 }
