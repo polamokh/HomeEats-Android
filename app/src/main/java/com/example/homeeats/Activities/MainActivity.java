@@ -76,36 +76,43 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, "Before",
                 Toast.LENGTH_SHORT).show();
 
-        final OrderDao orderDao = OrderDao.GetInstance();
-        final List<OrderItem> orderItems = new ArrayList<OrderItem>();
-
-        final Order order = new Order(null, new LatLng(1, 1), null, null, null, null, "Good order", 5, null, OrderStatus.Accepted);
-        FoodMakerDao.GetInstance().get("ctkAYZMA2sUoiQRKhAOxTy9nOc92", new RetrievalEventListener<FoodMaker>() {
+//        final OrderDao orderDao = OrderDao.GetInstance();
+//        final List<OrderItem> orderItems = new ArrayList<OrderItem>();
+//
+//        final Order order = new Order(null, new LatLng(1, 1), null, null, null, null, "Good order", 5, null, OrderStatus.Accepted);
+//        FoodMakerDao.GetInstance().get("ctkAYZMA2sUoiQRKhAOxTy9nOc92", new RetrievalEventListener<FoodMaker>() {
+//            @Override
+//            public void OnDataRetrieved(FoodMaker foodMaker) {
+//                order.foodMaker = foodMaker;
+//                FoodBuyerDao.GetInstance().get("lrOtoBNeAfcqiDlJJCJy0zSI7Nn2", new RetrievalEventListener<FoodBuyer>() {
+//                    @Override
+//                    public void OnDataRetrieved(FoodBuyer foodBuyer) {
+//                        order.foodBuyer = foodBuyer;
+//                        DeliveryBoyDao.GetInstance().get("QKchGRN7JBh3nZUiIP9O5GW5pfD3", new RetrievalEventListener<DeliveryBoy>() {
+//                            @Override
+//                            public void OnDataRetrieved(DeliveryBoy deliveryBoy) {
+//                                order.deliveryBoy = deliveryBoy;
+//                                MealItemDao.GetInstance().get("-M64XGeazTb_HbQnboZB", new RetrievalEventListener<MealItem>() {
+//                                    @Override
+//                                    public void OnDataRetrieved(MealItem mealItem) {
+//                                        order.orderItems = new ArrayList<OrderItem>();
+//                                        order.orderItems.add(new OrderItem(mealItem, 2, "da2aa zyadaa", 5));
+//                                        orderDao.save(order, orderDao.GetNewKey());
+//                                        order.totalPrice = order.getTotalPrice();
+//                                        Toast.makeText(getApplicationContext(), "Added order", Toast.LENGTH_SHORT).show();
+//                                    }
+//                                });
+//                            }
+//                        });
+//                    }
+//                });
+//            }
+//        });
+//
+        OrderDao.GetInstance().get("-M677cWbt_PNNjaGUPgJ", new RetrievalEventListener<Order>() {
             @Override
-            public void OnDataRetrieved(FoodMaker foodMaker) {
-                order.foodMaker = foodMaker;
-                FoodBuyerDao.GetInstance().get("lrOtoBNeAfcqiDlJJCJy0zSI7Nn2", new RetrievalEventListener<FoodBuyer>() {
-                    @Override
-                    public void OnDataRetrieved(FoodBuyer foodBuyer) {
-                        order.foodBuyer = foodBuyer;
-                        DeliveryBoyDao.GetInstance().get("QKchGRN7JBh3nZUiIP9O5GW5pfD3", new RetrievalEventListener<DeliveryBoy>() {
-                            @Override
-                            public void OnDataRetrieved(DeliveryBoy deliveryBoy) {
-                                order.deliveryBoy = deliveryBoy;
-                                MealItemDao.GetInstance().get("-M64XGeazTb_HbQnboZB", new RetrievalEventListener<MealItem>() {
-                                    @Override
-                                    public void OnDataRetrieved(MealItem mealItem) {
-                                        order.orderItems = new ArrayList<OrderItem>();
-                                        order.orderItems.add(new OrderItem(mealItem, 2, "da2aa zyadaa", 5));
-                                        orderDao.save(order, orderDao.GetNewKey());
-                                        order.totalPrice = order.getTotalPrice();
-                                        Toast.makeText(getApplicationContext(), "Added order", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            }
-                        });
-                    }
-                });
+            public void OnDataRetrieved(Order order) {
+                Toast.makeText(getApplicationContext(), "Get Order", Toast.LENGTH_SHORT);
             }
         });
     }
