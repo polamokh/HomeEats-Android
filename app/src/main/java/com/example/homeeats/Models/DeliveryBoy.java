@@ -1,9 +1,8 @@
-package com.example.homeeats;
+package com.example.homeeats.Models;
 
 import com.google.android.gms.maps.model.LatLng;
 
 import java.sql.Timestamp;
-import java.util.Date;
 
 public class DeliveryBoy extends Client {
     public boolean availability;

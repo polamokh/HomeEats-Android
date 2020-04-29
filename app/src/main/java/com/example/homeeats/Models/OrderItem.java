@@ -1,4 +1,4 @@
-package com.example.homeeats;
+package com.example.homeeats.Models;
 
 public class OrderItem {
     public MealItem mealItem;

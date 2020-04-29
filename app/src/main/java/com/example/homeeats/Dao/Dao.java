@@ -1,8 +1,8 @@
-package com.example.homeeats;
+package com.example.homeeats.Dao;
 
 import androidx.annotation.NonNull;
 
-import com.google.android.gms.maps.model.LatLng;
+import com.example.homeeats.RetrievalEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,7 +26,12 @@ public abstract class Dao<T> {
         rowReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                retrievalEventListener.OnDataRetrieved(parseDataSnapshot(dataSnapshot));
+                parseDataSnapshot(dataSnapshot, new RetrievalEventListener<T>() {
+                    @Override
+                    public void OnDataRetrieved(T t) {
+                        retrievalEventListener.OnDataRetrieved(t);
+                    }
+                });
             }
 
             @Override
@@ -40,19 +45,26 @@ public abstract class Dao<T> {
         return dbReference.child(tableName).push().getKey();
     }
 
-    public abstract T parseDataSnapshot(DataSnapshot dataSnapshot);
+    protected abstract void parseDataSnapshot(DataSnapshot dataSnapshot, RetrievalEventListener<T> retrievalEventListener);
 
     public void getAll(final RetrievalEventListener<List<T>> retrievalEventListener){
         DatabaseReference rowReference = dbReference.child(tableName);
         rowReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<T> list = new ArrayList<T>();
-                for(DataSnapshot currentSnapshot : dataSnapshot.getChildren())
-                {
-                    list.add(parseDataSnapshot(currentSnapshot));
-                }
-                retrievalEventListener.OnDataRetrieved(list);
+                final List<T> list = new ArrayList<T>();
+                final long len = dataSnapshot.getChildrenCount();
+                RetrievalEventListener<T> listRetrievalEventListener = new RetrievalEventListener<T>() {
+                    @Override
+                    public void OnDataRetrieved(T t) {
+                        list.add(t);
+                        if(list.size() == len){
+                            retrievalEventListener.OnDataRetrieved(list);
+                        }
+                    }
+                };
+                for(DataSnapshot currentDataSnapshot : dataSnapshot.getChildren())
+                    parseDataSnapshot(dataSnapshot, listRetrievalEventListener);
             }
 
             @Override

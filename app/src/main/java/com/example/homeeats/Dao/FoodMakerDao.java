@@ -1,5 +1,7 @@
-package com.example.homeeats;
+package com.example.homeeats.Dao;
 
+import com.example.homeeats.Models.FoodMaker;
+import com.example.homeeats.RetrievalEventListener;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 
@@ -13,8 +15,9 @@ public class FoodMakerDao extends Dao<FoodMaker> {
             singletonObject = new FoodMakerDao();
         return singletonObject;
     }
+
     @Override
-    public FoodMaker parseDataSnapshot(DataSnapshot dataSnapshot) {
+    protected void parseDataSnapshot(DataSnapshot dataSnapshot, RetrievalEventListener<FoodMaker> retrievalEventListener) {
         final FoodMaker foodMaker = new FoodMaker();
         foodMaker.id = dataSnapshot.getKey();
         foodMaker.name = dataSnapshot.child("name").getValue().toString();
@@ -25,7 +28,7 @@ public class FoodMakerDao extends Dao<FoodMaker> {
         double longitude = Double.parseDouble(dataSnapshot.child("location").child("longitude").getValue().toString());
         foodMaker.location = new LatLng(latitude, longitude);
         foodMaker.rating = Double.parseDouble(dataSnapshot.child("rating").getValue().toString());
-        return foodMaker;
+        retrievalEventListener.OnDataRetrieved(foodMaker);
     }
 
     @Override

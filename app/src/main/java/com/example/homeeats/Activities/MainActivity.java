@@ -1,4 +1,4 @@
-package com.example.homeeats;
+package com.example.homeeats.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,13 +12,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.homeeats.Dao.MealItemDao;
+import com.example.homeeats.Models.MealItem;
+import com.example.homeeats.R;
+import com.example.homeeats.RetrievalEventListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -64,17 +66,9 @@ public class MainActivity extends AppCompatActivity {
         mealItemDao.get("-M64XGeazTb_HbQnboZB", new RetrievalEventListener<MealItem>() {
             @Override
             public void OnDataRetrieved(final MealItem mealItem) {
-                FoodMakerDao.GetInstance().get(mealItem.foodMaker.id, new RetrievalEventListener<FoodMaker>() {
-                    @Override
-                    public void OnDataRetrieved(FoodMaker foodMaker) {
-                        mealItem.foodMaker = foodMaker;
-                        Toast.makeText(getApplicationContext(), foodMaker.name, Toast.LENGTH_SHORT).show();
-                    }
-                });
+                Toast.makeText(getApplicationContext(), mealItem.foodMaker.name, Toast.LENGTH_SHORT).show();
             }
         });
-
-
 
     }
 

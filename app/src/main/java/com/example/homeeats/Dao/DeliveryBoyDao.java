@@ -1,7 +1,7 @@
-package com.example.homeeats;
+package com.example.homeeats.Dao;
 
-import android.location.Location;
-
+import com.example.homeeats.Models.DeliveryBoy;
+import com.example.homeeats.RetrievalEventListener;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 
@@ -18,7 +18,7 @@ public class DeliveryBoyDao extends Dao<DeliveryBoy> {
     }
 
     @Override
-    public DeliveryBoy parseDataSnapshot(DataSnapshot dataSnapshot) {
+    protected void parseDataSnapshot(DataSnapshot dataSnapshot, RetrievalEventListener<DeliveryBoy> retrievalEventListener) {
         final DeliveryBoy deliveryBoy = new DeliveryBoy();
         deliveryBoy.id = dataSnapshot.getKey();
         deliveryBoy.name = dataSnapshot.child("name").getValue().toString();
@@ -29,7 +29,7 @@ public class DeliveryBoyDao extends Dao<DeliveryBoy> {
         double longitude = Double.parseDouble(dataSnapshot.child("location").child("longitude").getValue().toString());
         deliveryBoy.location = new LatLng(latitude, longitude);
         deliveryBoy.lastSeen = Long.parseLong(dataSnapshot.child("lastSeenTimeStamp").getValue().toString());
-        return deliveryBoy;
+        retrievalEventListener.OnDataRetrieved(deliveryBoy);
     }
 
     @Override

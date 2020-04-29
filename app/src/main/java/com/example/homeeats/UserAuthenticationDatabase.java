@@ -1,20 +1,22 @@
 package com.example.homeeats;
 
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.maps.model.LatLng;
+import com.example.homeeats.Dao.DeliveryBoyDao;
+import com.example.homeeats.Dao.FoodBuyerDao;
+import com.example.homeeats.Dao.FoodMakerDao;
+import com.example.homeeats.Models.Client;
+import com.example.homeeats.Models.DeliveryBoy;
+import com.example.homeeats.Models.FoodBuyer;
+import com.example.homeeats.Models.FoodMaker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
-
-import java.util.concurrent.Executor;
 
 public class UserAuthenticationDatabase {
     private static final FirebaseAuth mAuth = FirebaseAuth.getInstance();

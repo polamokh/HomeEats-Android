@@ -1,16 +1,10 @@
-package com.example.homeeats;
+package com.example.homeeats.Dao;
 
 
-import androidx.annotation.NonNull;
-
+import com.example.homeeats.Models.FoodBuyer;
+import com.example.homeeats.RetrievalEventListener;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class FoodBuyerDao extends Dao<FoodBuyer> {
     private static FoodBuyerDao singletonObject;
@@ -24,7 +18,7 @@ public class FoodBuyerDao extends Dao<FoodBuyer> {
     }
 
     @Override
-    public FoodBuyer parseDataSnapshot(DataSnapshot dataSnapshot) {
+    protected void parseDataSnapshot(DataSnapshot dataSnapshot, RetrievalEventListener<FoodBuyer> retrievalEventListener) {
         final FoodBuyer foodBuyer = new FoodBuyer();
         foodBuyer.id = dataSnapshot.getKey();
         foodBuyer.name = dataSnapshot.child("name").getValue().toString();
@@ -34,7 +28,7 @@ public class FoodBuyerDao extends Dao<FoodBuyer> {
         double latitude = Double.parseDouble(dataSnapshot.child("location").child("latitude").getValue().toString());
         double longitude = Double.parseDouble(dataSnapshot.child("location").child("longitude").getValue().toString());
         foodBuyer.location = new LatLng(latitude, longitude);
-        return foodBuyer;
+        retrievalEventListener.OnDataRetrieved(foodBuyer);
     }
 
     @Override

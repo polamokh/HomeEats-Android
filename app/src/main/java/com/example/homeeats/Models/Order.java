@@ -1,4 +1,4 @@
-package com.example.homeeats;
+package com.example.homeeats.Models;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.Exclude;

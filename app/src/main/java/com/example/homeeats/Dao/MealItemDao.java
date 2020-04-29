@@ -1,6 +1,8 @@
-package com.example.homeeats;
+package com.example.homeeats.Dao;
 
-import com.google.android.gms.maps.model.LatLng;
+import com.example.homeeats.Models.FoodMaker;
+import com.example.homeeats.Models.MealItem;
+import com.example.homeeats.RetrievalEventListener;
 import com.google.firebase.database.DataSnapshot;
 
 public class MealItemDao extends Dao<MealItem> {
@@ -15,8 +17,9 @@ public class MealItemDao extends Dao<MealItem> {
             singletonObject = new MealItemDao();
         return singletonObject;
     }
+
     @Override
-    public MealItem parseDataSnapshot(DataSnapshot dataSnapshot) {
+    protected void parseDataSnapshot(DataSnapshot dataSnapshot, final RetrievalEventListener<MealItem> retrievalEventListener) {
         final MealItem mealItem = new MealItem();
         mealItem.id = dataSnapshot.getKey();
         mealItem.name = dataSnapshot.child("name").getValue().toString();
@@ -25,9 +28,13 @@ public class MealItemDao extends Dao<MealItem> {
         mealItem.description = dataSnapshot.child("description").getValue().toString();
         mealItem.mealCategory = dataSnapshot.child("mealCategory").getValue().toString();
         mealItem.rating = Double.parseDouble(dataSnapshot.child("rating").getValue().toString());
-        mealItem.foodMaker = new FoodMaker();
-        mealItem.foodMaker.id = dataSnapshot.child("foodMakerId").getValue().toString();
-        return mealItem;
+        FoodMakerDao.GetInstance().get(dataSnapshot.child("foodMakerId").getValue().toString(), new RetrievalEventListener<FoodMaker>() {
+            @Override
+            public void OnDataRetrieved(FoodMaker foodMaker) {
+                mealItem.foodMaker = foodMaker;
+                retrievalEventListener.OnDataRetrieved(mealItem);
+            }
+        });
     }
 
     @Override
