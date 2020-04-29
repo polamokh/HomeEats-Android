@@ -64,7 +64,7 @@ public class SignUpActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     Log.d(TAG, "createUserWithEmail:success");
-                    FirebaseUser user = mAuth.getCurrentUser();
+                    final FirebaseUser user = mAuth.getCurrentUser();
                     UserProfileChangeRequest userProfileChangeRequest = new UserProfileChangeRequest.Builder()
                             .setDisplayName(name).build();
                     user.updateProfile(userProfileChangeRequest).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -72,12 +72,13 @@ public class SignUpActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<Void> task) {
                             if(task.isSuccessful()) {
                                 Log.d(TAG, "User profile updated.");
+                                writeUserToDatabase(user.getUid(), user.getDisplayName(), user.getEmail());
+                                Toast.makeText(SignUpActivity.this, "Signed up successfully",
+                                        Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
-                    writeUserToDatabase(user.getUid(), user.getDisplayName(), user.getEmail());
-                    Toast.makeText(SignUpActivity.this, "Signed up successfully",
-                            Toast.LENGTH_SHORT).show();
+
                 }
                 else {
                     Log.w(TAG, "createUserWithEmail::failure", task.getException());
@@ -89,7 +90,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void writeUserToDatabase(String UID, String name, String email) {
-        Buyer buyer = new Buyer(name, email);
+        FoodBuyer buyer = new FoodBuyer(UID, name, null, email, null, null);
         mDatabase.child("users").child(UID).setValue(buyer);
     }
 }
