@@ -21,6 +21,8 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Date;
+
 public class SignUpActivity extends AppCompatActivity {
 
     EditText editTextSignUpName;
@@ -54,8 +56,27 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void signUp(final String name, String email, String password, String type) {
         UserAuthenticationDatabase userAuthenticationDatabase = UserAuthenticationDatabase.GetInstance();
-        userAuthenticationDatabase.SignUpFoodBuyer(this, new FoodBuyer(null, name, "male", email, "011", new LatLng(1, 1)),
-                password);
-        ;
+        //Food Buyer
+        if(type.equals(getResources().getStringArray(R.array.user_type)[0])) {
+            userAuthenticationDatabase.SignUpFoodBuyer(
+                    this,
+                    new FoodBuyer(null, name, "male", email, "011", new LatLng(1, 1)),
+                    password);
+            ;
+        }
+        //Food Maker
+        else if(type.equals(getResources().getStringArray(R.array.user_type)[1])){
+            userAuthenticationDatabase.SignUpFoodMaker(this, new FoodMaker(null, name, "male", email, "011", new LatLng(1, 1), 4, null, null), password);
+        }
+        //Delivery Boy
+        else if(type.equals(getResources().getStringArray(R.array.user_type)[2])){
+            userAuthenticationDatabase.SignUpDeliveryBoy(
+                    this,
+                    new DeliveryBoy(null, name, "male", email, "011", true, new LatLng(1, 1), new Date().getTime()),
+                    password);
+        }
+        else {
+            Toast.makeText(this, "Invalid type", Toast.LENGTH_SHORT).show();
+        }
     }
 }

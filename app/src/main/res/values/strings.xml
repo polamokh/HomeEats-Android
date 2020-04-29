@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Home Eats</string>
     <array name="user_type">
-        <item>Buyer</item>
-        <item>Maker</item>
-        <item>Delivery</item>
+        <item>Food Buyer</item>
+        <item>Food Maker</item>
+        <item>Delivery Boy</item>
     </array>
 </resources>

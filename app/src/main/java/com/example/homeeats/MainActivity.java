@@ -60,16 +60,21 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, "Before",
                 Toast.LENGTH_SHORT).show();
 
-        FoodBuyerDao foodBuyerDao = FoodBuyerDao.GetInstance();
-        foodBuyerDao.getAll(new RetrievalEventListener<List<FoodBuyer>>() {
+        MealItemDao mealItemDao = MealItemDao.GetInstance();
+        mealItemDao.get("-M64XGeazTb_HbQnboZB", new RetrievalEventListener<MealItem>() {
             @Override
-            public void OnDataRetrieved(List<FoodBuyer> foodBuyers) {
-                for(FoodBuyer foodBuyer : foodBuyers)
-                {
-                    Toast.makeText(getApplicationContext(), foodBuyer.name, Toast.LENGTH_SHORT).show();
-                }
+            public void OnDataRetrieved(final MealItem mealItem) {
+                FoodMakerDao.GetInstance().get(mealItem.foodMaker.id, new RetrievalEventListener<FoodMaker>() {
+                    @Override
+                    public void OnDataRetrieved(FoodMaker foodMaker) {
+                        mealItem.foodMaker = foodMaker;
+                        Toast.makeText(getApplicationContext(), foodMaker.name, Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
+
+
 
     }
 

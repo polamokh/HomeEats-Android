@@ -30,9 +30,27 @@ public class UserAuthenticationDatabase {
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    public void SignUpFoodMaker(FoodMaker foodMaker, String password)
+    public void SignUpFoodMaker(final AppCompatActivity appCompatActivity, final FoodMaker foodMaker, String password)
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        mAuth.createUserWithEmailAndPassword(foodMaker.emailAddress, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    // Sign in success, update UI with the signed-in user's information
+                    FirebaseUser user = mAuth.getCurrentUser();
+                    FoodMakerDao foodMakerDao = FoodMakerDao.GetInstance();
+                    foodMaker.id = user.getUid();
+                    foodMakerDao.save(foodMaker, foodMaker.id);
+                    Toast.makeText(appCompatActivity, "Sign up Food Maker succeeded.",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Toast.makeText(appCompatActivity, "Authentication failed.",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
+        });
     }
     public void SignUpFoodBuyer(final AppCompatActivity appCompatActivity, final FoodBuyer foodBuyer, String password)
     {
@@ -44,8 +62,8 @@ public class UserAuthenticationDatabase {
                     FirebaseUser user = mAuth.getCurrentUser();
                     FoodBuyerDao foodBuyerDao = FoodBuyerDao.GetInstance();
                     foodBuyer.id = user.getUid();
-                    foodBuyerDao.save(foodBuyer);
-                    Toast.makeText(appCompatActivity, "Sign up succeeded.",
+                    foodBuyerDao.save(foodBuyer, foodBuyer.id);
+                    Toast.makeText(appCompatActivity, "Sign up Food Buyer succeeded.",
                             Toast.LENGTH_SHORT).show();
                 } else {
                     // If sign in fails, display a message to the user.
@@ -57,9 +75,27 @@ public class UserAuthenticationDatabase {
         });
 
     }
-    public void SignUpDeliveryBoy(DeliveryBoy deliveryBoy, String password)
+    public void SignUpDeliveryBoy(final AppCompatActivity appCompatActivity, final DeliveryBoy deliveryBoy, String password)
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        mAuth.createUserWithEmailAndPassword(deliveryBoy.emailAddress, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    // Sign in success, update UI with the signed-in user's information
+                    FirebaseUser user = mAuth.getCurrentUser();
+                    DeliveryBoyDao deliveryBoyDao = DeliveryBoyDao.GetInstance();
+                    deliveryBoy.id = user.getUid();
+                    deliveryBoyDao.save(deliveryBoy, deliveryBoy.id);
+                    Toast.makeText(appCompatActivity, "Sign up DeliveryBoy succeeded.",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Toast.makeText(appCompatActivity, "Authentication failed.",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
+        });
     }
     public Client Login(String email, String password)
     {

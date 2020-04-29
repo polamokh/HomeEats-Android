@@ -19,5 +19,6 @@ public abstract class Client {
         this.emailAddress = emailAddress;
         this.phone = phone;
     }
+
     public Client(){}
 }
