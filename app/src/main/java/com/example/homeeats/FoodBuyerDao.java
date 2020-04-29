@@ -2,7 +2,6 @@ package com.example.homeeats;
 
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
@@ -10,8 +9,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FoodBuyerDao extends Dao<FoodBuyer> {
@@ -24,12 +22,12 @@ public class FoodBuyerDao extends Dao<FoodBuyer> {
     }
 
     @Override
-    public void get(final AppCompatActivity appCompatActivity, final String id, final Method callback) {
-        final FoodBuyer foodBuyer = new FoodBuyer();
+    public void get(final String id, final RetrievalEventListener<FoodBuyer> retrievalEventListener) {
         DatabaseReference rowReference = dbReference.child("FoodBuyers").child(id);
         rowReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                final FoodBuyer foodBuyer = new FoodBuyer();
                 foodBuyer.name = dataSnapshot.child("name").getValue().toString();
                 foodBuyer.gender = dataSnapshot.child("gender").getValue().toString();
                 foodBuyer.emailAddress = dataSnapshot.child("emailAddress").getValue().toString();
@@ -37,13 +35,7 @@ public class FoodBuyerDao extends Dao<FoodBuyer> {
                 double latitude = Double.parseDouble(dataSnapshot.child("location").child("latitude").getValue().toString());
                 double longitude = Double.parseDouble(dataSnapshot.child("location").child("longitude").getValue().toString());
                 foodBuyer.location = new LatLng(latitude, longitude);
-                try {
-                    callback.invoke(appCompatActivity, new Object[]{foodBuyer});
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                }
+                retrievalEventListener.OnDataRetrieved(foodBuyer);
             }
 
             @Override
@@ -53,9 +45,34 @@ public class FoodBuyerDao extends Dao<FoodBuyer> {
     }
 
     @Override
-    public List<FoodBuyer> getAll() throws Exception {
-        return null;
+    public void getAll(final RetrievalEventListener<List<FoodBuyer>> retrievalEventListener){
+        DatabaseReference rowReference = dbReference.child("FoodBuyers");
+        rowReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<FoodBuyer> foodBuyers = new ArrayList<FoodBuyer>();
+                for(DataSnapshot currentSnapshot : dataSnapshot.getChildren())
+                {
+                    final FoodBuyer foodBuyer = new FoodBuyer();
+                    foodBuyer.name = currentSnapshot.child("name").getValue().toString();
+                    foodBuyer.gender = currentSnapshot.child("gender").getValue().toString();
+                    foodBuyer.emailAddress = currentSnapshot.child("emailAddress").getValue().toString();
+                    foodBuyer.phone = currentSnapshot.child("phone").getValue().toString();
+                    double latitude = Double.parseDouble(currentSnapshot.child("location").child("latitude").getValue().toString());
+                    double longitude = Double.parseDouble(currentSnapshot.child("location").child("longitude").getValue().toString());
+                    foodBuyer.location = new LatLng(latitude, longitude);
+                    foodBuyers.add(foodBuyer);
+                }
+                retrievalEventListener.OnDataRetrieved(foodBuyers);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
+
 
     @Override
     void save(FoodBuyer foodBuyer) {

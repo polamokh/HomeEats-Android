@@ -36,7 +36,7 @@ public class UserAuthenticationDatabase {
     }
     public void SignUpFoodBuyer(final AppCompatActivity appCompatActivity, final FoodBuyer foodBuyer, String password)
     {
-        mAuth.createUserWithEmailAndPassword(foodBuyer.emailAddress, password).addOnCompleteListener(appCompatActivity, new OnCompleteListener<AuthResult>() {
+        mAuth.createUserWithEmailAndPassword(foodBuyer.emailAddress, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {

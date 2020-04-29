@@ -17,7 +17,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import java.lang.reflect.Method;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
         editTextPassword = findViewById(R.id.editTextPassword);
         buttonLogin = findViewById(R.id.buttonLogin);
         textViewSignup = findViewById(R.id.textViewSignup);
-
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,17 +61,16 @@ public class MainActivity extends AppCompatActivity {
                 Toast.LENGTH_SHORT).show();
 
         FoodBuyerDao foodBuyerDao = FoodBuyerDao.GetInstance();
-        try {
-            foodBuyerDao.get(this, "lrOtoBNeAfcqiDlJJCJy0zSI7Nn2", MainActivity.class.getMethod("FoodBuyerTest", new Class[]{FoodBuyer.class}));
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        }
-    }
+        foodBuyerDao.getAll(new RetrievalEventListener<List<FoodBuyer>>() {
+            @Override
+            public void OnDataRetrieved(List<FoodBuyer> foodBuyers) {
+                for(FoodBuyer foodBuyer : foodBuyers)
+                {
+                    Toast.makeText(getApplicationContext(), foodBuyer.name, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
-    public void FoodBuyerTest(FoodBuyer foodBuyer)
-    {
-        Toast.makeText(this, foodBuyer.name,
-                Toast.LENGTH_SHORT).show();
     }
 
     @Override
