@@ -40,16 +40,16 @@ public class FoodMakerDao extends Dao<FoodMaker> {
 
     public void GetFoodMakerMeals(final String foodMakerId, final RetrievalEventListener<List<MealItem>> listRetrievalEventListener)
     {
-        List<MealItem> mealItems = new ArrayList<>();
+        final List<MealItem> makerMeals = new ArrayList<>();
         MealItemDao.GetInstance().getAll(new RetrievalEventListener<List<MealItem>>() {
             @Override
             public void OnDataRetrieved(List<MealItem> mealItems) {
                 for(MealItem currentMealItem : mealItems)
                 {
                     if(currentMealItem.foodMakerId.equals(foodMakerId))
-                        mealItems.add(currentMealItem);
+                        makerMeals.add(currentMealItem);
                 }
-                listRetrievalEventListener.OnDataRetrieved(mealItems);
+                listRetrievalEventListener.OnDataRetrieved(makerMeals);
             }
         });
     }
@@ -68,16 +68,16 @@ public class FoodMakerDao extends Dao<FoodMaker> {
     }
     public void GetFoodMakerOrders(final String foodMakerId, final RetrievalEventListener<List<Order>> listRetrievalEventListener)
     {
-        List<Order> orders = new ArrayList<>();
+        final List<Order> foodMakerOrders = new ArrayList<>();
         OrderDao.GetInstance().getAll(new RetrievalEventListener<List<Order>>() {
             @Override
             public void OnDataRetrieved(List<Order> orders) {
                 for(Order currentOrder : orders)
                 {
                     if(currentOrder.foodMakerId.equals(foodMakerId))
-                        orders.add(currentOrder);
+                        foodMakerOrders.add(currentOrder);
                 }
-                listRetrievalEventListener.OnDataRetrieved(orders);
+                listRetrievalEventListener.OnDataRetrieved(foodMakerOrders);
             }
         });
     }

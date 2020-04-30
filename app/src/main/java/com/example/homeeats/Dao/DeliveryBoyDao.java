@@ -1,9 +1,13 @@
 package com.example.homeeats.Dao;
 
 import com.example.homeeats.Models.DeliveryBoy;
+import com.example.homeeats.Models.Order;
 import com.example.homeeats.RetrievalEventListener;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DeliveryBoyDao extends Dao<DeliveryBoy> {
     private static DeliveryBoyDao singletonObject;
@@ -32,6 +36,19 @@ public class DeliveryBoyDao extends Dao<DeliveryBoy> {
         retrievalEventListener.OnDataRetrieved(deliveryBoy);
     }
 
+    public void GetDeliveryBoyOrder(final String deliveryBoyId, final RetrievalEventListener<List<Order>> listRetrievalEventListener)
+    {
+        final List<Order> deliveryBoyOrders = new ArrayList<>();
+        OrderDao.GetInstance().getAll(new RetrievalEventListener<List<Order>>() {
+            @Override
+            public void OnDataRetrieved(List<Order> orders) {
+                for(Order order : orders)
+                    if(order.deliveryBoyId.equals(deliveryBoyId))
+                        deliveryBoyOrders.add(order);
+                listRetrievalEventListener.OnDataRetrieved(deliveryBoyOrders);
+            }
+        });
+    }
     @Override
     void delete(DeliveryBoy deliveryBoy) {
 

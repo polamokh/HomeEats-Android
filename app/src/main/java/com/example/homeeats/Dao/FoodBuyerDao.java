@@ -38,16 +38,16 @@ public class FoodBuyerDao extends Dao<FoodBuyer> {
 
     public void GetFoodBuyerOrders(final String foodBuyerId, final RetrievalEventListener<List<Order>> retrievalEventListener)
     {
-        final List<Order> orders = new ArrayList<>();
+        final List<Order> foodBuyerOrders = new ArrayList<>();
         OrderDao.GetInstance().getAll(new RetrievalEventListener<List<Order>>() {
             @Override
             public void OnDataRetrieved(List<Order> orders) {
                 for(Order currentOrder : orders)
                 {
                     if(currentOrder.foodBuyerId.equals(foodBuyerId))
-                        orders.add(currentOrder);
+                        foodBuyerOrders.add(currentOrder);
                 }
-                retrievalEventListener.OnDataRetrieved(orders);
+                retrievalEventListener.OnDataRetrieved(foodBuyerOrders);
             }
         });
     }
