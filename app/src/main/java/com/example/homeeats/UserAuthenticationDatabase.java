@@ -31,10 +31,58 @@ public class UserAuthenticationDatabase {
             singletonObject = new UserAuthenticationDatabase();
         return singletonObject;
     }
-    public Client GetActiveClient()
+    private void buildUser(FirebaseUser user, final RetrievalEventListener<Client> retrievalEventListener)
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if(user == null) {
+            retrievalEventListener.OnDataRetrieved(null);
+            return;
+        }
+        String id = user.getUid();
+        UserPrimitiveDataDao.GetInstance().get(id, new RetrievalEventListener<UserPrimitiveData>() {
+            @Override
+            public void OnDataRetrieved(UserPrimitiveData userPrimitiveData) {
+                switch (userPrimitiveData.userType){
+                    case FoodBuyer:
+                        FoodBuyerDao.GetInstance().get(userPrimitiveData.id, new RetrievalEventListener<FoodBuyer>() {
+                            @Override
+                            public void OnDataRetrieved(FoodBuyer foodBuyer) {
+                                retrievalEventListener.OnDataRetrieved(foodBuyer);
+                            }
+                        });
+                        break;
+                    case FoodMaker:
+                        FoodMakerDao.GetInstance().get(userPrimitiveData.id, new RetrievalEventListener<FoodMaker>() {
+                            @Override
+                            public void OnDataRetrieved(FoodMaker foodMaker) {
+                                retrievalEventListener.OnDataRetrieved(foodMaker);
+                            }
+                        });
+                        break;
+                    case DeliverBoy:
+                        DeliveryBoyDao.GetInstance().get(userPrimitiveData.id, new RetrievalEventListener<DeliveryBoy>() {
+                            @Override
+                            public void OnDataRetrieved(DeliveryBoy deliveryBoy) {
+                                retrievalEventListener.OnDataRetrieved(deliveryBoy);
+                            }
+                        });
+                        break;
+                    case Invalid:
+                        retrievalEventListener.OnDataRetrieved(null);
+                }
+            }
+        });
     }
+    public void GetActiveClient(final RetrievalEventListener<Client> retrievalEventListener)
+    {
+        FirebaseUser user = mAuth.getCurrentUser();
+        buildUser(user, new RetrievalEventListener<Client>() {
+            @Override
+            public void OnDataRetrieved(Client client) {
+                retrievalEventListener.OnDataRetrieved(client);
+            }
+        });
+    }
+
     public void SignUpFoodMaker(final AppCompatActivity appCompatActivity, final FoodMaker foodMaker, String password)
     {
         mAuth.createUserWithEmailAndPassword(foodMaker.emailAddress, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -117,39 +165,10 @@ public class UserAuthenticationDatabase {
                 if (task.isSuccessful()) {
                     // Sign in success, update UI with the signed-in user's information
                     FirebaseUser user = mAuth.getCurrentUser();
-                    String id = user.getUid();
-                    UserPrimitiveDataDao.GetInstance().get(id, new RetrievalEventListener<UserPrimitiveData>() {
+                    buildUser(user, new RetrievalEventListener<Client>() {
                         @Override
-                        public void OnDataRetrieved(UserPrimitiveData userPrimitiveData) {
-                            switch (userPrimitiveData.userType){
-                                case FoodBuyer:
-                                    FoodBuyerDao.GetInstance().get(userPrimitiveData.id, new RetrievalEventListener<FoodBuyer>() {
-                                        @Override
-                                        public void OnDataRetrieved(FoodBuyer foodBuyer) {
-                                            retrievalEventListener.OnDataRetrieved(foodBuyer);
-                                        }
-                                    });
-                                    break;
-                                case FoodMaker:
-                                    FoodMakerDao.GetInstance().get(userPrimitiveData.id, new RetrievalEventListener<FoodMaker>() {
-                                        @Override
-                                        public void OnDataRetrieved(FoodMaker foodMaker) {
-                                            retrievalEventListener.OnDataRetrieved(foodMaker);
-                                        }
-                                    });
-                                    break;
-                                case DeliverBoy:
-                                    DeliveryBoyDao.GetInstance().get(userPrimitiveData.id, new RetrievalEventListener<DeliveryBoy>() {
-                                        @Override
-                                        public void OnDataRetrieved(DeliveryBoy deliveryBoy) {
-                                            retrievalEventListener.OnDataRetrieved(deliveryBoy);
-                                        }
-                                    });
-                                    break;
-                                case Invalid:
-                                    throw new RuntimeException("Got "+userPrimitiveData.userType.toString());
-                                    //retrievalEventListener.OnDataRetrieved(null);
-                            }
+                        public void OnDataRetrieved(Client client) {
+                            retrievalEventListener.OnDataRetrieved(client);
                         }
                     });
                 } else {
@@ -163,6 +182,6 @@ public class UserAuthenticationDatabase {
     }
     public void SignOut()
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        mAuth.signOut();
     }
 }
