@@ -63,7 +63,7 @@ public abstract class Dao<T> {
                     }
                 };
                 for(DataSnapshot currentDataSnapshot : dataSnapshot.getChildren())
-                    parseDataSnapshot(dataSnapshot, listRetrievalEventListener);
+                    parseDataSnapshot(currentDataSnapshot, listRetrievalEventListener);
             }
 
             @Override
