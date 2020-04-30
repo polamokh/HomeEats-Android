@@ -17,6 +17,7 @@ import com.example.homeeats.Dao.FoodBuyerDao;
 import com.example.homeeats.Dao.FoodMakerDao;
 import com.example.homeeats.Dao.MealItemDao;
 import com.example.homeeats.Dao.OrderDao;
+import com.example.homeeats.EventListenersListener;
 import com.example.homeeats.Models.DeliveryBoy;
 import com.example.homeeats.Models.FoodBuyer;
 import com.example.homeeats.Models.FoodMaker;
@@ -109,14 +110,76 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 //
-        OrderDao.GetInstance().get("-M677cWbt_PNNjaGUPgJ", new RetrievalEventListener<Order>() {
+//        AddNewOrder();
+
+        Order order;
+        OrderDao.GetInstance().get("-M67Seiqi02gO1XNvA6T", new RetrievalEventListener<Order>() {
             @Override
             public void OnDataRetrieved(Order order) {
                 Toast.makeText(getApplicationContext(), "Get Order", Toast.LENGTH_SHORT);
             }
         });
+
     }
 
+    protected void AddNewOrder()
+    {
+        final Order order = new Order(null, new LatLng(1, 1), null, null, null, null, "Good order", 5, null, OrderStatus.Accepted);
+        order.orderItems = new ArrayList<OrderItem>();
+        final EventListenersListener eventListenersListener = new EventListenersListener() {
+            @Override
+            public void onFinish() {
+                OrderDao.GetInstance().save(order, OrderDao.GetInstance().GetNewKey());
+                Toast.makeText(getApplicationContext(), "Order finished", Toast.LENGTH_SHORT).show();
+            }
+        };
+        RetrievalEventListener foodMakerListener = new RetrievalEventListener<FoodMaker>() {
+            @Override
+            public void OnDataRetrieved(FoodMaker foodMaker) {
+                order.foodMaker = foodMaker;
+                eventListenersListener.notify(this);
+            }
+        };
+        eventListenersListener.Add(foodMakerListener);
+        RetrievalEventListener foodBuyerListener = new RetrievalEventListener<FoodBuyer>() {
+            @Override
+            public void OnDataRetrieved(FoodBuyer foodBuyer) {
+                order.foodBuyer = foodBuyer;
+                eventListenersListener.notify(this);
+            }
+        };
+        eventListenersListener.Add(foodBuyerListener);
+        RetrievalEventListener deliveryBoyEventListener = new RetrievalEventListener<DeliveryBoy>() {
+            @Override
+            public void OnDataRetrieved(DeliveryBoy deliveryBoy) {
+                order.deliveryBoy = deliveryBoy;
+                eventListenersListener.notify(this);
+            }
+        };
+        eventListenersListener.Add(deliveryBoyEventListener);
+        List<RetrievalEventListener> mealItemsEventListeners = new ArrayList<>();
+        for(int i = 1; i <= 5; i++)
+        {
+            final OrderItem orderItem = new OrderItem(null, i, "da2aa zyadaa", 5);
+            RetrievalEventListener mealItemEventListener = new RetrievalEventListener<MealItem>() {
+                @Override
+                public void OnDataRetrieved(MealItem mealItem) {
+                    orderItem.mealItem = mealItem;
+                    eventListenersListener.notify(this);
+                }
+            };
+            mealItemsEventListeners.add(mealItemEventListener);
+            eventListenersListener.Add(mealItemEventListener);
+            order.orderItems.add(orderItem);
+        }
+        FoodBuyerDao.GetInstance().get("lrOtoBNeAfcqiDlJJCJy0zSI7Nn2", foodBuyerListener);
+        FoodMakerDao.GetInstance().get("ctkAYZMA2sUoiQRKhAOxTy9nOc92", foodMakerListener);
+        DeliveryBoyDao.GetInstance().get("QKchGRN7JBh3nZUiIP9O5GW5pfD3", deliveryBoyEventListener);
+        for(int i = 0; i < 5; i++)
+        {
+            MealItemDao.GetInstance().get("-M64XGeazTb_HbQnboZB", mealItemsEventListeners.get(i));
+        }
+    }
     @Override
     protected void onStart() {
         super.onStart();
