@@ -1,5 +1,6 @@
 package com.example.homeeats.Dao;
 
+import com.example.homeeats.EventListenersListener;
 import com.example.homeeats.Models.DeliveryBoy;
 import com.example.homeeats.Models.FoodBuyer;
 import com.example.homeeats.Models.FoodMaker;
@@ -12,6 +13,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class OrderDao extends Dao<Order> {
     private static OrderDao orderDao;
@@ -36,50 +38,24 @@ public class OrderDao extends Dao<Order> {
         double longitude = Double.parseDouble(dataSnapshot.child("buyerLocation").child("longitude").getValue().toString());
         order.buyerLocation = new LatLng(latitude, longitude);
         order.orderItems = new ArrayList<OrderItem>();
-        FoodMakerDao.GetInstance().get(dataSnapshot.child("foodMakerId").getValue().toString(), new RetrievalEventListener<FoodMaker>() {
-            @Override
-            public void OnDataRetrieved(FoodMaker foodMaker) {
-                order.foodMaker = foodMaker;
-                FoodBuyerDao.GetInstance().get(dataSnapshot.child("foodBuyerId").getValue().toString(), new RetrievalEventListener<FoodBuyer>() {
-                    @Override
-                    public void OnDataRetrieved(FoodBuyer foodBuyer) {
-                        order.foodBuyer = foodBuyer;
-                        DeliveryBoyDao.GetInstance().get(dataSnapshot.child("deliveryBoyId").getValue().toString(), new RetrievalEventListener<DeliveryBoy>() {
-                            @Override
-                            public void OnDataRetrieved(DeliveryBoy deliveryBoy) {
-                                order.deliveryBoy = deliveryBoy;
-                                RetrievalEventListener orderItemsRetrievalEventListener = new RetrievalEventListener<OrderItem>() {
-                                    @Override
-                                    public void OnDataRetrieved(OrderItem orderItem) {
-                                        order.orderItems.add(orderItem);
-                                        if(order.orderItems.size() == dataSnapshot.child("orderItems").getChildrenCount())
-                                            retrievalEventListener.OnDataRetrieved(order);
-                                    }
-                                };
-                                for(DataSnapshot currentDataSnapshot : dataSnapshot.child("orderItems").getChildren())
-                                    parseOrderItemDataSnapShot(currentDataSnapshot, orderItemsRetrievalEventListener);
-                            }
-                        });
+        order.foodMakerId = dataSnapshot.child("foodMakerId").getValue().toString();
+        order.foodBuyerId = dataSnapshot.child("foodBuyerId").getValue().toString();
+        order.deliveryBoyId = dataSnapshot.child("deliveryBoyId").getValue().toString();
 
-                    }
-                });
-            }
-        });
+        order.orderItems = new ArrayList<>();
+        for(DataSnapshot currentSnapshot : dataSnapshot.child("orderItems").getChildren())
+            order.orderItems.add(parseOrderItemDataSnapShot(currentSnapshot));
     }
 
-    protected void parseOrderItemDataSnapShot(DataSnapshot dataSnapshot, final RetrievalEventListener<OrderItem> retrievalEventListener)
+    protected OrderItem parseOrderItemDataSnapShot(DataSnapshot dataSnapshot)
     {
         final OrderItem orderItem = new OrderItem();
         orderItem.quantity = Integer.parseInt(dataSnapshot.child("quantity").getValue().toString());
         orderItem.notes = dataSnapshot.child("notes").getValue().toString();
         orderItem.rating = Integer.parseInt(dataSnapshot.child("rating").getValue().toString());
-        MealItemDao.GetInstance().get(dataSnapshot.child("mealItemId").getValue().toString(), new RetrievalEventListener<MealItem>() {
-            @Override
-            public void OnDataRetrieved(MealItem mealItem) {
-                orderItem.mealItem = mealItem;
-                retrievalEventListener.OnDataRetrieved(orderItem);
-            }
-        });
+        orderItem.mealItemId = dataSnapshot.child("mealItemId").getValue().toString();
+        orderItem.totalPrice = Double.parseDouble(dataSnapshot.child("totalPrice").getValue().toString());
+        return orderItem;
     }
 
     @Override

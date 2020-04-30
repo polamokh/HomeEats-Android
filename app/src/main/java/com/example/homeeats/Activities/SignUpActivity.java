@@ -61,7 +61,7 @@ public class SignUpActivity extends AppCompatActivity {
         }
         //Food Maker
         else if(type.equals(getResources().getStringArray(R.array.user_type)[1])){
-            userAuthenticationDatabase.SignUpFoodMaker(this, new FoodMaker(null, name, "male", email, "011", new LatLng(1, 1), 4, null, null), password);
+            userAuthenticationDatabase.SignUpFoodMaker(this, new FoodMaker(null, name, "male", email, "011", new LatLng(1, 1), 4), password);
         }
         //Delivery Boy
         else if(type.equals(getResources().getStringArray(R.array.user_type)[2])){

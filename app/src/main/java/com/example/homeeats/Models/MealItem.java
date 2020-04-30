@@ -1,15 +1,13 @@
 package com.example.homeeats.Models;
 
+import com.example.homeeats.Dao.FoodMakerDao;
+import com.example.homeeats.RetrievalEventListener;
 import com.google.firebase.database.Exclude;
 
 public class MealItem {
     @Exclude
     public String id;
     public String name;
-    @Exclude
-    public FoodMaker foodMaker;
-
-
     public String foodMakerId;
     //url
     public String photo;
@@ -18,14 +16,19 @@ public class MealItem {
     public String mealCategory;
     public Double rating;
 
-    public String getFoodMakerId() {
-        return foodMaker.id;
+    public void GetFoodMaker(final RetrievalEventListener<FoodMaker> foodMakerRetrievalEventListener)
+    {
+        FoodMakerDao.GetInstance().get(foodMakerId, new RetrievalEventListener<FoodMaker>() {
+            @Override
+            public void OnDataRetrieved(FoodMaker foodMaker) {
+                foodMakerRetrievalEventListener.OnDataRetrieved(foodMaker);
+            }
+        });
     }
-
-    public MealItem(String id, String name, FoodMaker foodMaker, String photo, String description, double price, String mealCategory, double rating) {
+    public MealItem(String id, String name, String foodMakerId, String photo, String description, double price, String mealCategory, double rating) {
         this.id = id;
         this.name = name;
-        this.foodMaker = foodMaker;
+        this.foodMakerId = foodMakerId;
         this.photo = photo;
         this.description = description;
         this.price = price;

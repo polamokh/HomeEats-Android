@@ -28,13 +28,8 @@ public class MealItemDao extends Dao<MealItem> {
         mealItem.description = dataSnapshot.child("description").getValue().toString();
         mealItem.mealCategory = dataSnapshot.child("mealCategory").getValue().toString();
         mealItem.rating = Double.parseDouble(dataSnapshot.child("rating").getValue().toString());
-        FoodMakerDao.GetInstance().get(dataSnapshot.child("foodMakerId").getValue().toString(), new RetrievalEventListener<FoodMaker>() {
-            @Override
-            public void OnDataRetrieved(FoodMaker foodMaker) {
-                mealItem.foodMaker = foodMaker;
-                retrievalEventListener.OnDataRetrieved(mealItem);
-            }
-        });
+        mealItem.foodMakerId = dataSnapshot.child("foodMakerId").getValue().toString();
+        retrievalEventListener.OnDataRetrieved(mealItem);
     }
 
     @Override
