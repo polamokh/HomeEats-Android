@@ -110,15 +110,15 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 //
-//        AddNewOrder();
+        AddNewOrder();
 
-        Order order;
-        OrderDao.GetInstance().get("-M67Seiqi02gO1XNvA6T", new RetrievalEventListener<Order>() {
-            @Override
-            public void OnDataRetrieved(Order order) {
-                Toast.makeText(getApplicationContext(), "Get Order", Toast.LENGTH_SHORT);
-            }
-        });
+//        Order order;
+//        OrderDao.GetInstance().get("-M67Seiqi02gO1XNvA6T", new RetrievalEventListener<Order>() {
+//            @Override
+//            public void OnDataRetrieved(Order order) {
+//                Toast.makeText(getApplicationContext(), "Get Order", Toast.LENGTH_SHORT);
+//            }
+//        });
 
     }
 
@@ -172,6 +172,7 @@ public class MainActivity extends AppCompatActivity {
             eventListenersListener.Add(mealItemEventListener);
             order.orderItems.add(orderItem);
         }
+        eventListenersListener.OnFinishAddingListeners();
         FoodBuyerDao.GetInstance().get("lrOtoBNeAfcqiDlJJCJy0zSI7Nn2", foodBuyerListener);
         FoodMakerDao.GetInstance().get("ctkAYZMA2sUoiQRKhAOxTy9nOc92", foodMakerListener);
         DeliveryBoyDao.GetInstance().get("QKchGRN7JBh3nZUiIP9O5GW5pfD3", deliveryBoyEventListener);
