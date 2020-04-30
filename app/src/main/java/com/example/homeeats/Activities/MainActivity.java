@@ -18,6 +18,7 @@ import com.example.homeeats.Dao.FoodMakerDao;
 import com.example.homeeats.Dao.MealItemDao;
 import com.example.homeeats.Dao.OrderDao;
 import com.example.homeeats.EventListenersListener;
+import com.example.homeeats.Models.Client;
 import com.example.homeeats.Models.DeliveryBoy;
 import com.example.homeeats.Models.FoodBuyer;
 import com.example.homeeats.Models.FoodMaker;
@@ -27,6 +28,7 @@ import com.example.homeeats.Models.OrderItem;
 import com.example.homeeats.Models.OrderStatus;
 import com.example.homeeats.R;
 import com.example.homeeats.RetrievalEventListener;
+import com.example.homeeats.UserAuthenticationDatabase;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -62,7 +64,12 @@ public class MainActivity extends AppCompatActivity {
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signIn(editTextEmail.getText().toString(), editTextPassword.getText().toString());
+                UserAuthenticationDatabase.GetInstance().Login(MainActivity.this, editTextEmail.getText().toString(), editTextPassword.getText().toString(), new RetrievalEventListener<Client>() {
+                    @Override
+                    public void OnDataRetrieved(Client client) {
+                        Toast.makeText(getApplicationContext(), "Welcome "+client.name,Toast.LENGTH_LONG).show();
+                    }
+                });
             }
         });
 
@@ -110,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 //
-        AddNewOrder();
+//        AddNewOrder();
 
 //        Order order;
 //        OrderDao.GetInstance().get("-M67Seiqi02gO1XNvA6T", new RetrievalEventListener<Order>() {

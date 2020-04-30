@@ -1,9 +1,10 @@
 package com.example.homeeats.Models;
 
 public enum OrderStatus {
-    Making, Delivering, Delivered, Accepted, Rejected, invalid;
-    public static OrderStatus getValue(String s)
-    {
+
+    Making, Delivering, Delivered, Accepted, Rejected, Invalid;
+
+    public static OrderStatus getValue(String s) {
         switch (s)
         {
             case "Making":
@@ -17,7 +18,7 @@ public enum OrderStatus {
             case "Rejected":
                 return Rejected;
             default:
-                return invalid;
+                return Invalid;
         }
     }
 }
