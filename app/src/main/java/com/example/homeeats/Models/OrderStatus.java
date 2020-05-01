@@ -2,7 +2,7 @@ package com.example.homeeats.Models;
 
 public enum OrderStatus {
 
-    Making, Delivering, Delivered, Accepted, Rejected, Invalid;
+    Making, Delivering, Delivered, Pending, Accepted, Rejected, Invalid;
 
     public static OrderStatus getValue(String s) {
         switch (s)
@@ -17,6 +17,8 @@ public enum OrderStatus {
                 return Accepted;
             case "Rejected":
                 return Rejected;
+            case "Pending":
+                return Pending;
             default:
                 return Invalid;
         }

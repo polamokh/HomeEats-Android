@@ -3,6 +3,10 @@ package com.example.homeeats.Dao;
 import androidx.annotation.NonNull;
 
 import com.example.homeeats.RetrievalEventListener;
+import com.example.homeeats.TaskListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -72,7 +76,19 @@ public abstract class Dao<T> {
             }
         });
     }
-    public void save(T t, String id){
-        dbReference.child(tableName).child(id).setValue(t);
+    public void save(T t, String id, final TaskListener taskListener){
+        Task<Void> task = dbReference.child(tableName).child(id).setValue(t);
+        task.addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                taskListener.OnSuccess();
+            }
+        });
+        task.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                taskListener.OnFail();
+            }
+        });
     }
 }

@@ -28,6 +28,7 @@ import com.example.homeeats.Models.OrderItem;
 import com.example.homeeats.Models.OrderStatus;
 import com.example.homeeats.R;
 import com.example.homeeats.RetrievalEventListener;
+import com.example.homeeats.TaskListener;
 import com.example.homeeats.UserAuthenticationDatabase;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserAuthenticationDatabase.GetInstance().Login(MainActivity.this, editTextEmail.getText().toString(), editTextPassword.getText().toString(), new RetrievalEventListener<Client>() {
+                UserAuthenticationDatabase.GetInstance().Login(editTextEmail.getText().toString(), editTextPassword.getText().toString(), new RetrievalEventListener<Client>() {
                     @Override
                     public void OnDataRetrieved(Client client) {
                         Toast.makeText(getApplicationContext(), "Welcome "+client.name,Toast.LENGTH_LONG).show();
@@ -136,8 +137,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 order.totalPrice = order.totalPrice;
-                OrderDao.GetInstance().save(order, OrderDao.GetInstance().GetNewKey());
-                Toast.makeText(getApplicationContext(), "Added order", Toast.LENGTH_SHORT).show();
+                OrderDao.GetInstance().save(order, OrderDao.GetInstance().GetNewKey(), new TaskListener() {
+                    @Override
+                    public void OnSuccess() {
+                        Toast.makeText(getApplicationContext(), "Added order", Toast.LENGTH_SHORT).show();
+                    }
+                    @Override
+                    public void OnFail(){
+
+                    }
+                });
             }
         };
         List<RetrievalEventListener> mealsEventListeners = new ArrayList<>();

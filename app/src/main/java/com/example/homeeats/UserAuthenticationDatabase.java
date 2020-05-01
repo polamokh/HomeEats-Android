@@ -83,87 +83,158 @@ public class UserAuthenticationDatabase {
         });
     }
 
-    public void SignUpFoodMaker(final AppCompatActivity appCompatActivity, final FoodMaker foodMaker, String password)
+    public void SignUpFoodMaker(final FoodMaker foodMaker, String password, final TaskListener taskListener)
     {
         mAuth.createUserWithEmailAndPassword(foodMaker.emailAddress, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     // Sign in success, update UI with the signed-in user's information
-                    FirebaseUser user = mAuth.getCurrentUser();
+                    final FirebaseUser user = mAuth.getCurrentUser();
                     FoodMakerDao foodMakerDao = FoodMakerDao.GetInstance();
                     foodMaker.id = user.getUid();
-                    foodMakerDao.save(foodMaker, foodMaker.id);
-                    UserPrimitiveData userPrimitiveData = new UserPrimitiveData(user.getUid(), UserType.FoodMaker);
-                    UserPrimitiveDataDao.GetInstance().save(userPrimitiveData,user.getUid());
-                    Toast.makeText(appCompatActivity, "Sign up Food Maker succeeded.",
-                            Toast.LENGTH_SHORT).show();
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Toast.makeText(appCompatActivity, "Authentication failed.",
-                            Toast.LENGTH_SHORT).show();
-                    return;
-                }
+                    foodMakerDao.save(foodMaker, foodMaker.id, new TaskListener() {
+                        @Override
+                        public void OnSuccess() {
+                            final UserPrimitiveData userPrimitiveData = new UserPrimitiveData(user.getUid(), UserType.FoodMaker);
+                            UserPrimitiveDataDao.GetInstance().save(userPrimitiveData, user.getUid(), new TaskListener() {
+                                @Override
+                                public void OnSuccess() {
+                                    taskListener.OnSuccess();
+                                }
+
+                                @Override
+                                public void OnFail() {
+                                    final TaskListener userPrimitiveDataTaskListener = this;
+                                    FoodMakerDao.GetInstance().save(null, foodMaker.id, new TaskListener() {
+                                        @Override
+                                        public void OnSuccess() {
+                                            taskListener.OnFail();
+                                        }
+
+                                        @Override
+                                        public void OnFail() {
+                                            userPrimitiveDataTaskListener.OnFail();
+                                        }
+                                    });
+
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void OnFail() {
+                            taskListener.OnFail();
+                        }
+                    });
+                } else
+                    taskListener.OnFail();
             }
         });
     }
-    public void SignUpFoodBuyer(final AppCompatActivity appCompatActivity, final FoodBuyer foodBuyer, String password)
+    public void SignUpFoodBuyer(final FoodBuyer foodBuyer, String password, final TaskListener taskListener)
     {
         mAuth.createUserWithEmailAndPassword(foodBuyer.emailAddress, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     // Sign in success, update UI with the signed-in user's information
-                    FirebaseUser user = mAuth.getCurrentUser();
+                    final FirebaseUser user = mAuth.getCurrentUser();
                     FoodBuyerDao foodBuyerDao = FoodBuyerDao.GetInstance();
                     foodBuyer.id = user.getUid();
-                    foodBuyerDao.save(foodBuyer, foodBuyer.id);
-                    UserPrimitiveData userPrimitiveData = new UserPrimitiveData(user.getUid(), UserType.FoodBuyer);
-                    UserPrimitiveDataDao.GetInstance().save(userPrimitiveData,user.getUid());
-                    Toast.makeText(appCompatActivity, "Sign up Food Buyer succeeded.",
-                            Toast.LENGTH_SHORT).show();
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Toast.makeText(appCompatActivity, "Authentication failed.",
-                            Toast.LENGTH_SHORT).show();
-                    return;
-                }
+                    foodBuyerDao.save(foodBuyer, foodBuyer.id, new TaskListener() {
+                        @Override
+                        public void OnSuccess() {
+                            UserPrimitiveData userPrimitiveData = new UserPrimitiveData(user.getUid(), UserType.FoodBuyer);
+                            UserPrimitiveDataDao.GetInstance().save(userPrimitiveData, user.getUid(), new TaskListener() {
+                                @Override
+                                public void OnSuccess() {
+                                    taskListener.OnSuccess();
+                                }
+
+                                @Override
+                                public void OnFail() {
+                                    final TaskListener userPrimitiveDataTaskListener = this;
+                                    FoodBuyerDao.GetInstance().save(null, foodBuyer.id, new TaskListener() {
+                                        @Override
+                                        public void OnSuccess() {
+                                            taskListener.OnFail();
+                                        }
+
+                                        @Override
+                                        public void OnFail() {
+                                            userPrimitiveDataTaskListener.OnFail();
+                                        }
+                                    });
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void OnFail() {
+                            taskListener.OnFail();
+                        }
+                    });
+                } else
+                    taskListener.OnFail();
             }
         });
 
     }
-    public void SignUpDeliveryBoy(final AppCompatActivity appCompatActivity, final DeliveryBoy deliveryBoy, String password)
+    public void SignUpDeliveryBoy(final DeliveryBoy deliveryBoy, String password, final TaskListener taskListener)
     {
         mAuth.createUserWithEmailAndPassword(deliveryBoy.emailAddress, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     // Sign in success, update UI with the signed-in user's information
-                    FirebaseUser user = mAuth.getCurrentUser();
+                    final FirebaseUser user = mAuth.getCurrentUser();
                     DeliveryBoyDao deliveryBoyDao = DeliveryBoyDao.GetInstance();
                     deliveryBoy.id = user.getUid();
-                    deliveryBoyDao.save(deliveryBoy, deliveryBoy.id);
-                    UserPrimitiveData userPrimitiveData = new UserPrimitiveData(user.getUid(), UserType.DeliverBoy);
-                    UserPrimitiveDataDao.GetInstance().save(userPrimitiveData,user.getUid());
-                    Toast.makeText(appCompatActivity, "Sign up DeliveryBoy succeeded.",
-                            Toast.LENGTH_SHORT).show();
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Toast.makeText(appCompatActivity, "Authentication failed.",
-                            Toast.LENGTH_SHORT).show();
-                    return;
-                }
+                    deliveryBoyDao.save(deliveryBoy, deliveryBoy.id, new TaskListener() {
+                        @Override
+                        public void OnSuccess() {
+                            UserPrimitiveData userPrimitiveData = new UserPrimitiveData(user.getUid(), UserType.DeliverBoy);
+                            UserPrimitiveDataDao.GetInstance().save(userPrimitiveData, user.getUid(), new TaskListener() {
+                                @Override
+                                public void OnSuccess() {
+                                    taskListener.OnSuccess();
+                                }
+                                @Override
+                                public void OnFail(){
+                                    final TaskListener userPrimitiveDataTaskListener = this;
+                                    DeliveryBoyDao.GetInstance().save(null, deliveryBoy.id, new TaskListener() {
+                                        @Override
+                                        public void OnSuccess() {
+                                            taskListener.OnFail();
+                                        }
+
+                                        @Override
+                                        public void OnFail() {
+                                            userPrimitiveDataTaskListener.OnFail();
+                                        }
+                                    });
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void OnFail() {
+                            taskListener.OnFail();
+                        }
+                    });
+                } else
+                    taskListener.OnFail();
             }
         });
     }
-    public void Login(final AppCompatActivity appCompatActivity, String email, String password, final RetrievalEventListener<Client> retrievalEventListener)
+    public void Login(String email, String password, final RetrievalEventListener<Client> retrievalEventListener)
     {
-     //   throw new UnsupportedOperationException("Not supported yet.");
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    // Sign in success, update UI with the signed-in user's information
+                    // Sign in success, return logged in client
                     FirebaseUser user = mAuth.getCurrentUser();
                     buildUser(user, new RetrievalEventListener<Client>() {
                         @Override
@@ -172,9 +243,8 @@ public class UserAuthenticationDatabase {
                         }
                     });
                 } else {
-                    // If sign in fails, display a message to the user.
-                    Toast.makeText(appCompatActivity, "Authentication failed.",
-                            Toast.LENGTH_SHORT).show();
+                    //sign in fails
+                    retrievalEventListener.OnDataRetrieved(null);
                 }
             }
         });

@@ -1,5 +1,5 @@
 package com.example.homeeats;
 
-public interface RetrievalEventListener<T> {
-    public void OnDataRetrieved(T t);
+public abstract class RetrievalEventListener<T> {
+    public abstract void OnDataRetrieved(T t);
 }

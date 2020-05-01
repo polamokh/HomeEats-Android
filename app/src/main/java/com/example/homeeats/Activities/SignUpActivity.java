@@ -13,6 +13,7 @@ import com.example.homeeats.Models.DeliveryBoy;
 import com.example.homeeats.Models.FoodBuyer;
 import com.example.homeeats.Models.FoodMaker;
 import com.example.homeeats.R;
+import com.example.homeeats.TaskListener;
 import com.example.homeeats.UserAuthenticationDatabase;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -53,22 +54,57 @@ public class SignUpActivity extends AppCompatActivity {
         UserAuthenticationDatabase userAuthenticationDatabase = UserAuthenticationDatabase.GetInstance();
         //Food Buyer
         if(type.equals(getResources().getStringArray(R.array.user_type)[0])) {
+            final FoodBuyer foodBuyer = new FoodBuyer(null, name, "male", email, "011", new LatLng(1, 1));
             userAuthenticationDatabase.SignUpFoodBuyer(
-                    this,
-                    new FoodBuyer(null, name, "male", email, "011", new LatLng(1, 1)),
-                    password);
-            ;
+                    foodBuyer,
+                    password,
+                    new TaskListener() {
+                        @Override
+                        public void OnSuccess() {
+                            Toast.makeText(getApplicationContext(), foodBuyer.id, Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void OnFail() {
+                            Toast.makeText(getApplicationContext(), "Sign up failed", Toast.LENGTH_SHORT).show();
+                        }
+                    });
         }
         //Food Maker
         else if(type.equals(getResources().getStringArray(R.array.user_type)[1])){
-            userAuthenticationDatabase.SignUpFoodMaker(this, new FoodMaker(null, name, "male", email, "011", new LatLng(1, 1), 4), password);
+            final FoodMaker foodMaker = new FoodMaker(null, name, "male", email, "011", new LatLng(1, 1), 4);
+            userAuthenticationDatabase.SignUpFoodMaker(
+                    foodMaker,
+                    password,
+                    new TaskListener() {
+                        @Override
+                        public void OnSuccess() {
+                            Toast.makeText(getApplicationContext(), foodMaker.id, Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void OnFail() {
+                            Toast.makeText(getApplicationContext(), "Sign up failed", Toast.LENGTH_SHORT).show();
+                        }
+                    });
         }
         //Delivery Boy
         else if(type.equals(getResources().getStringArray(R.array.user_type)[2])){
+            DeliveryBoy deliveryBoy = new DeliveryBoy(null, name, "male", email, "011", true, new LatLng(1, 1), new Date().getTime());
             userAuthenticationDatabase.SignUpDeliveryBoy(
-                    this,
-                    new DeliveryBoy(null, name, "male", email, "011", true, new LatLng(1, 1), new Date().getTime()),
-                    password);
+                    deliveryBoy,
+                    password,
+                    new TaskListener() {
+                        @Override
+                        public void OnSuccess() {
+                            Toast.makeText(getApplicationContext(), "Signed up", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void OnFail() {
+                            Toast.makeText(getApplicationContext(), "Sign up failed", Toast.LENGTH_SHORT).show();
+                        }
+                    });
         }
         else {
             Toast.makeText(this, "Invalid type", Toast.LENGTH_SHORT).show();
