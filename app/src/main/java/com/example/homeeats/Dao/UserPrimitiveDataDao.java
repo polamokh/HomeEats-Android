@@ -25,9 +25,4 @@ public class UserPrimitiveDataDao extends Dao<UserPrimitiveData> {
         userPrimitiveData.userType = UserType.getValue(dataSnapshot.child("userType").getValue().toString());
         retrievalEventListener.OnDataRetrieved(userPrimitiveData);
     }
-
-    @Override
-    void delete(UserPrimitiveData userPrimitiveData) {
-
-    }
 }

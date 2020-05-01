@@ -75,5 +75,4 @@ public abstract class Dao<T> {
     public void save(T t, String id){
         dbReference.child(tableName).child(id).setValue(t);
     }
-    abstract void delete(T t);
 }

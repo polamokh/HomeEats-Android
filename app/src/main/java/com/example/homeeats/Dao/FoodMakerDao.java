@@ -81,9 +81,4 @@ public class FoodMakerDao extends Dao<FoodMaker> {
             }
         });
     }
-
-    @Override
-    void delete(FoodMaker foodMakerDao) {
-
-    }
 }

@@ -51,9 +51,4 @@ public class FoodBuyerDao extends Dao<FoodBuyer> {
             }
         });
     }
-
-    @Override
-    void delete(FoodBuyer foodBuyer) {
-
-    }
 }

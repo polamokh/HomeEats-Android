@@ -57,9 +57,4 @@ public class OrderDao extends Dao<Order> {
         orderItem.totalPrice = Double.parseDouble(dataSnapshot.child("totalPrice").getValue().toString());
         return orderItem;
     }
-
-    @Override
-    void delete(Order order) {
-
-    }
 }

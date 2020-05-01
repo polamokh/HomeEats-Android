@@ -49,8 +49,4 @@ public class DeliveryBoyDao extends Dao<DeliveryBoy> {
             }
         });
     }
-    @Override
-    void delete(DeliveryBoy deliveryBoy) {
-
-    }
 }

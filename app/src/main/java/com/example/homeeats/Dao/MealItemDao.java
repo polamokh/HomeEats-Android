@@ -31,9 +31,4 @@ public class MealItemDao extends Dao<MealItem> {
         mealItem.foodMakerId = dataSnapshot.child("foodMakerId").getValue().toString();
         retrievalEventListener.OnDataRetrieved(mealItem);
     }
-
-    @Override
-    void delete(MealItem mealItem) {
-
-    }
 }
