@@ -1,5 +1,8 @@
 package com.example.homeeats.Dao;
 
+import android.graphics.Bitmap;
+
+import com.example.homeeats.FilesStorageDatabase;
 import com.example.homeeats.Models.FoodMaker;
 import com.example.homeeats.Models.MealItem;
 import com.example.homeeats.RetrievalEventListener;
@@ -31,7 +34,16 @@ public class MealItemDao extends Dao<MealItem> {
         mealItem.foodMakerId = dataSnapshot.child("foodMakerId").getValue().toString();
         retrievalEventListener.OnDataRetrieved(mealItem);
     }
-
+    public void setMealImage(final String mealId, String mealMakerId, Bitmap image, final RetrievalEventListener<String> retrievalEventListener){
+        FilesStorageDatabase.GetInstance().uploadPhoto(image, String.format("meal images/%s/%s.jpg", mealMakerId, mealId).toString(),
+                new RetrievalEventListener<String>() {
+                    @Override
+                    public void OnDataRetrieved(String uploadPath) {
+                        dbReference.child(tableName).child(mealId).child("photo").setValue(uploadPath);
+                        retrievalEventListener.OnDataRetrieved(uploadPath);
+                    }
+                });
+    }
     @Override
     void delete(MealItem mealItem) {
 
