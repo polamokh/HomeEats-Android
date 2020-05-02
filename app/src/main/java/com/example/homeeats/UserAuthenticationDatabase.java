@@ -307,9 +307,11 @@ public class UserAuthenticationDatabase {
                 MessagingService.GetFirebaseAppToken(new RetrievalEventListener<String>() {
                     @Override
                     public void OnDataRetrieved(String token) {
-                        for(String currentToken : userPrimitiveData.userTokens)
-                            if(currentToken.equals(token))
-                                userPrimitiveData.userTokens.remove(currentToken);
+                        for(int i = 0; i < userPrimitiveData.userTokens.size(); i++)
+                            if(userPrimitiveData.userTokens.get(i).equals(token)) {
+                                userPrimitiveData.userTokens.remove(i);
+                                i--;
+                            }
                         UserPrimitiveDataDao.GetInstance().save(userPrimitiveData, userPrimitiveData.id, new TaskListener() {
                             @Override
                             public void OnSuccess() {

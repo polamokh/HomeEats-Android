@@ -21,6 +21,8 @@ public abstract class EventListenersListener {
     public void OnFinishAddingListeners()
     {
         Locked = true;
+        if(retrievalEventListeners.size() == 0)
+            onFinish();
     }
     public void notify(AbstractEventListener abstractEventListener)  {
         if(Locked == false)
