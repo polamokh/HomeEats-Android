@@ -107,13 +107,26 @@ public class MessagingService extends FirebaseMessagingService {
     public static void SendUserNotifications(String userId, final TaskListener taskListener){
         UserNotificationDao.GetInstance().GetUserNotificationByUserId(userId, new RetrievalEventListener<List<UserNotification>>() {
             @Override
-            public void OnDataRetrieved(List<UserNotification> userNotifications) {
+            public void OnDataRetrieved(final List<UserNotification> userNotifications) {
                 if(userNotifications != null)
                 {
                     final EventListenersListener eventListenersListener = new EventListenersListener() {
                         @Override
                         public void onFinish() {
                             taskListener.OnSuccess();
+                            //delete notifications
+                            for(UserNotification userNotification : userNotifications)
+                                UserNotificationDao.GetInstance().save(null, userNotification.getId(), new TaskListener() {
+                                    @Override
+                                    public void OnSuccess() {
+
+                                    }
+
+                                    @Override
+                                    public void OnFail() {
+
+                                    }
+                                });
                         }
                     };
                     List<TaskListener> taskListeners = new ArrayList<>();
@@ -134,6 +147,7 @@ public class MessagingService extends FirebaseMessagingService {
                     eventListenersListener.OnFinishAddingListeners();
                     for(int i = 0; i < userNotifications.size(); i++)
                         SendUserNotification(userNotifications.get(i), taskListeners.get(i));
+
                 }
             }
         });
