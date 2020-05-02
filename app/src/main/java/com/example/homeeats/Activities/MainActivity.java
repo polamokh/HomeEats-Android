@@ -15,8 +15,10 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.homeeats.Activities.FoodMaker.FoodMakerActivity;
 import com.example.homeeats.Dao.MealItemDao;
 import com.example.homeeats.Dao.OrderDao;
+import com.example.homeeats.Dao.UserPrimitiveDataDao;
 import com.example.homeeats.EventListenersListener;
 import com.example.homeeats.FcmNotifier;
 import com.example.homeeats.MessagingService;
@@ -26,6 +28,7 @@ import com.example.homeeats.Models.Order;
 import com.example.homeeats.Models.OrderItem;
 import com.example.homeeats.Models.OrderStatus;
 import com.example.homeeats.Models.UserNotification;
+import com.example.homeeats.Models.UserPrimitiveData;
 import com.example.homeeats.R;
 import com.example.homeeats.RetrievalEventListener;
 import com.example.homeeats.TaskListener;
@@ -84,12 +87,13 @@ public class MainActivity extends AppCompatActivity {
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserAuthenticationDatabase.GetInstance().Login(editTextEmail.getText().toString(), editTextPassword.getText().toString(), new RetrievalEventListener<Client>() {
-                    @Override
-                    public void OnDataRetrieved(Client client) {
-                        Toast.makeText(getApplicationContext(), client.name, Toast.LENGTH_LONG).show();
-                    }
-                });
+                UserAuthenticationDatabase.GetInstance().Login(editTextEmail.getText().toString(),
+                        editTextPassword.getText().toString(), new RetrievalEventListener<Client>() {
+                            @Override
+                            public void OnDataRetrieved(Client client) {
+                                Toast.makeText(getApplicationContext(), client.name, Toast.LENGTH_LONG).show();
+                            }
+                        });
             }
         });
 
