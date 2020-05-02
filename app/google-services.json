@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "80933997349-kmvaf041d8u80lcu7bid6n24ou8mbsva.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.homeeats",
+            "certificate_hash": "d22b8e4273fc9e144cb8f3021a15a04af15132fe"
+          }
+        },
+        {
           "client_id": "80933997349-l8fa201ihinvfpbpjvsut8mv4uaq9nte.apps.googleusercontent.com",
           "client_type": 3
         }

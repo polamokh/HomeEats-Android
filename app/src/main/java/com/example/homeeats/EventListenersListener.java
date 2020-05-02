@@ -4,28 +4,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class EventListenersListener {
-    private List<RetrievalEventListener> retrievalEventListeners;
+    private List<AbstractEventListener> retrievalEventListeners;
     private boolean Locked;
     public EventListenersListener()
     {
-        retrievalEventListeners = new ArrayList<RetrievalEventListener>();
+        retrievalEventListeners = new ArrayList<AbstractEventListener>();
         Locked = false;
     }
     private int Done;
     public abstract void onFinish();
-    public void Add(RetrievalEventListener retrievalEventListener)  {
+    public void Add(AbstractEventListener abstractEventListener)  {
         if(Locked)
             throw new RuntimeException("Event Listeners Listener Locked");
-        retrievalEventListeners.add(retrievalEventListener);
+        retrievalEventListeners.add(abstractEventListener);
     }
     public void OnFinishAddingListeners()
     {
         Locked = true;
     }
-    public void notify(RetrievalEventListener retrievalEventListener)  {
+    public void notify(AbstractEventListener abstractEventListener)  {
         if(Locked == false)
             throw new RuntimeException("Event Listeners Listener not Locked");
-        retrievalEventListeners.remove(retrievalEventListener);
+        retrievalEventListeners.remove(abstractEventListener);
         if(retrievalEventListeners.size() == 0)
             onFinish();
     }

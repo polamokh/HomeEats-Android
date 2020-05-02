@@ -1,9 +1,6 @@
 package com.example.homeeats;
 
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.homeeats.Dao.DeliveryBoyDao;
 import com.example.homeeats.Dao.FoodBuyerDao;
@@ -20,6 +17,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.ArrayList;
 
 public class UserAuthenticationDatabase {
     private static final FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -58,7 +57,7 @@ public class UserAuthenticationDatabase {
                             }
                         });
                         break;
-                    case DeliverBoy:
+                    case DeliveryBoy:
                         DeliveryBoyDao.GetInstance().get(userPrimitiveData.id, new RetrievalEventListener<DeliveryBoy>() {
                             @Override
                             public void OnDataRetrieved(DeliveryBoy deliveryBoy) {
@@ -96,30 +95,37 @@ public class UserAuthenticationDatabase {
                     foodMakerDao.save(foodMaker, foodMaker.id, new TaskListener() {
                         @Override
                         public void OnSuccess() {
-                            final UserPrimitiveData userPrimitiveData = new UserPrimitiveData(user.getUid(), UserType.FoodMaker);
-                            UserPrimitiveDataDao.GetInstance().save(userPrimitiveData, user.getUid(), new TaskListener() {
+                            final UserPrimitiveData userPrimitiveData = new UserPrimitiveData(user.getUid(), UserType.FoodMaker, new ArrayList<String>());
+                            MessagingService.GetFirebaseAppToken(new RetrievalEventListener<String>() {
                                 @Override
-                                public void OnSuccess() {
-                                    taskListener.OnSuccess();
-                                }
-
-                                @Override
-                                public void OnFail() {
-                                    final TaskListener userPrimitiveDataTaskListener = this;
-                                    FoodMakerDao.GetInstance().save(null, foodMaker.id, new TaskListener() {
+                                public void OnDataRetrieved(String token) {
+                                    userPrimitiveData.userTokens.add(token);
+                                    UserPrimitiveDataDao.GetInstance().save(userPrimitiveData, user.getUid(), new TaskListener() {
                                         @Override
                                         public void OnSuccess() {
-                                            taskListener.OnFail();
+                                            taskListener.OnSuccess();
                                         }
 
                                         @Override
                                         public void OnFail() {
-                                            userPrimitiveDataTaskListener.OnFail();
+                                            final TaskListener userPrimitiveDataTaskListener = this;
+                                            FoodMakerDao.GetInstance().save(null, foodMaker.id, new TaskListener() {
+                                                @Override
+                                                public void OnSuccess() {
+                                                    taskListener.OnFail();
+                                                }
+
+                                                @Override
+                                                public void OnFail() {
+                                                    userPrimitiveDataTaskListener.OnFail();
+                                                }
+                                            });
+
                                         }
                                     });
-
                                 }
                             });
+
                         }
 
                         @Override
@@ -145,25 +151,31 @@ public class UserAuthenticationDatabase {
                     foodBuyerDao.save(foodBuyer, foodBuyer.id, new TaskListener() {
                         @Override
                         public void OnSuccess() {
-                            UserPrimitiveData userPrimitiveData = new UserPrimitiveData(user.getUid(), UserType.FoodBuyer);
-                            UserPrimitiveDataDao.GetInstance().save(userPrimitiveData, user.getUid(), new TaskListener() {
+                            final UserPrimitiveData userPrimitiveData = new UserPrimitiveData(user.getUid(), UserType.FoodBuyer, new ArrayList<String>());
+                            MessagingService.GetFirebaseAppToken(new RetrievalEventListener<String>() {
                                 @Override
-                                public void OnSuccess() {
-                                    taskListener.OnSuccess();
-                                }
-
-                                @Override
-                                public void OnFail() {
-                                    final TaskListener userPrimitiveDataTaskListener = this;
-                                    FoodBuyerDao.GetInstance().save(null, foodBuyer.id, new TaskListener() {
+                                public void OnDataRetrieved(String token) {
+                                    userPrimitiveData.userTokens.add(token);
+                                    UserPrimitiveDataDao.GetInstance().save(userPrimitiveData, user.getUid(), new TaskListener() {
                                         @Override
                                         public void OnSuccess() {
-                                            taskListener.OnFail();
+                                            taskListener.OnSuccess();
                                         }
 
                                         @Override
                                         public void OnFail() {
-                                            userPrimitiveDataTaskListener.OnFail();
+                                            final TaskListener userPrimitiveDataTaskListener = this;
+                                            FoodBuyerDao.GetInstance().save(null, foodBuyer.id, new TaskListener() {
+                                                @Override
+                                                public void OnSuccess() {
+                                                    taskListener.OnFail();
+                                                }
+
+                                                @Override
+                                                public void OnFail() {
+                                                    userPrimitiveDataTaskListener.OnFail();
+                                                }
+                                            });
                                         }
                                     });
                                 }
@@ -194,24 +206,30 @@ public class UserAuthenticationDatabase {
                     deliveryBoyDao.save(deliveryBoy, deliveryBoy.id, new TaskListener() {
                         @Override
                         public void OnSuccess() {
-                            UserPrimitiveData userPrimitiveData = new UserPrimitiveData(user.getUid(), UserType.DeliverBoy);
-                            UserPrimitiveDataDao.GetInstance().save(userPrimitiveData, user.getUid(), new TaskListener() {
+                            final UserPrimitiveData userPrimitiveData = new UserPrimitiveData(user.getUid(), UserType.DeliveryBoy, new ArrayList<String>());
+                            MessagingService.GetFirebaseAppToken(new RetrievalEventListener<String>() {
                                 @Override
-                                public void OnSuccess() {
-                                    taskListener.OnSuccess();
-                                }
-                                @Override
-                                public void OnFail(){
-                                    final TaskListener userPrimitiveDataTaskListener = this;
-                                    DeliveryBoyDao.GetInstance().save(null, deliveryBoy.id, new TaskListener() {
+                                public void OnDataRetrieved(String token) {
+                                    userPrimitiveData.userTokens.add(token);
+                                    UserPrimitiveDataDao.GetInstance().save(userPrimitiveData, user.getUid(), new TaskListener() {
                                         @Override
                                         public void OnSuccess() {
-                                            taskListener.OnFail();
+                                            taskListener.OnSuccess();
                                         }
-
                                         @Override
-                                        public void OnFail() {
-                                            userPrimitiveDataTaskListener.OnFail();
+                                        public void OnFail(){
+                                            final TaskListener userPrimitiveDataTaskListener = this;
+                                            DeliveryBoyDao.GetInstance().save(null, deliveryBoy.id, new TaskListener() {
+                                                @Override
+                                                public void OnSuccess() {
+                                                    taskListener.OnFail();
+                                                }
+
+                                                @Override
+                                                public void OnFail() {
+                                                    userPrimitiveDataTaskListener.OnFail();
+                                                }
+                                            });
                                         }
                                     });
                                 }
@@ -238,8 +256,39 @@ public class UserAuthenticationDatabase {
                     FirebaseUser user = mAuth.getCurrentUser();
                     buildUser(user, new RetrievalEventListener<Client>() {
                         @Override
-                        public void OnDataRetrieved(Client client) {
-                            retrievalEventListener.OnDataRetrieved(client);
+                        public void OnDataRetrieved(final Client client) {
+                            UserPrimitiveDataDao.GetInstance().get(client.id, new RetrievalEventListener<UserPrimitiveData>() {
+                                @Override
+                                public void OnDataRetrieved(final UserPrimitiveData userPrimitiveData) {
+                                    MessagingService.GetFirebaseAppToken(new RetrievalEventListener<String>() {
+                                        @Override
+                                        public void OnDataRetrieved(String token) {
+                                            UserPrimitiveDataDao.GetInstance().AddUserPrimitiveDataToken(userPrimitiveData, token, new TaskListener() {
+                                                @Override
+                                                public void OnSuccess() {
+                                                    MessagingService.SendUserNotifications(client.id, new TaskListener() {
+                                                        @Override
+                                                        public void OnSuccess() {
+                                                            retrievalEventListener.OnDataRetrieved(client);
+                                                        }
+
+                                                        @Override
+                                                        public void OnFail() {
+                                                            throw new RuntimeException("sad things happen");
+                                                        }
+                                                    });
+
+                                                }
+
+                                                @Override
+                                                public void OnFail() {
+                                                    throw new RuntimeException("sad things happen");
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            });
                         }
                     });
                 } else {
@@ -250,8 +299,33 @@ public class UserAuthenticationDatabase {
         });
 
     }
-    public void SignOut()
+    public void SignOut(final TaskListener taskListener)
     {
-        mAuth.signOut();
+        UserPrimitiveDataDao.GetInstance().get(mAuth.getUid(), new RetrievalEventListener<UserPrimitiveData>() {
+            @Override
+            public void OnDataRetrieved(final UserPrimitiveData userPrimitiveData) {
+                MessagingService.GetFirebaseAppToken(new RetrievalEventListener<String>() {
+                    @Override
+                    public void OnDataRetrieved(String token) {
+                        for(String currentToken : userPrimitiveData.userTokens)
+                            if(currentToken.equals(token))
+                                userPrimitiveData.userTokens.remove(currentToken);
+                        UserPrimitiveDataDao.GetInstance().save(userPrimitiveData, userPrimitiveData.id, new TaskListener() {
+                            @Override
+                            public void OnSuccess() {
+                                mAuth.signOut();
+                                taskListener.OnSuccess();
+                            }
+
+                            @Override
+                            public void OnFail() {
+                                taskListener.OnFail();
+                            }
+                        });
+                    }
+                });
+            }
+        });
+
     }
 }

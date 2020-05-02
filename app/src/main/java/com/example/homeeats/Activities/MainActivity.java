@@ -1,9 +1,9 @@
 package com.example.homeeats.Activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,36 +12,35 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.homeeats.Dao.DeliveryBoyDao;
-import com.example.homeeats.Dao.FoodBuyerDao;
-import com.example.homeeats.Dao.FoodMakerDao;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.homeeats.Dao.MealItemDao;
 import com.example.homeeats.Dao.OrderDao;
 import com.example.homeeats.EventListenersListener;
+import com.example.homeeats.FcmNotifier;
+import com.example.homeeats.MessagingService;
 import com.example.homeeats.Models.Client;
-import com.example.homeeats.Models.DeliveryBoy;
-import com.example.homeeats.Models.FoodBuyer;
-import com.example.homeeats.Models.FoodMaker;
 import com.example.homeeats.Models.MealItem;
 import com.example.homeeats.Models.Order;
 import com.example.homeeats.Models.OrderItem;
 import com.example.homeeats.Models.OrderStatus;
+import com.example.homeeats.Models.UserNotification;
 import com.example.homeeats.R;
 import com.example.homeeats.RetrievalEventListener;
 import com.example.homeeats.TaskListener;
 import com.example.homeeats.UserAuthenticationDatabase;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String CHANNEL_ID = "1";
     EditText editTextEmail;
     EditText editTextPassword;
     Button buttonLogin;
@@ -51,8 +50,28 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
 
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "test channel";
+            String description = "channel for testing";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        final String TOKEN = "eVo-hvnwC-w:APA91bGq4CdsHioP8st9hhSG_PEMyvlc4NqN2Yqj8IisXzs4u2KnEUa9tICNhz2hXTa6urtYxiChUcDcPi9wtSR-tBFA0OTdpbjkiE7k2mqN56BG2Sd5manOnE8nxdfEVgPGPvc9wBgI";
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -68,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
                 UserAuthenticationDatabase.GetInstance().Login(editTextEmail.getText().toString(), editTextPassword.getText().toString(), new RetrievalEventListener<Client>() {
                     @Override
                     public void OnDataRetrieved(Client client) {
-                        Toast.makeText(getApplicationContext(), "Welcome "+client.name,Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), client.name, Toast.LENGTH_LONG).show();
                     }
                 });
             }
@@ -82,9 +101,25 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Toast.makeText(this, "Before",
-                Toast.LENGTH_SHORT).show();
-
+        if (getIntent().getExtras() != null) {
+            for (String key : getIntent().getExtras().keySet()) {
+                Log.e("Tag", key + " , " + getIntent().getExtras().get(key).toString());
+                String value = getIntent().getExtras().get(key).toString();
+                Log.d(TAG, "Key: " + key + " Value: " + value);
+            }
+        }
+//        FirebaseMessagingService firebaseMessagingService = new FirebaseMessagingService();
+//        NotificationManager notificationManager =
+//                (NotificationManager) getSystemService(getApplicationContext().NOTIFICATION_SERVICE);
+//        String channelId = "some_channel_id";
+//        CharSequence channelName = "Some Channel";
+//        int importance = NotificationManager.IMPORTANCE_DEFAULT;
+//        NotificationChannel notificationChannel = new NotificationChannel(channelId, channelName, importance);
+//        notificationChannel.enableLights(true);
+//        notificationChannel.setLightColor(Color.RED);
+//        notificationChannel.enableVibration(true);
+//        notificationChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+//        notificationManager.createNotificationChannel(notificationChannel);
 //        final OrderDao orderDao = OrderDao.GetInstance();
 //        final List<OrderItem> orderItems = new ArrayList<OrderItem>();
 //
@@ -127,7 +162,6 @@ public class MainActivity extends AppCompatActivity {
 //                Toast.makeText(getApplicationContext(), "Get Order", Toast.LENGTH_SHORT);
 //            }
 //        });
-
     }
 
     protected void AddNewOrder()
@@ -232,24 +266,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-    }
-
-    private void signIn(String email, String password) {
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            Toast.makeText(MainActivity.this, "Logged in successfully",
-                                    Toast.LENGTH_SHORT).show();
-                        } else {
-                            Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(MainActivity.this, task.getException().getMessage(),
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+        if (getIntent().getExtras() != null) {
+            for (String key : getIntent().getExtras().keySet()) {
+                String value = getIntent().getExtras().getString(key);
+                Log.d(TAG, "Key: " + key + " Value: " + value);
+            }
+        }
     }
 }

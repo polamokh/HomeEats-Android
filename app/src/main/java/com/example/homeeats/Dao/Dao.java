@@ -57,6 +57,11 @@ public abstract class Dao<T> {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 final List<T> list = new ArrayList<T>();
                 final long len = dataSnapshot.getChildrenCount();
+                if(len == 0)
+                {
+                    retrievalEventListener.OnDataRetrieved(list);
+                    return;
+                }
                 RetrievalEventListener<T> listRetrievalEventListener = new RetrievalEventListener<T>() {
                     @Override
                     public void OnDataRetrieved(T t) {

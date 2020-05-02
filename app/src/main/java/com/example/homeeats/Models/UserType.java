@@ -1,9 +1,7 @@
 package com.example.homeeats.Models;
 
-import com.example.homeeats.R;
-
 public enum UserType  {
-    FoodMaker, FoodBuyer, DeliverBoy, Invalid;
+    FoodMaker, FoodBuyer, DeliveryBoy, Invalid;
 
     public static UserType getValue(String s) {
         switch (s)
@@ -13,7 +11,7 @@ public enum UserType  {
             case "FoodBuyer":
                 return FoodBuyer;
             case "DeliveryBoy":
-                return DeliverBoy;
+                return DeliveryBoy;
             default:
                 return Invalid;
         }
