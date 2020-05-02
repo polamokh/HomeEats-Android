@@ -149,6 +149,8 @@ public class MessagingService extends FirebaseMessagingService {
                         SendUserNotification(userNotifications.get(i), taskListeners.get(i));
 
                 }
+                else
+                    taskListener.OnSuccess();
             }
         });
     }
