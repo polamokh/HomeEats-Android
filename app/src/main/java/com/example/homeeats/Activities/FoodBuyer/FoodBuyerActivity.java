@@ -73,15 +73,17 @@ public class FoodBuyerActivity extends AppCompatActivity implements NavigationVi
             case R.id.foodBuyerNavMeals:
                 getSupportFragmentManager().beginTransaction().replace(R.id.foodBuyerFragmentContainer,
                         new FoodBuyerMealsFragment()).commit();
-                return true;
+                break;
             case R.id.foodBuyerNavMakers:
-                return true;
+                getSupportFragmentManager().beginTransaction().replace(R.id.foodBuyerFragmentContainer,
+                        new FoodBuyerMakersFragment()).commit();
+                break;
             case R.id.foodBuyerNavCart:
-                return true;
+                break;
             case R.id.foodBuyerNavOrders:
-                return true;
+                break;
             case R.id.foodBuyerNavSettings:
-                return true;
+                break;
             case R.id.foodBuyerNavLogout:
                 UserAuthenticationDatabase.GetInstance().SignOut(new TaskListener() {
                     @Override
@@ -92,9 +94,10 @@ public class FoodBuyerActivity extends AppCompatActivity implements NavigationVi
                     @Override
                     public void OnFail() { }
                 });
-                return true;
+                break;
         }
-        return false;
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     @Override
