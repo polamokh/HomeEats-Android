@@ -54,7 +54,7 @@
         android:layout_marginRight="15dp"
         android:ems="10"
         android:hint="Category"
-        android:inputType="numberDecimal"
+        android:inputType="text"
         android:text="" />
 
     <Button

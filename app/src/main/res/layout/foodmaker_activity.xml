@@ -28,7 +28,7 @@
             android:id="@+id/foodmaker_add_meal_button"
             android:layout_width="match_parent"
             android:layout_height="150px"
-            android:text="Hello"/>
+            android:text="Add Meal"/>
 
         <FrameLayout
             android:id="@+id/foodMakerFragmentContainer"

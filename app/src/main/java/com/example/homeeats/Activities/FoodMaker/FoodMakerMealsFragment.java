@@ -15,6 +15,7 @@ import com.example.homeeats.Adapters.FoodMakerMealsRecycleAdapter;
 import com.example.homeeats.Dao.FoodMakerDao;
 import com.example.homeeats.Models.MealItem;
 import com.example.homeeats.R;
+import android.content.Intent;
 import com.example.homeeats.RetrievalEventListener;
 
 import java.util.List;
@@ -29,17 +30,24 @@ public class FoodMakerMealsFragment extends Fragment {
         final RecyclerView recyclerView = view.findViewById(R.id.foodMakerRecyclerView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
-
-        FoodMakerDao.GetInstance().GetFoodMakerMeals(
-                "ctkAYZMA2sUoiQRKhAOxTy9nOc92",  //TODO: sent by intent
-                new RetrievalEventListener<List<MealItem>>() {
+        String foodMakerID = getActivity().getIntent().getExtras().getString("FoodMakerID");
+        FoodMakerDao.GetInstance().GetFoodMakerMeals(foodMakerID, new RetrievalEventListener<List<MealItem>>()
+        {
+            @Override
+            public void OnDataRetrieved(List<MealItem> mealItems)
+            {
+                new RetrievalEventListener<List<MealItem>>()
+                {
                     @Override
                     public void OnDataRetrieved(List<MealItem> mealItems) {
                         FoodMakerMealsRecycleAdapter foodMakerMealsRecycleAdapter = new FoodMakerMealsRecycleAdapter(mealItems);
                         recyclerView.setAdapter(foodMakerMealsRecycleAdapter);
                     }
-                }
-        );
+                };
+            }
+        });
+
+
 
         return view;
     }

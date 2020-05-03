@@ -95,7 +95,8 @@ public class FoodMakerActivity extends AppCompatActivity implements NavigationVi
                 // TODO
                 break;
             case R.id.foodMakerNavMeals:
-                // TODO
+                Intent intent = new Intent(FoodMakerActivity.this, FoodMakerMealsFragment.class);
+                startActivity(intent);
                 break;
         }
 
