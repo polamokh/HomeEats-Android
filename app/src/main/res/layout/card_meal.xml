@@ -89,10 +89,11 @@
                 android:id="@+id/arrowBtn"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginEnd="12dp"/>
-<!--
-                android:background="@drawable/ic_expand"          // TODO: missing drawable/ic/expand
--->
+                android:layout_marginEnd="12dp"
+                android:background="@drawable/ic_expand"
+                />
+
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/expandableView"
                 android:layout_width="match_parent"

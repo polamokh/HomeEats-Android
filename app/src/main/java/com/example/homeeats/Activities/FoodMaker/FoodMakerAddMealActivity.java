@@ -49,7 +49,7 @@ public class FoodMakerAddMealActivity extends AppCompatActivity {
        final EditText Desc=(EditText)findViewById(R.id.Desc_textbox);
      final   EditText Price=(EditText)findViewById(R.id.Price_textbox);
        final EditText Category=(EditText)findViewById(R.id.Category_textbox);
-      final  fab.setOnClickListener(new View.OnClickListener() {
+       fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 MealItem MI=new MealItem(null,Name.getText().toString(), getIntent().getExtras().getString("FoodMakerID"), "", Desc.getText().toString(),Double.parseDouble(Price.getText().toString()),"", 4.5);
