@@ -48,7 +48,7 @@ public class FoodMakerActivity extends AppCompatActivity implements NavigationVi
         setSupportActionBar(toolbar);
 
         drawerLayout = findViewById(R.id.foodMakerDrawerLayout);
-        NavigationView navigationView = findViewById(R.id.foodMakerNavView);
+        navigationView = findViewById(R.id.foodMakerNavView);
 
         final TextView textViewNavHeaderName = navigationView.getHeaderView(0)
                 .findViewById(R.id.navHeaderTextViewName);
