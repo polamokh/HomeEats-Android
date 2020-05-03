@@ -11,6 +11,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public abstract class Dao<T> {
 
     public void get(String id, final RetrievalEventListener<T> retrievalEventListener) {
         DatabaseReference rowReference = dbReference.child(tableName).child(id);
+        Query query = rowReference;
         rowReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

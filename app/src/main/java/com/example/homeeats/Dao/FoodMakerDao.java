@@ -1,6 +1,7 @@
 package com.example.homeeats.Dao;
 
 import com.example.homeeats.EventListenersListener;
+import com.example.homeeats.Helper.StringHelper;
 import com.example.homeeats.Models.FoodMaker;
 import com.example.homeeats.Models.MealItem;
 import com.example.homeeats.Models.Order;
@@ -80,5 +81,29 @@ public class FoodMakerDao extends Dao<FoodMaker> {
                 listRetrievalEventListener.OnDataRetrieved(foodMakerOrders);
             }
         });
+    }
+
+    //filter makers by name from database
+    public void FilterMakersByName(final String name, final RetrievalEventListener<List<FoodMaker>> retrievalEventListener)
+    {
+        final List<FoodMaker> filteredFoodMakers = new ArrayList<>();
+        getAll(new RetrievalEventListener<List<FoodMaker>>() {
+            @Override
+            public void OnDataRetrieved(List<FoodMaker> foodMakers) {
+                for(FoodMaker foodMaker : foodMakers)
+                    if(StringHelper.Contains(foodMaker.name, name))
+                        filteredFoodMakers.add(foodMaker);
+                retrievalEventListener.OnDataRetrieved(filteredFoodMakers);
+            }
+        });
+    }
+
+    //filter makers by name given a list of food makers
+    public List<FoodMaker> FilterMakersByName(List<FoodMaker> foodMakers, String name){
+        final List<FoodMaker> filteredFoodMakers = new ArrayList<>();
+        for(FoodMaker foodMaker : foodMakers)
+            if(StringHelper.Contains(foodMaker.name, name))
+                filteredFoodMakers.add(foodMaker);
+        return filteredFoodMakers;
     }
 }

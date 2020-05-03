@@ -49,4 +49,21 @@ public class DeliveryBoyDao extends Dao<DeliveryBoy> {
             }
         });
     }
+
+
+    // Gets the first available delivery boy, if there is no available -> null.
+    public void GetAvailableDeliveryBoy(final RetrievalEventListener<DeliveryBoy> deliveryBoyRetrievalEventListener){
+        getAll(new RetrievalEventListener<List<DeliveryBoy>>() {
+            @Override
+            public void OnDataRetrieved(List<DeliveryBoy> deliveryBoys) {
+                for(DeliveryBoy deliveryBoy: deliveryBoys){
+                    if(deliveryBoy.availability == true ){
+                        deliveryBoyRetrievalEventListener.OnDataRetrieved(deliveryBoy);
+                        return;
+                    }
+                }
+                deliveryBoyRetrievalEventListener.OnDataRetrieved(null);
+            }
+        });
+    }
 }

@@ -1,9 +1,13 @@
 package com.example.homeeats.Dao;
 
+import com.example.homeeats.Helper.StringHelper;
 import com.example.homeeats.Models.FoodMaker;
 import com.example.homeeats.Models.MealItem;
 import com.example.homeeats.RetrievalEventListener;
 import com.google.firebase.database.DataSnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MealItemDao extends Dao<MealItem> {
     private MealItemDao()
@@ -29,6 +33,46 @@ public class MealItemDao extends Dao<MealItem> {
         mealItem.mealCategory = dataSnapshot.child("mealCategory").getValue().toString();
         mealItem.rating = Double.parseDouble(dataSnapshot.child("rating").getValue().toString());
         mealItem.foodMakerId = dataSnapshot.child("foodMakerId").getValue().toString();
+        mealItem.isAvailable = Boolean.parseBoolean(dataSnapshot.child("isAvailable").getValue().toString());
         retrievalEventListener.OnDataRetrieved(mealItem);
+    }
+
+    //filters meals by name and category from database
+    //if name is null then name is ignored
+    //if category is null then category is ignored
+    public void FilterMealsByNameAndCategory(final String name, final String category, final RetrievalEventListener<List<MealItem>> retrievalEventListener){
+        final List<MealItem> filteredMealItems = new ArrayList<>();
+        getAll(new RetrievalEventListener<List<MealItem>>() {
+            @Override
+            public void OnDataRetrieved(List<MealItem> mealItems) {
+                for(MealItem mealItem : mealItems){
+                    //check name
+                    if(name != null && !StringHelper.Contains(mealItem.name, name))
+                        continue;
+                    //check category
+                    if(category != null && !StringHelper.Contains(mealItem.mealCategory, category))
+                        continue;
+                    filteredMealItems.add(mealItem);
+                }
+                retrievalEventListener.OnDataRetrieved(filteredMealItems);
+            }
+        });
+    }
+
+    //filters meals by name and category from a given list of meal items
+    //if name is null then name is ignored
+    //if category is null then category is ignored
+    public List<MealItem> FilterMealsByNameAndCategory(List<MealItem> mealItems, final String name, final String category){
+        final List<MealItem> filteredMealItems = new ArrayList<>();
+        for(MealItem mealItem : mealItems){
+            //check name
+            if(name != null && !StringHelper.Contains(mealItem.name, name))
+                continue;
+            //check category
+            if(category != null && !StringHelper.Contains(mealItem.mealCategory, category))
+                continue;
+            filteredMealItems.add(mealItem);
+        }
+        return filteredMealItems;
     }
 }

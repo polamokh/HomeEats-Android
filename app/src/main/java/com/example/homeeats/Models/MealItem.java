@@ -15,6 +15,7 @@ public class MealItem {
     public Double price;
     public String mealCategory;
     public Double rating;
+    public boolean isAvailable;
 
     public void GetFoodMaker(final RetrievalEventListener<FoodMaker> foodMakerRetrievalEventListener)
     {
@@ -25,7 +26,7 @@ public class MealItem {
             }
         });
     }
-    public MealItem(String id, String name, String foodMakerId, String photo, String description, double price, String mealCategory, double rating) {
+    public MealItem(String id, String name, String foodMakerId, String photo, String description, double price, String mealCategory, double rating, boolean isAvailable) {
         this.id = id;
         this.name = name;
         this.foodMakerId = foodMakerId;
@@ -34,6 +35,7 @@ public class MealItem {
         this.price = price;
         this.mealCategory = mealCategory;
         this.rating = rating;
+        this.isAvailable = isAvailable;
     }
 
     public MealItem() {

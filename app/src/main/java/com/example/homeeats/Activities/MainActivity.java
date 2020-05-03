@@ -15,12 +15,16 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.homeeats.Dao.FoodBuyerDao;
+import com.example.homeeats.Dao.FoodMakerDao;
 import com.example.homeeats.Dao.MealItemDao;
 import com.example.homeeats.Dao.OrderDao;
 import com.example.homeeats.EmailSender.EmailUtil;
 import com.example.homeeats.EventListenersListener;
+import com.example.homeeats.Helper.StringHelper;
 import com.example.homeeats.MessagingService;
 import com.example.homeeats.Models.Client;
+import com.example.homeeats.Models.FoodMaker;
 import com.example.homeeats.Models.MealItem;
 import com.example.homeeats.Models.Order;
 import com.example.homeeats.Models.OrderItem;
@@ -85,31 +89,38 @@ public class MainActivity extends AppCompatActivity {
         editTextPassword = findViewById(R.id.editTextPassword);
         buttonLogin = findViewById(R.id.buttonLogin);
         textViewSignup = findViewById(R.id.textViewSignup);
-        try {
-            final String fromEmail = "homeeats.ris.2020@gmail.com"; //requires valid gmail id
-            final String password = "HomeEats123"; // correct password for gmail id
-            final String toEmail = "ramyeg26@gmail.com"; // can be any email id
-
-            System.out.println("TLSEmail Start");
-            Properties props = new Properties();
-            props.put("mail.smtp.host", "smtp.gmail.com"); //SMTP Host
-            props.put("mail.smtp.port", "587"); //TLS Port
-            props.put("mail.smtp.auth", "true"); //enable authentication
-            props.put("mail.smtp.starttls.enable", "true"); //enable STARTTLS
-
-            //create Authenticator object to pass in Session.getInstance argument
-            Authenticator auth = new Authenticator() {
-                //override the getPasswordAuthentication method
-                protected PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication(fromEmail, password);
-                }
-            };
-            Session session = Session.getInstance(props, auth);
-
-            EmailUtil.sendEmail(session, toEmail,"TLSEmail Testing Subject", "TLSEmail Testing Body");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        //testing sending emails
+//        try {
+//            final String fromEmail = "homeeats.ris.2020@gmail.com"; //requires valid gmail id
+//            final String password = "HomeEats123"; // correct password for gmail id
+//            final String toEmail = "ramyeg26@gmail.com"; // can be any email id
+//
+//            System.out.println("TLSEmail Start");
+//            Properties props = new Properties();
+//            props.put("mail.smtp.host", "smtp.gmail.com"); //SMTP Host
+//            props.put("mail.smtp.port", "587"); //TLS Port
+//            props.put("mail.smtp.auth", "true"); //enable authentication
+//            props.put("mail.smtp.starttls.enable", "true"); //enable STARTTLS
+//
+//            //create Authenticator object to pass in Session.getInstance argument
+//            Authenticator auth = new Authenticator() {
+//                //override the getPasswordAuthentication method
+//                protected PasswordAuthentication getPasswordAuthentication() {
+//                    return new PasswordAuthentication(fromEmail, password);
+//                }
+//            };
+//            Session session = Session.getInstance(props, auth);
+//
+//            EmailUtil.sendEmail(session, toEmail,"TLSEmail Testing Subject", "TLSEmail Testing Body");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+        FoodMakerDao.GetInstance().FilterMakersByName("tEsT", new RetrievalEventListener<List<FoodMaker>>() {
+            @Override
+            public void OnDataRetrieved(List<FoodMaker> foodMakers) {
+                Toast.makeText(getApplicationContext(), "Food makers done", Toast.LENGTH_SHORT).show();
+            }
+        });
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
