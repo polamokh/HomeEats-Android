@@ -1,7 +1,6 @@
 package com.example.homeeats.Dao;
 
-import com.example.homeeats.Helper.StringHelper;
-import com.example.homeeats.Models.FoodMaker;
+import com.example.homeeats.Helpers.StringHelper;
 import com.example.homeeats.Models.MealItem;
 import com.example.homeeats.RetrievalEventListener;
 import com.google.firebase.database.DataSnapshot;

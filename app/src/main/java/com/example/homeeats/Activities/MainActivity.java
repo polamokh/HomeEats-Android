@@ -15,21 +15,16 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.homeeats.Dao.FoodBuyerDao;
 import com.example.homeeats.Dao.FoodMakerDao;
 import com.example.homeeats.Dao.MealItemDao;
 import com.example.homeeats.Dao.OrderDao;
-import com.example.homeeats.EmailSender.EmailUtil;
 import com.example.homeeats.EventListenersListener;
-import com.example.homeeats.Helper.StringHelper;
-import com.example.homeeats.MessagingService;
 import com.example.homeeats.Models.Client;
 import com.example.homeeats.Models.FoodMaker;
 import com.example.homeeats.Models.MealItem;
 import com.example.homeeats.Models.Order;
 import com.example.homeeats.Models.OrderItem;
 import com.example.homeeats.Models.OrderStatus;
-import com.example.homeeats.Models.UserNotification;
 import com.example.homeeats.R;
 import com.example.homeeats.RetrievalEventListener;
 import com.example.homeeats.TaskListener;
@@ -40,11 +35,6 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
-
-import javax.mail.Authenticator;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
 
 public class MainActivity extends AppCompatActivity {
 

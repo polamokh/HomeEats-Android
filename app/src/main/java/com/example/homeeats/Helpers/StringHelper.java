@@ -1,4 +1,4 @@
-package com.example.homeeats.Helper;
+package com.example.homeeats.Helpers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
