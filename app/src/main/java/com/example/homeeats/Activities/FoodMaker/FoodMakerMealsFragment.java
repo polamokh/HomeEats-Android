@@ -26,10 +26,6 @@ public class FoodMakerMealsFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.foodmaker_fragment, container, false);
 
-
-
-
-
         final RecyclerView recyclerView = view.findViewById(R.id.foodMakerRecyclerView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(linearLayoutManager);

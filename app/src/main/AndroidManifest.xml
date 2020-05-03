@@ -11,7 +11,6 @@
         android:theme="@style/AppTheme">
         <activity android:name=".Activities.FoodMaker.FoodMakerActivity"
             android:theme="@style/AppTheme.NoActionBar">
-
         </activity>
 
         <service android:name=".MessagingService">
@@ -19,7 +18,9 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
+        <activity android:name=".Activities.FoodMaker.FoodMakerAddMealActivity" />
+        <activity android:name=".Activities.DeliveryBoy.DeliveryBoyActivity" />
+        <activity android:name=".Activities.FoodBuyer.FoodBuyerActivity" />
         <activity android:name=".Activities.SignUpActivity" />
         <activity android:name=".Activities.MainActivity">
             <intent-filter>

@@ -20,7 +20,7 @@ public class FoodBuyerActivity extends AppCompatActivity implements NavigationVi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.foodbuyer_activity);
     }
 
     @Override

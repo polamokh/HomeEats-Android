@@ -5,18 +5,16 @@
 
     <group android:checkableBehavior="single">
         <item android:id="@+id/foodMakerNavMeals"
-            android:title="Meals"/>
+            android:title="Meals"
+            />
 
         <item android:id="@+id/foodMakerNavRequests"
             android:title="Requests"/>
-    </group>
-    <item>
-        <menu>
-            <item android:id="@+id/foodMakerNavSettings"
-                android:title="Settings"/>
 
-            <item android:id="@+id/foodMakerNavLogout"
-                android:title="Logout"/>
-        </menu>
-    </item>
+        <item android:id="@+id/foodMakerNavSettings"
+            android:title="Settings"/>
+
+        <item android:id="@+id/foodMakerNavLogout"
+            android:title="Logout"/>
+    </group>
 </menu>

@@ -24,6 +24,12 @@
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             android:elevation="4dp" />
 
+        <Button
+            android:id="@+id/foodmaker_add_meal_button"
+            android:layout_width="match_parent"
+            android:layout_height="150px"
+            android:text="Hello"/>
+
         <FrameLayout
             android:id="@+id/foodMakerFragmentContainer"
             android:layout_width="match_parent"
@@ -36,6 +42,8 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:headerLayout="@layout/nav_header"
+        app:itemTextColor="@color/colorOrange"
+        app:itemBackground="@color/colorTransparent"
         app:menu="@menu/foodmaker_sidemenu"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -6,6 +6,7 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.homeeats.R;
 import com.google.android.material.navigation.NavigationView;
 
 public class DeliveryBoyActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -13,7 +14,7 @@ public class DeliveryBoyActivity extends AppCompatActivity implements Navigation
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+        setContentView(R.layout.deliveryboy_activity);
     }
 
     @Override
