@@ -45,14 +45,14 @@ public class FoodMakerAddMealActivity extends AppCompatActivity {
         final MealItemDao MD= MealItemDao.GetInstance();
         final FirebaseAuth mAuth = FirebaseAuth.getInstance();
         ImageButton fab =(ImageButton)findViewById(R.id.add);
-        EditText Name=(EditText)findViewById(R.id.Name_textbox);
-        EditText Desc=(EditText)findViewById(R.id.Desc_textbox);
-        EditText Price=(EditText)findViewById(R.id.Price_textbox);
-        EditText Category=(EditText)findViewById(R.id.Category_textbox);
-        fab.setOnClickListener(new View.OnClickListener() {
+        final EditText Name=(EditText)findViewById(R.id.Name_textbox);
+       final EditText Desc=(EditText)findViewById(R.id.Desc_textbox);
+     final   EditText Price=(EditText)findViewById(R.id.Price_textbox);
+       final EditText Category=(EditText)findViewById(R.id.Category_textbox);
+      final  fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MealItem MI=new MealItem(null,"Cordon Blue", getIntent().getExtras().getString("FoodMakerID"), "", " 4 Mozzarella Stuffed Chicken Breasts ", 75.00,"Meal", 4.5);
+                MealItem MI=new MealItem(null,Name.getText().toString(), getIntent().getExtras().getString("FoodMakerID"), "", Desc.getText().toString(),Double.parseDouble(Price.getText().toString()),"", 4.5);
                 MD.save(MI, MealItemDao.GetInstance().GetNewKey(), new TaskListener() {
                     @Override
                     public void OnSuccess() {
