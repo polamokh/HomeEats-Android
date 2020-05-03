@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.homeeats.Adapters.RecyclerViewAdapter;
+import com.example.homeeats.Adapters.FoodMakerMealsRecycleAdapter;
 import com.example.homeeats.Dao.FoodMakerDao;
 import com.example.homeeats.Models.MealItem;
 import com.example.homeeats.R;
@@ -23,19 +23,24 @@ public class FoodMakerMealsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_food_maker_meals, container, false);
+
+        View view = inflater.inflate(R.layout.foodmaker_fragment, container, false);
+
+
+
+
 
         final RecyclerView recyclerView = view.findViewById(R.id.foodMakerRecyclerView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
 
         FoodMakerDao.GetInstance().GetFoodMakerMeals(
-                "ctkAYZMA2sUoiQRKhAOxTy9nOc92",
+                "ctkAYZMA2sUoiQRKhAOxTy9nOc92",  //TODO: sent by intent
                 new RetrievalEventListener<List<MealItem>>() {
                     @Override
                     public void OnDataRetrieved(List<MealItem> mealItems) {
-                        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(mealItems);
-                        recyclerView.setAdapter(recyclerViewAdapter);
+                        FoodMakerMealsRecycleAdapter foodMakerMealsRecycleAdapter = new FoodMakerMealsRecycleAdapter(mealItems);
+                        recyclerView.setAdapter(foodMakerMealsRecycleAdapter);
                     }
                 }
         );

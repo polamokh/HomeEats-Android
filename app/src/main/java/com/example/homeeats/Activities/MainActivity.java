@@ -15,6 +15,8 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.homeeats.Activities.DeliveryBoy.DeliveryBoyActivity;
+import com.example.homeeats.Activities.FoodBuyer.FoodBuyerActivity;
 import com.example.homeeats.Activities.FoodMaker.FoodMakerActivity;
 import com.example.homeeats.Dao.MealItemDao;
 import com.example.homeeats.Dao.OrderDao;
@@ -23,12 +25,15 @@ import com.example.homeeats.EventListenersListener;
 import com.example.homeeats.FcmNotifier;
 import com.example.homeeats.MessagingService;
 import com.example.homeeats.Models.Client;
+import com.example.homeeats.Models.DeliveryBoy;
+import com.example.homeeats.Models.FoodBuyer;
 import com.example.homeeats.Models.MealItem;
 import com.example.homeeats.Models.Order;
 import com.example.homeeats.Models.OrderItem;
 import com.example.homeeats.Models.OrderStatus;
 import com.example.homeeats.Models.UserNotification;
 import com.example.homeeats.Models.UserPrimitiveData;
+import com.example.homeeats.Models.UserType;
 import com.example.homeeats.R;
 import com.example.homeeats.RetrievalEventListener;
 import com.example.homeeats.TaskListener;
@@ -36,6 +41,7 @@ import com.example.homeeats.UserAuthenticationDatabase;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.example.homeeats.Activities.FoodMaker.FoodMakerActivity;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
@@ -91,7 +97,35 @@ public class MainActivity extends AppCompatActivity {
                         editTextPassword.getText().toString(), new RetrievalEventListener<Client>() {
                             @Override
                             public void OnDataRetrieved(Client client) {
-                                Toast.makeText(getApplicationContext(), client.name, Toast.LENGTH_LONG).show();
+                                if (client == null){
+                                    Toast.makeText(getApplicationContext(), "Invalid login ya 3'aby >:(",Toast.LENGTH_LONG).show();
+                                    return;
+                                }
+                                Toast.makeText(getApplicationContext(), "Welcome "+client.name,Toast.LENGTH_LONG).show();
+                                UserPrimitiveDataDao.GetInstance().get(client.id, new RetrievalEventListener<UserPrimitiveData>() {
+                                    @Override
+                                    public void OnDataRetrieved(UserPrimitiveData userPrimitiveData) {
+
+                                        if (userPrimitiveData.userType == UserType.DeliveryBoy){
+                                            Intent intent = new Intent(MainActivity.this, DeliveryBoyActivity.class);
+                                            intent.putExtra("DeliveryBoyID", userPrimitiveData.id);
+                                            startActivity(intent);
+
+                                        }else if (userPrimitiveData.userType == UserType.FoodBuyer){
+                                            Intent intent = new Intent(MainActivity.this, FoodBuyerActivity.class);
+                                            intent.putExtra("FoodBuyerID", userPrimitiveData.id);
+                                            startActivity(intent);
+
+                                        }else if (userPrimitiveData.userType == UserType.FoodMaker){
+                                            Intent intent = new Intent(MainActivity.this, FoodMakerActivity.class);
+                                            intent.putExtra("FoodMakerID", userPrimitiveData.id);
+                                            startActivity(intent);
+                                        }else{
+                                            Toast.makeText(getApplicationContext(), "Invalid Login",Toast.LENGTH_LONG).show();
+                                        }
+
+                                    }
+                                });
                             }
                         });
             }

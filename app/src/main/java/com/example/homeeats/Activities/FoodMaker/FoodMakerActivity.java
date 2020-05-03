@@ -12,6 +12,8 @@ import android.view.MenuItem;
 import com.example.homeeats.R;
 import com.google.android.material.navigation.NavigationView;
 
+import static com.example.homeeats.R.id.foodMakerToolbar;
+
 public class FoodMakerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawerLayout;
@@ -19,9 +21,9 @@ public class FoodMakerActivity extends AppCompatActivity implements NavigationVi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_food_maker);
+        setContentView(R.layout.foodmaker_activity);
 
-        Toolbar toolbar = findViewById(R.id.foodMakerToolbar);
+        Toolbar toolbar = findViewById(foodMakerToolbar);
         setSupportActionBar(toolbar);
 
         drawerLayout = findViewById(R.id.foodMakerDrawerLayout);
