@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/foodBuyerMealCardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp">
+
+            <ImageView
+                android:id="@+id/foodBuyerMealCardViewImage"
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="5dp"
+                android:scaleType="centerCrop"/>
+
+            <TextView
+                android:id="@+id/foodBuyerMealCardViewName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/foodBuyerMealCardViewImage"
+                android:text="Pizza"
+                android:layout_alignParentLeft="true"
+                android:textSize="24sp"/>
+
+            <TextView
+                android:id="@+id/foodBuyerMealCardViewPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/foodBuyerMealCardViewImage"
+                android:text="EGP50"
+                android:layout_alignParentRight="true"
+                android:textSize="24sp"/>
+
+            <TextView
+                android:id="@+id/foodBuyerMealCardViewDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/foodBuyerMealCardViewName"
+                android:text="Some text Some text Some text Some text Some text Some text Some text "
+                android:maxLines="2"
+                android:layout_alignParentLeft="true"
+                android:textSize="18sp"/>
+
+            <ImageView
+                android:id="@+id/foodBuyerMealCardViewMakerImage"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:scaleType="centerInside"
+                android:layout_marginRight="6dp"
+                android:layout_below="@+id/foodBuyerMealCardViewDescription"
+                android:layout_toStartOf="@id/foodBuyerMealCardViewMakerName"/>
+
+            <TextView
+                android:id="@+id/foodBuyerMealCardViewMakerName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/foodBuyerMealCardViewDescription"
+                android:text="Maker"
+                android:layout_alignParentRight="true"
+                android:textSize="24sp"/>
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+</LinearLayout>

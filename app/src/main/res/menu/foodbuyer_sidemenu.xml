@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/foodBuyerNavMeals"
+            android:icon="@drawable/ic_meal"
+            android:title="Meals"
+            />
+
+        <item android:id="@+id/foodBuyerNavMakers"
+            android:icon="@drawable/ic_makers"
+            android:title="Makers"/>
+
+        <item android:id="@+id/foodBuyerNavCart"
+            android:icon="@drawable/ic_cart"
+            android:title="Cart"/>
+
+        <item android:id="@+id/foodBuyerNavOrders"
+            android:icon="@drawable/ic_orders"
+            android:title="Orders"/>
+
+        <item android:id="@+id/foodBuyerNavSettings"
+            android:icon="@drawable/ic_settings"
+            android:title="Settings"/>
+
+        <item android:id="@+id/foodBuyerNavLogout"
+            android:icon="@drawable/ic_signout"
+            android:title="Logout"/>
+    </group>
+</menu>
