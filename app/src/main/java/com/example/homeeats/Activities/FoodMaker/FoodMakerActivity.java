@@ -107,10 +107,13 @@ public class FoodMakerActivity extends AppCompatActivity implements NavigationVi
                 });
                 break;
             case R.id.foodMakerNavSettings:
-                // TODO
+                Intent intent = new Intent(FoodMakerActivity.this, FoodMakerEditProfileActivity.class);
+                String foodMakerID = getIntent().getExtras().getString("FoodMakerID");
+                intent.putExtra("FoodMakerID", foodMakerID);
+                startActivity(intent);
                 break;
             case R.id.foodMakerNavRequests:
-                // TODO
+                //TODO
                 break;
             case R.id.foodMakerNavMeals:
                 getSupportFragmentManager().beginTransaction().replace(R.id.foodMakerFragmentContainer,

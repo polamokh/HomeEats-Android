@@ -135,7 +135,7 @@
                     android:layout_marginLeft="12dp"
                     android:gravity="end" />
                 <ImageView
-                    android:id="@+id/imageView2"
+                    android:id="@+id/delete_Meal_Item"
                     android:layout_width="70dp"
                     android:layout_height="90dp"
                     app:srcCompat="@android:drawable/ic_menu_delete"
@@ -146,18 +146,18 @@
                     android:layout_marginLeft="12dp"
                     />
                 <Switch
-                    android:id="@+id/switch1"
+                    android:id="@+id/MealItem_Availability"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Available"
                     android:textSize="18dp"
                     android:textColor="@color/colorAccent"
                     android:layout_marginLeft="50dp"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView2"
+                    app:layout_constraintTop_toBottomOf="@+id/delete_Meal_Item"
                     app:layout_constraintStart_toStartOf="parent"
                     tools:layout_editor_absoluteX="107dp"
                     tools:layout_editor_absoluteY="426dp"
-                    app:layout_constraintLeft_toRightOf="@id/imageView2"/>
+                    app:layout_constraintLeft_toRightOf="@id/delete_Meal_Item"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
