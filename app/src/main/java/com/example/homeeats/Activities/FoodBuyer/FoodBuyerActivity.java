@@ -16,6 +16,8 @@ import com.example.homeeats.Dao.FoodBuyerDao;
 import com.example.homeeats.Models.FoodBuyer;
 import com.example.homeeats.R;
 import com.example.homeeats.RetrievalEventListener;
+import com.example.homeeats.TaskListener;
+import com.example.homeeats.UserAuthenticationDatabase;
 import com.google.android.material.navigation.NavigationView;
 
 import static com.example.homeeats.R.id.foodMakerToolbar;
@@ -64,6 +66,34 @@ public class FoodBuyerActivity extends AppCompatActivity implements NavigationVi
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        item.setChecked(true);
+
+        //TODO: Complete FoodBuyer missing fragments
+        switch (item.getItemId()) {
+            case R.id.foodBuyerNavMeals:
+                getSupportFragmentManager().beginTransaction().replace(R.id.foodBuyerFragmentContainer,
+                        new FoodBuyerMealsFragment()).commit();
+                return true;
+            case R.id.foodBuyerNavMakers:
+                return true;
+            case R.id.foodBuyerNavCart:
+                return true;
+            case R.id.foodBuyerNavOrders:
+                return true;
+            case R.id.foodBuyerNavSettings:
+                return true;
+            case R.id.foodBuyerNavLogout:
+                UserAuthenticationDatabase.GetInstance().SignOut(new TaskListener() {
+                    @Override
+                    public void OnSuccess() {
+                        FoodBuyerActivity.super.onBackPressed();
+                    }
+
+                    @Override
+                    public void OnFail() { }
+                });
+                return true;
+        }
         return false;
     }
 
