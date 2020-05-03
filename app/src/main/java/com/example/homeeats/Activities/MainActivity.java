@@ -93,15 +93,21 @@ public class MainActivity extends AppCompatActivity {
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                final Toast failedLoginToast = Toast.makeText(getApplicationContext(), "Invalid login ya 3'aby >:(",Toast.LENGTH_LONG);
+                if (editTextEmail.getText().toString().equals("") || editTextPassword.getText().toString().equals("")){
+                    failedLoginToast.show();
+                    return;
+                }
                 UserAuthenticationDatabase.GetInstance().Login(editTextEmail.getText().toString(),
                         editTextPassword.getText().toString(), new RetrievalEventListener<Client>() {
                             @Override
                             public void OnDataRetrieved(Client client) {
                                 if (client == null){
-                                    Toast.makeText(getApplicationContext(), "Invalid login ya 3'aby >:(",Toast.LENGTH_LONG).show();
+                                    failedLoginToast.show();
                                     return;
                                 }
-                                Toast.makeText(getApplicationContext(), "Welcome "+client.name,Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "Welcome "+ client.name, Toast.LENGTH_LONG).show();
                                 UserPrimitiveDataDao.GetInstance().get(client.id, new RetrievalEventListener<UserPrimitiveData>() {
                                     @Override
                                     public void OnDataRetrieved(UserPrimitiveData userPrimitiveData) {
@@ -302,8 +308,43 @@ public class MainActivity extends AppCompatActivity {
 //    }
     @Override
     protected void onStart() {
+
+
+
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
+
+
+        /*
+        TODO:     ATTENTION! this absolute piece art of a code is perfectly working. It preservers sessions even after closing the application.
+        TODO:     That's right, like facebook. We disabled it for now to make your lives more easier in testing,
+        if (currentUser != null){
+
+            UserPrimitiveDataDao.GetInstance().get(currentUser.getUid(), new RetrievalEventListener<UserPrimitiveData>() {
+                @Override
+                public void OnDataRetrieved(UserPrimitiveData userPrimitiveData) {
+                    if (userPrimitiveData.userType == UserType.DeliveryBoy){
+                        Intent intent = new Intent(MainActivity.this, DeliveryBoyActivity.class);
+                        intent.putExtra("DeliveryBoyID", userPrimitiveData.id);
+                        startActivity(intent);
+
+                    }else if (userPrimitiveData.userType == UserType.FoodBuyer){
+                        Intent intent = new Intent(MainActivity.this, FoodBuyerActivity.class);
+                        intent.putExtra("FoodBuyerID", userPrimitiveData.id);
+                        startActivity(intent);
+
+                    }else if (userPrimitiveData.userType == UserType.FoodMaker){
+                        Intent intent = new Intent(MainActivity.this, FoodMakerActivity.class);
+                        intent.putExtra("FoodMakerID", userPrimitiveData.id);
+                        startActivity(intent);
+                    }else{
+                        Toast.makeText(getApplicationContext(), "Invalid Login",Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        }
+         */
+
         if (getIntent().getExtras() != null) {
             for (String key : getIntent().getExtras().keySet()) {
                 String value = getIntent().getExtras().getString(key);
