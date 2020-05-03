@@ -31,21 +31,15 @@ public class FoodMakerMealsFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
         String foodMakerID = getActivity().getIntent().getExtras().getString("FoodMakerID");
-        FoodMakerDao.GetInstance().GetFoodMakerMeals(foodMakerID, new RetrievalEventListener<List<MealItem>>()
-        {
-            @Override
-            public void OnDataRetrieved(List<MealItem> mealItems)
-            {
-                new RetrievalEventListener<List<MealItem>>()
-                {
+        FoodMakerDao.GetInstance().GetFoodMakerMeals(foodMakerID,
+                new RetrievalEventListener<List<MealItem>>() {
                     @Override
                     public void OnDataRetrieved(List<MealItem> mealItems) {
-                        FoodMakerMealsRecycleAdapter foodMakerMealsRecycleAdapter = new FoodMakerMealsRecycleAdapter(mealItems);
+                        FoodMakerMealsRecycleAdapter foodMakerMealsRecycleAdapter =
+                                new FoodMakerMealsRecycleAdapter(mealItems);
                         recyclerView.setAdapter(foodMakerMealsRecycleAdapter);
                     }
-                };
-            }
-        });
+                });
 
 
 

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.ClipData;
@@ -12,13 +13,19 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.homeeats.Activities.MainActivity;
+import com.example.homeeats.Dao.FoodMakerDao;
+import com.example.homeeats.Models.FoodMaker;
 import com.example.homeeats.R;
+import com.example.homeeats.RetrievalEventListener;
 import com.example.homeeats.TaskListener;
 import com.example.homeeats.UserAuthenticationDatabase;
 import com.google.android.material.navigation.NavigationView;
+
+import org.w3c.dom.Text;
 
 import static com.example.homeeats.R.id.foodMakerToolbar;
 
@@ -35,21 +42,33 @@ public class FoodMakerActivity extends AppCompatActivity implements NavigationVi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.foodmaker_activity);
 
-
         addMealButton = findViewById(R.id.foodmaker_add_meal_button);
+
+        Toolbar toolbar = findViewById(foodMakerToolbar);
+        setSupportActionBar(toolbar);
+
         drawerLayout = findViewById(R.id.foodMakerDrawerLayout);
         NavigationView navigationView = findViewById(R.id.foodMakerNavView);
-        Toolbar toolbar = findViewById(foodMakerToolbar);
+
+        final TextView textViewNavHeaderName = navigationView.getHeaderView(0)
+                .findViewById(R.id.navHeaderTextViewName);
+        final TextView textViewNavHeaderEmail = navigationView.getHeaderView(0)
+                .findViewById(R.id.navHeaderTextViewEmail);
+        FoodMakerDao.GetInstance().get(getIntent().getExtras().getString("FoodMakerID"),
+                new RetrievalEventListener<FoodMaker>() {
+                    @Override
+                    public void OnDataRetrieved(FoodMaker foodMaker) {
+                        textViewNavHeaderName.setText(foodMaker.name);
+                        textViewNavHeaderEmail.setText(foodMaker.emailAddress);
+                    }
+                });
+
+        navigationView.setNavigationItemSelectedListener(this);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-
-        setSupportActionBar(toolbar);
-        navigationView.setNavigationItemSelectedListener(this);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-        navigationView = (NavigationView) findViewById(R.id.foodMakerNavView);
-        navigationView.setNavigationItemSelectedListener(this);
-
 
         addMealButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,8 +97,7 @@ public class FoodMakerActivity extends AppCompatActivity implements NavigationVi
                     @Override
                     public void OnSuccess() {
                         Toast.makeText(getApplicationContext(), "Goodbye :)", Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(FoodMakerActivity.this, MainActivity.class);
-                        startActivity(intent);
+                        FoodMakerActivity.super.onBackPressed();
                     }
 
                     @Override
@@ -95,11 +113,19 @@ public class FoodMakerActivity extends AppCompatActivity implements NavigationVi
                 // TODO
                 break;
             case R.id.foodMakerNavMeals:
-                Intent intent = new Intent(FoodMakerActivity.this, FoodMakerMealsFragment.class);
-                startActivity(intent);
+                getSupportFragmentManager().beginTransaction().replace(R.id.foodMakerFragmentContainer,
+                        new FoodMakerMealsFragment()).commit();
                 break;
         }
 
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START))
+            drawerLayout.closeDrawer(GravityCompat.START);
+        else
+            super.onBackPressed();
     }
 }

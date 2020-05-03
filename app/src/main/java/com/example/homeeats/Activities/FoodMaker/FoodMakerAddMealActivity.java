@@ -26,6 +26,7 @@ import java.io.IOException;
 
 public class FoodMakerAddMealActivity extends AppCompatActivity {
     private int PICK_IMAGE_REQUEST = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,32 +36,38 @@ public class FoodMakerAddMealActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Button selectImage = (Button)findViewById(R.id.uploadImage);
+        Button selectImage = (Button) findViewById(R.id.uploadImage);
         selectImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 chooseImage();
             }
         });
-        final MealItemDao MD= MealItemDao.GetInstance();
+        final MealItemDao MD = MealItemDao.GetInstance();
         final FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        ImageButton fab =(ImageButton)findViewById(R.id.add);
-        final EditText Name=(EditText)findViewById(R.id.Name_textbox);
-       final EditText Desc=(EditText)findViewById(R.id.Desc_textbox);
-     final   EditText Price=(EditText)findViewById(R.id.Price_textbox);
-       final EditText Category=(EditText)findViewById(R.id.Category_textbox);
-       fab.setOnClickListener(new View.OnClickListener() {
+        ImageButton fab = (ImageButton) findViewById(R.id.add);
+        final EditText Name = (EditText) findViewById(R.id.Name_textbox);
+        final EditText Desc = (EditText) findViewById(R.id.Desc_textbox);
+        final EditText Price = (EditText) findViewById(R.id.Price_textbox);
+        final EditText Category = (EditText) findViewById(R.id.Category_textbox);
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MealItem MI=new MealItem(null,Name.getText().toString(), getIntent().getExtras().getString("FoodMakerID"), "", Desc.getText().toString(),Double.parseDouble(Price.getText().toString()),"", 4.5);
+                //TODO: Change photo string
+                MealItem MI = new MealItem(null, Name.getText().toString(),
+                        getIntent().getExtras().getString("FoodMakerID"),
+                        "https://firebasestorage.googleapis.com/v0/b/hom...",
+                        Desc.getText().toString(),
+                        Double.parseDouble(Price.getText().toString()), "", 4.5);
                 MD.save(MI, MealItemDao.GetInstance().GetNewKey(), new TaskListener() {
                     @Override
                     public void OnSuccess() {
-                        Toast.makeText(getApplicationContext(),"Meal Added Successfully",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Meal Added Successfully", Toast.LENGTH_LONG).show();
                     }
+
                     @Override
                     public void OnFail() {
-                        Toast.makeText(getApplicationContext(),"Failed To Add Meal",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Failed To Add Meal", Toast.LENGTH_LONG).show();
                     }
                 });
             }

@@ -317,7 +317,7 @@ public class MainActivity extends AppCompatActivity {
 
         /*
         TODO:     ATTENTION! this absolute piece art of a code is perfectly working. It preservers sessions even after closing the application.
-        TODO:     That's right, like facebook. We disabled it for now to make your lives more easier in testing,
+         That's right, like facebook. We disabled it for now to make your lives more easier in testing,
         if (currentUser != null){
 
             UserPrimitiveDataDao.GetInstance().get(currentUser.getUid(), new RetrievalEventListener<UserPrimitiveData>() {
