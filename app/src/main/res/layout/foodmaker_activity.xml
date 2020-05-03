@@ -43,7 +43,6 @@
         android:layout_gravity="start"
         app:headerLayout="@layout/nav_header"
         app:itemTextColor="@color/colorOrange"
-        app:itemBackground="@color/colorTransparent"
         app:menu="@menu/foodmaker_sidemenu"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>
