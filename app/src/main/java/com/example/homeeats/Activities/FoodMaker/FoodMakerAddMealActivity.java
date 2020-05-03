@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -42,8 +44,11 @@ public class FoodMakerAddMealActivity extends AppCompatActivity {
         });
         final MealItemDao MD= MealItemDao.GetInstance();
         final FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        /* TODO: button fab doesn't exist in xml (R.id.add?)
-        FloatingActionButton fab = findViewById(R.id.add);
+        ImageButton fab =(ImageButton)findViewById(R.id.add);
+        EditText Name=(EditText)findViewById(R.id.Name_textbox);
+        EditText Desc=(EditText)findViewById(R.id.Desc_textbox);
+        EditText Price=(EditText)findViewById(R.id.Price_textbox);
+        EditText Category=(EditText)findViewById(R.id.Category_textbox);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -60,7 +65,7 @@ public class FoodMakerAddMealActivity extends AppCompatActivity {
                 });
             }
         });
-         */
+
     }
 
     public void chooseImage() {

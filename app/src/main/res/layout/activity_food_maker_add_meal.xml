@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.FoodMaker.FoodMakerAddActivity">
+    tools:context=".Activities.FoodMaker.FoodMakerAddMealActivity">
     <EditText
         android:id="@+id/Name_textbox"
         android:layout_width="332dp"
@@ -71,8 +71,19 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="398dp"
+        android:layout_height="85dp"
         android:layout_below="@id/Category_textbox"
-        android:layout_marginTop="107dp" />
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="276dp" />
+
+    <ImageButton
+        android:id="@+id/add"
+        android:layout_width="207dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/uploadImage"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="17dp"
+        android:src="@android:drawable/ic_input_add" />
 </RelativeLayout>
