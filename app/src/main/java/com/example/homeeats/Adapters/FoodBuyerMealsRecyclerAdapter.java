@@ -1,5 +1,6 @@
 package com.example.homeeats.Adapters;
 
+import android.content.Intent;
 import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.homeeats.Activities.FoodBuyer.FoodBuyerViewMakerActivity;
 import com.example.homeeats.Dao.FoodMakerDao;
 import com.example.homeeats.Models.FoodMaker;
 import com.example.homeeats.Models.MealItem;
@@ -55,6 +57,7 @@ public class FoodBuyerMealsRecyclerAdapter extends
                     @Override
                     public void OnDataRetrieved(FoodMaker foodMaker) {
                         holder.makerName.setText("by " + foodMaker.name);
+                        holder.makerID = foodMaker.id;
                     }
                 });
     }
@@ -72,6 +75,8 @@ public class FoodBuyerMealsRecyclerAdapter extends
         TextView mealDescription;
         TextView mealCategory;
         TextView makerName;
+
+        String makerID;
 
         public MealViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -92,8 +97,9 @@ public class FoodBuyerMealsRecyclerAdapter extends
         }
 
         void makerClick(View view) {
-            //TODO: Add onClick maker event.
-            Toast.makeText(view.getContext(), "Clicked", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(view.getContext(), FoodBuyerViewMakerActivity.class);
+            intent.putExtra("FoodMakerID", makerID);
+            view.getContext().startActivity(intent);
         }
     }
 }

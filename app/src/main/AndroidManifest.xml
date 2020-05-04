@@ -29,6 +29,7 @@
         <activity android:name=".Activities.FoodMaker.FoodMakerAddMealActivity" />
         <activity android:name=".Activities.DeliveryBoy.DeliveryBoyActivity" />
         <activity android:name=".Activities.FoodBuyer.FoodBuyerActivity" />
+        <activity android:name=".Activities.FoodBuyer.FoodBuyerViewMakerActivity" />
         <activity android:name=".Activities.SignUpActivity" />
         <activity android:name=".Activities.MainActivity">
             <intent-filter>
