@@ -12,11 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.homeeats.Adapters.FoodBuyerMealsRecyclerAdapter;
-import com.example.homeeats.Dao.FoodBuyerDao;
 import com.example.homeeats.Dao.MealItemDao;
+import com.example.homeeats.Listeners.RetrievalEventListener;
 import com.example.homeeats.Models.MealItem;
 import com.example.homeeats.R;
-import com.example.homeeats.Listeners.RetrievalEventListener;
 
 import java.util.List;
 

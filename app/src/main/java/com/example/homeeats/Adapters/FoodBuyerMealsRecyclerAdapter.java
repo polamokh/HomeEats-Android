@@ -53,7 +53,7 @@ public class FoodBuyerMealsRecyclerAdapter extends
                 new RetrievalEventListener<FoodMaker>() {
                     @Override
                     public void OnDataRetrieved(FoodMaker foodMaker) {
-                        holder.makerName.setText(foodMaker.name);
+                        holder.makerName.setText("by " + foodMaker.name);
                     }
                 });
     }
@@ -66,7 +66,6 @@ public class FoodBuyerMealsRecyclerAdapter extends
     public static class MealViewHolder extends RecyclerView.ViewHolder {
         CardView cardView;
         ImageView mealImageView;
-        ImageView makerImageView;
         TextView mealName;
         TextView mealPrice;
         TextView mealDescription;
@@ -76,20 +75,12 @@ public class FoodBuyerMealsRecyclerAdapter extends
             super(itemView);
             cardView = itemView.findViewById(R.id.foodBuyerMealCardView);
             mealImageView = itemView.findViewById(R.id.foodBuyerMealCardViewImage);
-            makerImageView = itemView.findViewById(R.id.foodBuyerMealCardViewMakerImage);
             mealName = itemView.findViewById(R.id.foodBuyerMealCardViewName);
             mealPrice = itemView.findViewById(R.id.foodBuyerMealCardViewPrice);
             mealDescription = itemView.findViewById(R.id.foodBuyerMealCardViewDescription);
             makerName = itemView.findViewById(R.id.foodBuyerMealCardViewMakerName);
 
             makerName.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    makerClick(v);
-                }
-            });
-
-            makerImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     makerClick(v);
