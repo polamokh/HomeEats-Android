@@ -11,6 +11,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".Activities.FoodMaker.FoodMakerEditProfileActivity"></activity>
+        <activity
+            android:name=".Activities.FoodMaker.FoodMakerActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <service android:name=".MessagingService">
             <intent-filter>
@@ -22,6 +26,9 @@
             android:name=".LiveLocationService"
             android:foregroundServiceType="location">
         </service>
+        <activity android:name=".Activities.FoodMaker.FoodMakerAddMealActivity" />
+        <activity android:name=".Activities.DeliveryBoy.DeliveryBoyActivity" />
+        <activity android:name=".Activities.FoodBuyer.FoodBuyerActivity" />
         <activity android:name=".Activities.SignUpActivity" />
         <activity android:name=".Activities.MainActivity">
             <intent-filter>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/foodMakerNavMeals"
+            android:icon="@drawable/ic_meal"
+            android:title="Meals"
+            />
+
+        <item android:id="@+id/foodMakerNavRequests"
+            android:icon="@drawable/ic_notifications"
+            android:title="Requests"/>
+
+        <item android:id="@+id/foodMakerNavSettings"
+            android:icon="@drawable/ic_settings"
+            android:title="Settings"/>
+
+        <item android:id="@+id/foodMakerNavLogout"
+            android:icon="@drawable/ic_signout"
+            android:title="Logout"/>
+    </group>
+</menu>

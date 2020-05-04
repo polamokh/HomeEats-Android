@@ -13,7 +13,7 @@ import java.util.List;
 
 public class FoodMakerDao extends Dao<FoodMaker> {
     private static FoodMakerDao singletonObject;
-    private FoodMakerDao(){
+    public FoodMakerDao(){
         super("FoodMakers");
     }
     public static FoodMakerDao GetInstance() {

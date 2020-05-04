@@ -5,4 +5,11 @@
         <item>Food Maker</item>
         <item>Delivery Boy</item>
     </array>
+
+    <string name="nav_item_meals">Meals</string>
+    <string name="nav_item_settings">Settings</string>
+    <string name="nav_item_logout">Logout</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

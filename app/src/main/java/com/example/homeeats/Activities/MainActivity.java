@@ -1,8 +1,6 @@
 package com.example.homeeats.Activities;
 
 import android.Manifest;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -19,27 +17,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.example.homeeats.Dao.DeliveryBoyDao;
-import com.example.homeeats.Dao.MealItemDao;
-import com.example.homeeats.Dao.OrderDao;
-import com.example.homeeats.Listeners.EventListenersListener;
+import com.example.homeeats.Activities.DeliveryBoy.DeliveryBoyActivity;
+import com.example.homeeats.Activities.FoodBuyer.FoodBuyerActivity;
+import com.example.homeeats.Activities.FoodMaker.FoodMakerActivity;
+import com.example.homeeats.Dao.UserPrimitiveDataDao;
+import com.example.homeeats.Listeners.RetrievalEventListener;
 import com.example.homeeats.LiveLocationService;
 import com.example.homeeats.Models.Client;
-import com.example.homeeats.Models.DeliveryBoy;
-import com.example.homeeats.Models.MealItem;
-import com.example.homeeats.Models.Order;
-import com.example.homeeats.Models.OrderItem;
-import com.example.homeeats.Models.OrderStatus;
+import com.example.homeeats.Models.UserPrimitiveData;
+import com.example.homeeats.Models.UserType;
 import com.example.homeeats.R;
-import com.example.homeeats.Listeners.RetrievalEventListener;
-import com.example.homeeats.Listeners.TaskListener;
 import com.example.homeeats.UserAuthenticationDatabase;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -112,19 +102,54 @@ public class MainActivity extends AppCompatActivity {
 //            e.printStackTrace();
 //        }
 
-        //start Live Location service
-        stopService();
-        startLocationService();
-
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserAuthenticationDatabase.GetInstance().Login(editTextEmail.getText().toString(), editTextPassword.getText().toString(), new RetrievalEventListener<Client>() {
-                    @Override
-                    public void OnDataRetrieved(Client client) {
-                        Toast.makeText(getApplicationContext(), client.name, Toast.LENGTH_LONG).show();
-                    }
-                });
+
+                final Toast failedLoginToast = Toast.makeText(getApplicationContext(), "Invalid login ya 3'aby >:(",Toast.LENGTH_LONG);
+                if (editTextEmail.getText().toString().equals("") || editTextPassword.getText().toString().equals("")){
+                    failedLoginToast.show();
+                    return;
+                }
+                UserAuthenticationDatabase.GetInstance().Login(editTextEmail.getText().toString(),
+                        editTextPassword.getText().toString(), new RetrievalEventListener<Client>() {
+                            @Override
+                            public void OnDataRetrieved(Client client) {
+                                if (client == null){
+                                    failedLoginToast.show();
+                                    return;
+                                }
+                                Toast.makeText(getApplicationContext(), "Welcome "+ client.name, Toast.LENGTH_LONG).show();
+                                UserPrimitiveDataDao.GetInstance().get(client.id, new RetrievalEventListener<UserPrimitiveData>() {
+                                    @Override
+                                    public void OnDataRetrieved(UserPrimitiveData userPrimitiveData) {
+
+                                        if (userPrimitiveData.userType == UserType.DeliveryBoy){
+                                            runLiveLocationService();
+                                            Intent intent = new Intent(MainActivity.this, DeliveryBoyActivity.class);
+                                            intent.putExtra("DeliveryBoyID", userPrimitiveData.id);
+                                            startActivity(intent);
+
+                                        }else if (userPrimitiveData.userType == UserType.FoodBuyer){
+                                            stopLiveLocationService();
+                                            Intent intent = new Intent(MainActivity.this, FoodBuyerActivity.class);
+                                            intent.putExtra("FoodBuyerID", userPrimitiveData.id);
+                                            startActivity(intent);
+
+                                        }else if (userPrimitiveData.userType == UserType.FoodMaker){
+                                            stopLiveLocationService();
+                                            Intent intent = new Intent(MainActivity.this, FoodMakerActivity.class);
+                                            intent.putExtra("FoodMakerID", userPrimitiveData.id);
+                                            startActivity(intent);
+                                        }else{
+                                            stopLiveLocationService();
+                                            Toast.makeText(getApplicationContext(), "Invalid Login",Toast.LENGTH_LONG).show();
+                                        }
+
+                                    }
+                                });
+                            }
+                        });
             }
         });
 
@@ -146,19 +171,64 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void startLocationService() {
+    public void runLiveLocationService(){
+        stopLiveLocationService();
+        startLiveLocationService();
+    }
+    public void startLiveLocationService() {
         Intent serviceIntent = new Intent(this, LiveLocationService.class);
         ContextCompat.startForegroundService(this, serviceIntent);
     }
-    public void stopService() {
+    public void stopLiveLocationService() {
         Intent serviceIntent = new Intent(this, LiveLocationService.class);
         stopService(serviceIntent);
     }
 
     @Override
     protected void onStart() {
+
+
+
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
+
+
+        /*
+        TODO:     ATTENTION! this absolute piece art of a code is perfectly working. It preservers sessions even after closing the application.
+         That's right, like facebook. We disabled it for now to make your lives more easier in testing,
+        if (currentUser != null){
+
+            UserPrimitiveDataDao.GetInstance().get(currentUser.getUid(), new RetrievalEventListener<UserPrimitiveData>() {
+                @Override
+                public void OnDataRetrieved(UserPrimitiveData userPrimitiveData) {
+                    if (userPrimitiveData.userType == UserType.DeliveryBoy){
+                        runLiveLocationService();
+                        Intent intent = new Intent(MainActivity.this, DeliveryBoyActivity.class);
+                        intent.putExtra("DeliveryBoyID", userPrimitiveData.id);
+                        startActivity(intent);
+
+                    }else if (userPrimitiveData.userType == UserType.FoodBuyer){
+                        stopLiveLocationService();
+                        Intent intent = new Intent(MainActivity.this, FoodBuyerActivity.class);
+                        intent.putExtra("FoodBuyerID", userPrimitiveData.id);
+                        startActivity(intent);
+
+                    }else if (userPrimitiveData.userType == UserType.FoodMaker){
+                        stopLiveLocationService();
+                        Intent intent = new Intent(MainActivity.this, FoodMakerActivity.class);
+                        intent.putExtra("FoodMakerID", userPrimitiveData.id);
+                        startActivity(intent);
+                    }else{
+                        stopLiveLocationService();
+                        Toast.makeText(getApplicationContext(), "Invalid Login",Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        }
+        else
+            stopLiveLocationService();
+         */
+
         if (getIntent().getExtras() != null) {
             for (String key : getIntent().getExtras().keySet()) {
                 String value = getIntent().getExtras().getString(key);
