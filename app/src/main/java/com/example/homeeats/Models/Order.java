@@ -3,12 +3,10 @@ package com.example.homeeats.Models;
 import com.example.homeeats.Dao.DeliveryBoyDao;
 import com.example.homeeats.Dao.FoodBuyerDao;
 import com.example.homeeats.Dao.FoodMakerDao;
-import com.example.homeeats.EventListenersListener;
-import com.example.homeeats.RetrievalEventListener;
+import com.example.homeeats.Listeners.RetrievalEventListener;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.Exclude;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Order {

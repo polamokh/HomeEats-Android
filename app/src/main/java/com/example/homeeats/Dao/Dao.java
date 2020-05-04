@@ -2,8 +2,8 @@ package com.example.homeeats.Dao;
 
 import androidx.annotation.NonNull;
 
-import com.example.homeeats.RetrievalEventListener;
-import com.example.homeeats.TaskListener;
+import com.example.homeeats.Listeners.RetrievalEventListener;
+import com.example.homeeats.Listeners.TaskListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;

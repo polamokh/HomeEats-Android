@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 import com.example.homeeats.FilesStorageDatabase;
 import com.example.homeeats.Helpers.StringHelper;
 import com.example.homeeats.Models.MealItem;
-import com.example.homeeats.RetrievalEventListener;
+import com.example.homeeats.Listeners.RetrievalEventListener;
 import com.google.firebase.database.DataSnapshot;
 
 import java.util.ArrayList;

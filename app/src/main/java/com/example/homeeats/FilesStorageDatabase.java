@@ -3,6 +3,7 @@ package com.example.homeeats;
 import android.graphics.Bitmap;
 import android.net.Uri;
 
+import com.example.homeeats.Listeners.RetrievalEventListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;

@@ -1,4 +1,6 @@
-package com.example.homeeats;
+package com.example.homeeats.Listeners;
+
+import com.example.homeeats.Listeners.AbstractEventListener;
 
 import java.util.ArrayList;
 import java.util.List;

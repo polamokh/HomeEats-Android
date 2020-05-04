@@ -2,11 +2,9 @@ package com.example.homeeats.Dao;
 
 import com.example.homeeats.Models.UserPrimitiveData;
 import com.example.homeeats.Models.UserType;
-import com.example.homeeats.RetrievalEventListener;
-import com.example.homeeats.TaskListener;
+import com.example.homeeats.Listeners.RetrievalEventListener;
+import com.example.homeeats.Listeners.TaskListener;
 import com.google.firebase.database.DataSnapshot;
-
-import java.util.ArrayList;
 
 public class UserPrimitiveDataDao extends Dao<UserPrimitiveData> {
     private static UserPrimitiveDataDao singletonObject;

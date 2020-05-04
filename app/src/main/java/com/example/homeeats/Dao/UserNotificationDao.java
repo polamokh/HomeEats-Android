@@ -1,11 +1,7 @@
 package com.example.homeeats.Dao;
 
-import android.app.Notification;
-
 import com.example.homeeats.Models.UserNotification;
-import com.example.homeeats.Models.UserPrimitiveData;
-import com.example.homeeats.RetrievalEventListener;
-import com.example.homeeats.TaskListener;
+import com.example.homeeats.Listeners.RetrievalEventListener;
 import com.google.firebase.database.DataSnapshot;
 
 import java.util.ArrayList;

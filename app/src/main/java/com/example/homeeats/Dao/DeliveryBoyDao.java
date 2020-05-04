@@ -1,19 +1,34 @@
 package com.example.homeeats.Dao;
 
+import android.util.Pair;
+
+import androidx.annotation.NonNull;
+
 import com.example.homeeats.Models.DeliveryBoy;
 import com.example.homeeats.Models.Order;
-import com.example.homeeats.RetrievalEventListener;
+import com.example.homeeats.Listeners.RetrievalEventListener;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DeliveryBoyDao extends Dao<DeliveryBoy> {
     private static DeliveryBoyDao singletonObject;
+    private Map<String, DatabaseReference> deliveryBoyIdRowReferences;
+    private Map<String, List<Pair<RetrievalEventListener<DeliveryBoy>, ValueEventListener>>>  deliveryBorIdRetrievalEventListeners;
     private DeliveryBoyDao() {
         super("DeliveryBoys");
+        deliveryBoyIdRowReferences = new HashMap<>();
+        deliveryBorIdRetrievalEventListeners = new HashMap<>();
     }
+
     public static DeliveryBoyDao GetInstance()
     {
         if(singletonObject == null)
@@ -49,6 +64,52 @@ public class DeliveryBoyDao extends Dao<DeliveryBoy> {
             }
         });
     }
+
+    public void AddDeliveryBoyLiveLocationListener(final String deliveryBoyId, final RetrievalEventListener<DeliveryBoy> retrievalEventListener){
+        if(!deliveryBoyIdRowReferences.containsKey(deliveryBoyId)) {
+            deliveryBoyIdRowReferences.put(deliveryBoyId, dbReference.child(tableName).child(deliveryBoyId));
+            deliveryBorIdRetrievalEventListeners.put(deliveryBoyId, new ArrayList<Pair<RetrievalEventListener<DeliveryBoy>, ValueEventListener>>());
+        }
+        DatabaseReference rowReference = deliveryBoyIdRowReferences.get(deliveryBoyId);
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                parseDataSnapshot(dataSnapshot, new RetrievalEventListener<DeliveryBoy>() {
+                    @Override
+                    public void OnDataRetrieved(DeliveryBoy deliveryBoy) {
+                        retrievalEventListener.OnDataRetrieved(deliveryBoy);
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+        rowReference.addValueEventListener(valueEventListener);
+        deliveryBorIdRetrievalEventListeners.get(deliveryBoyId).add(new Pair<>(retrievalEventListener, valueEventListener));
+    }
+
+    public void RemoveDeliveryBoyLiveLocationListener(String deliveryBoyId, RetrievalEventListener<DeliveryBoy> retrievalEventListener){
+        if(deliveryBoyIdRowReferences.containsKey(deliveryBoyId) == false)
+            return;
+        DatabaseReference rowReference = deliveryBoyIdRowReferences.get(deliveryBoyId);
+        List<Pair<RetrievalEventListener<DeliveryBoy>, ValueEventListener>> eventListeners = deliveryBorIdRetrievalEventListeners.get(deliveryBoyId);
+        for(int i = 0; i < eventListeners.size(); i++){
+            Pair<RetrievalEventListener<DeliveryBoy>, ValueEventListener> p = eventListeners.get(i);
+            if(p.first == retrievalEventListener) {
+                rowReference.removeEventListener(p.second);
+                eventListeners.remove(i);
+                i--;
+            }
+        }
+        if(deliveryBorIdRetrievalEventListeners.get(deliveryBoyId).size() == 0){
+            deliveryBorIdRetrievalEventListeners.remove(deliveryBoyId);
+            deliveryBoyIdRowReferences.remove(deliveryBoyId);
+        }
+    }
+
 
 
     // Gets the first available delivery boy, if there is no available -> null.
