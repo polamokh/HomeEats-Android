@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
 //        }
 
 //        AddNewOrder();
-        OrderDao.GetInstance().SendOrderNotifications("-M6Tk7Tp_Oe9YV5omuHl", "Test", "Testing notifications");
+        
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
