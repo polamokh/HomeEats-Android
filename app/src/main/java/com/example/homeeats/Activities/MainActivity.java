@@ -1,6 +1,8 @@
 package com.example.homeeats.Activities;
 
 import android.Manifest;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -20,16 +22,30 @@ import androidx.core.content.ContextCompat;
 import com.example.homeeats.Activities.DeliveryBoy.DeliveryBoyActivity;
 import com.example.homeeats.Activities.FoodBuyer.FoodBuyerActivity;
 import com.example.homeeats.Activities.FoodMaker.FoodMakerActivity;
+import com.example.homeeats.Dao.MealItemDao;
+import com.example.homeeats.Dao.OrderDao;
 import com.example.homeeats.Dao.UserPrimitiveDataDao;
+import com.example.homeeats.Listeners.EventListenersListener;
 import com.example.homeeats.Listeners.RetrievalEventListener;
+import com.example.homeeats.Listeners.TaskListener;
 import com.example.homeeats.LiveLocationService;
 import com.example.homeeats.Models.Client;
+import com.example.homeeats.Models.MealItem;
+import com.example.homeeats.Models.Order;
+import com.example.homeeats.Models.OrderItem;
+import com.example.homeeats.Models.OrderStatus;
 import com.example.homeeats.Models.UserPrimitiveData;
 import com.example.homeeats.Models.UserType;
 import com.example.homeeats.R;
 import com.example.homeeats.UserAuthenticationDatabase;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.iid.FirebaseInstanceId;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -62,10 +78,7 @@ public class MainActivity extends AppCompatActivity {
             checkPermission();
         }
 
-
-
-        final String TOKEN = "eVo-hvnwC-w:APA91bGq4CdsHioP8st9hhSG_PEMyvlc4NqN2Yqj8IisXzs4u2KnEUa9tICNhz2hXTa6urtYxiChUcDcPi9wtSR-tBFA0OTdpbjkiE7k2mqN56BG2Sd5manOnE8nxdfEVgPGPvc9wBgI";
-
+        Toast.makeText(getApplicationContext(), FirebaseInstanceId.getInstance().getToken(), Toast.LENGTH_SHORT).show();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -75,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
         editTextPassword = findViewById(R.id.editTextPassword);
         buttonLogin = findViewById(R.id.buttonLogin);
         textViewSignup = findViewById(R.id.textViewSignup);
+
         //testing sending emails
 //        try {
 //            final String fromEmail = "homeeats.ris.2020@gmail.com"; //requires valid gmail id
@@ -102,6 +116,8 @@ public class MainActivity extends AppCompatActivity {
 //            e.printStackTrace();
 //        }
 
+//        AddNewOrder();
+        OrderDao.GetInstance().SendOrderNotifications("-M6Tk7Tp_Oe9YV5omuHl", "Test", "Testing notifications");
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -169,6 +185,55 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+    }
+
+    protected void AddNewOrder()
+    {
+        final Order order = new Order(null,
+                "FnFqPvY2VuMWrLf04ZZacTbrV293",
+                "3cs3kGaPDIQiofGVfFw1ckrPNCr2",
+                "xdor7utP2rfQCKPUfijxLTky6X83",
+                new ArrayList<OrderItem>(),
+                "Koshry gamd zo7l2a",
+                4,
+                0.0,
+                OrderStatus.Pending,
+                new LatLng(1, 1));
+        final EventListenersListener eventListenersListener = new EventListenersListener() {
+            @Override
+            public void onFinish() {
+                order.totalPrice = order.totalPrice;
+                OrderDao.GetInstance().save(order, OrderDao.GetInstance().GetNewKey(), new TaskListener() {
+                    @Override
+                    public void OnSuccess() {
+                        Toast.makeText(getApplicationContext(), "Added order", Toast.LENGTH_SHORT).show();
+                    }
+                    @Override
+                    public void OnFail(){
+
+                    }
+                });
+            }
+        };
+        List<RetrievalEventListener> mealsEventListeners = new ArrayList<>();
+        for(int i = 1; i <= 7; i++){
+            final OrderItem orderItem = new OrderItem(null, i, "da2aa zayada", 5);
+            RetrievalEventListener<MealItem> mealEventListener = new RetrievalEventListener<MealItem>() {
+                @Override
+                public void OnDataRetrieved(MealItem mealItem) {
+                    orderItem.mealItemId = mealItem.id;
+                    orderItem.totalPrice = orderItem.quantity * mealItem.price;
+                    order.orderItems.add(orderItem);
+                    eventListenersListener.notify(this);
+                }
+            };
+            mealsEventListeners.add(mealEventListener);
+            eventListenersListener.Add(mealEventListener);
+        }
+        eventListenersListener.OnFinishAddingListeners();
+        for(int i = 1; i <= 7; i++){
+            MealItemDao.GetInstance().get("-M64XGeazTb_HbQnboZB", mealsEventListeners.get(i - 1));
+        }
     }
 
     public void runLiveLocationService(){

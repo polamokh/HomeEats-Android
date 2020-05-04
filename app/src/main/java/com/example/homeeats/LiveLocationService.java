@@ -77,7 +77,13 @@ public class LiveLocationService extends Service {
         return START_NOT_STICKY;
     }
 
-    private void createNotificationChannel() {
+    @Override
+    public void onDestroy() {
+        Log.e("Service", "Stopping");
+        super.onDestroy();
+    }
+
+    public void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel serviceChannel = new NotificationChannel(
                     CHANNEL_ID,
@@ -87,12 +93,6 @@ public class LiveLocationService extends Service {
             NotificationManager manager = getSystemService(NotificationManager.class);
             manager.createNotificationChannel(serviceChannel);
         }
-    }
-
-    @Override
-    public void onDestroy() {
-        Log.e("Service", "Stopping");
-        super.onDestroy();
     }
 
     @Nullable

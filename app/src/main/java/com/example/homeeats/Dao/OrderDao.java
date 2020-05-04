@@ -1,9 +1,14 @@
 package com.example.homeeats.Dao;
 
+import android.util.Log;
+
+import com.example.homeeats.Listeners.TaskListener;
+import com.example.homeeats.MessagingService;
 import com.example.homeeats.Models.Order;
 import com.example.homeeats.Models.OrderItem;
 import com.example.homeeats.Models.OrderStatus;
 import com.example.homeeats.Listeners.RetrievalEventListener;
+import com.example.homeeats.Models.UserNotification;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 
@@ -39,6 +44,7 @@ public class OrderDao extends Dao<Order> {
         order.orderItems = new ArrayList<>();
         for(DataSnapshot currentSnapshot : dataSnapshot.child("orderItems").getChildren())
             order.orderItems.add(parseOrderItemDataSnapShot(currentSnapshot));
+        retrievalEventListener.OnDataRetrieved(order);
     }
 
     protected OrderItem parseOrderItemDataSnapShot(DataSnapshot dataSnapshot)
@@ -50,5 +56,61 @@ public class OrderDao extends Dao<Order> {
         orderItem.mealItemId = dataSnapshot.child("mealItemId").getValue().toString();
         orderItem.totalPrice = Double.parseDouble(dataSnapshot.child("totalPrice").getValue().toString());
         return orderItem;
+    }
+
+    public void SendOrderNotifications(final String orderId, final String title, final String body){
+        get(orderId, new RetrievalEventListener<Order>() {
+            @Override
+            public void OnDataRetrieved(Order order) {
+                //send Food buyer notification
+                UserNotification foodBuyerNotification = new UserNotification();
+                foodBuyerNotification.setUserId(order.foodBuyerId);
+                foodBuyerNotification.setTitle(title);
+                foodBuyerNotification.setBody(body);
+                MessagingService.SendUserNotification(foodBuyerNotification, new TaskListener() {
+                    @Override
+                    public void OnSuccess() {
+                        Log.e("Notification", "sent food buyer notification");
+                    }
+
+                    @Override
+                    public void OnFail() {
+
+                    }
+                });
+                //send food maker notification
+                UserNotification foodMakerNotification = new UserNotification();
+                foodMakerNotification.setUserId(order.foodMakerId);
+                foodMakerNotification.setTitle(title);
+                foodMakerNotification.setBody(body);
+                MessagingService.SendUserNotification(foodMakerNotification, new TaskListener() {
+                    @Override
+                    public void OnSuccess() {
+                        Log.e("Notification", "sent food maker notification");
+                    }
+
+                    @Override
+                    public void OnFail() {
+
+                    }
+                });
+                //send delivery boy notification
+                UserNotification deliveryBoyNotification = new UserNotification();
+                deliveryBoyNotification.setUserId(order.deliveryBoyId);
+                deliveryBoyNotification.setTitle(title);
+                deliveryBoyNotification.setBody(body);
+                MessagingService.SendUserNotification(deliveryBoyNotification, new TaskListener() {
+                    @Override
+                    public void OnSuccess() {
+                        Log.e("Notification", "sent delivery boy notification");
+                    }
+
+                    @Override
+                    public void OnFail() {
+
+                    }
+                });
+            }
+        });
     }
 }
