@@ -22,6 +22,7 @@
         android:completionThreshold="1"
         android:ellipsize="middle"
         android:hint="Select a maker"
+        android:drawableStart="@drawable/ic_search"
         android:inputType="text"
         android:textSize="20sp"
         app:layout_constraintTop_toTopOf="parent" />

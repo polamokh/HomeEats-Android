@@ -48,6 +48,7 @@ public class FoodBuyerMealsRecyclerAdapter extends
         holder.mealName.setText(meals.get(position).name);
         holder.mealPrice.setText("EGP" + meals.get(position).price.toString());
         holder.mealDescription.setText(meals.get(position).description);
+        holder.mealCategory.setText(meals.get(position).mealCategory);
 
         FoodMakerDao.GetInstance().get(meals.get(position).foodMakerId,
                 new RetrievalEventListener<FoodMaker>() {
@@ -69,6 +70,7 @@ public class FoodBuyerMealsRecyclerAdapter extends
         TextView mealName;
         TextView mealPrice;
         TextView mealDescription;
+        TextView mealCategory;
         TextView makerName;
 
         public MealViewHolder(@NonNull View itemView) {
@@ -78,6 +80,7 @@ public class FoodBuyerMealsRecyclerAdapter extends
             mealName = itemView.findViewById(R.id.foodBuyerMealCardViewName);
             mealPrice = itemView.findViewById(R.id.foodBuyerMealCardViewPrice);
             mealDescription = itemView.findViewById(R.id.foodBuyerMealCardViewDescription);
+            mealCategory = itemView.findViewById(R.id.foodBuyerMealCardViewCategory);
             makerName = itemView.findViewById(R.id.foodBuyerMealCardViewMakerName);
 
             makerName.setOnClickListener(new View.OnClickListener() {

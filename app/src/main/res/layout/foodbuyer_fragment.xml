@@ -1,11 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/foodBuyerRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_below="@id/foodBuyerMealsSearch"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <Spinner
+        android:id="@+id/foodBuyerMealsSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:layout_margin="10dp"
+        android:layout_alignParentTop="true"/>
+
+    <EditText
+        android:id="@+id/foodBuyerMealsSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:inputType="text"
+        android:layout_margin="10dp"
+        android:drawableStart="@drawable/ic_search"
+        android:hint="Search"
+        android:layout_toEndOf="@id/foodBuyerMealsSpinner"
+        android:layout_alignParentTop="true" />
+
+</RelativeLayout>
