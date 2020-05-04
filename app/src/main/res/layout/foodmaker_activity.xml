@@ -24,12 +24,6 @@
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             android:elevation="4dp" />
 
-        <Button
-            android:id="@+id/foodmaker_add_meal_button"
-            android:layout_width="match_parent"
-            android:layout_height="150px"
-            android:text="Add Meal"/>
-
         <FrameLayout
             android:id="@+id/foodMakerFragmentContainer"
             android:layout_width="match_parent"

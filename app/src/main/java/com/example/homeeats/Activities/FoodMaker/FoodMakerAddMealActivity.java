@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import com.example.homeeats.Dao.MealItemDao;
 import com.example.homeeats.Models.MealItem;
 import com.example.homeeats.R;
+import com.example.homeeats.RetrievalEventListener;
 import com.example.homeeats.TaskListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,6 +28,7 @@ import java.io.IOException;
 
 public class FoodMakerAddMealActivity extends AppCompatActivity {
     private int PICK_IMAGE_REQUEST = 1;
+    ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,19 +53,28 @@ public class FoodMakerAddMealActivity extends AppCompatActivity {
         final EditText Desc = (EditText) findViewById(R.id.Desc_textbox);
         final EditText Price = (EditText) findViewById(R.id.Price_textbox);
         final EditText Category = (EditText) findViewById(R.id.Category_textbox);
+        imageView = findViewById(R.id.imageView2);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //TODO: Change photo string
-                MealItem MI = new MealItem(null, Name.getText().toString(),
+                final MealItem MI = new MealItem(null, Name.getText().toString(),
                         getIntent().getExtras().getString("FoodMakerID"),
-                        "https://firebasestorage.googleapis.com/v0/b/hom...",
+                        "",
                         Desc.getText().toString(),
                         Double.parseDouble(Price.getText().toString()), "", 4.5);
-                MD.save(MI, MealItemDao.GetInstance().GetNewKey(), new TaskListener() {
+                final String Meal_ID = MealItemDao.GetInstance().GetNewKey();
+                MD.save(MI, Meal_ID, new TaskListener() {
                     @Override
                     public void OnSuccess() {
-                        Toast.makeText(getApplicationContext(), "Meal Added Successfully", Toast.LENGTH_LONG).show();
+                        MealItemDao.GetInstance().setMealImage(Meal_ID, getIntent().getExtras().getString("FoodMakerID"), ((BitmapDrawable) imageView.getDrawable()).getBitmap(), new RetrievalEventListener<String>() {
+                            @Override
+                            public void OnDataRetrieved(String s) {
+                                Toast.makeText(getApplicationContext(), "Meal Added Successfully", Toast.LENGTH_LONG).show();
+                            }
+                        });
+
                     }
 
                     @Override
@@ -89,8 +101,6 @@ public class FoodMakerAddMealActivity extends AppCompatActivity {
             Uri uri = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                // Log.d(TAG, String.valueOf(bitmap));
-                ImageView imageView = findViewById(R.id.imageView2);
                 imageView.setImageBitmap(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();

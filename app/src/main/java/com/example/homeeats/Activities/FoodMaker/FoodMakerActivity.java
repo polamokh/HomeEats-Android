@@ -23,6 +23,7 @@ import com.example.homeeats.R;
 import com.example.homeeats.RetrievalEventListener;
 import com.example.homeeats.TaskListener;
 import com.example.homeeats.UserAuthenticationDatabase;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import org.w3c.dom.Text;
@@ -32,17 +33,31 @@ import static com.example.homeeats.R.id.foodMakerToolbar;
 public class FoodMakerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawerLayout;
-    private Button addMealButton;
+    private FloatingActionButton addMealButton;
     private ClipData.Item signOut;
     private NavigationView navigationView;
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        addMealButton = findViewById(R.id.food_maker_add_meal_button);
+        addMealButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(FoodMakerActivity.this, FoodMakerAddMealActivity.class);
+                String foodMakerID = getIntent().getExtras().getString("FoodMakerID");
+                intent.putExtra("FoodMakerID", foodMakerID);
+                startActivity(intent);
+            }
+        });
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.foodmaker_activity);
 
-        addMealButton = findViewById(R.id.foodmaker_add_meal_button);
+        addMealButton = findViewById(R.id.food_maker_add_meal_button);
 
         Toolbar toolbar = findViewById(foodMakerToolbar);
         setSupportActionBar(toolbar);
@@ -70,15 +85,7 @@ public class FoodMakerActivity extends AppCompatActivity implements NavigationVi
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        addMealButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(FoodMakerActivity.this, FoodMakerAddMealActivity.class);
-                String foodMakerID = getIntent().getExtras().getString("FoodMakerID");
-                intent.putExtra("FoodMakerID", foodMakerID);
-                startActivity(intent);
-            }
-        });
+
 
         if(savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.foodMakerFragmentContainer,

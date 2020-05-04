@@ -12,6 +12,7 @@ import com.example.homeeats.Dao.FoodMakerDao;
 import com.example.homeeats.Models.FoodMaker;
 import com.example.homeeats.R;
 import com.example.homeeats.RetrievalEventListener;
+import com.example.homeeats.TaskListener;
 
 public class FoodMakerEditProfileActivity extends AppCompatActivity {
 
@@ -50,8 +51,18 @@ public class FoodMakerEditProfileActivity extends AppCompatActivity {
                         foodMaker.name=edited_name.getText().toString();
                         foodMaker.emailAddress=edited_Email.getText().toString();
                         foodMaker.phone=edited_Phone.getText().toString();
-                        Toast.makeText(getApplicationContext(),"Profile Edited Successfully", Toast.LENGTH_LONG).show();
+                        FoodMakerDao.GetInstance().save(foodMaker, Food_maker_ID, new TaskListener() {
+                            @Override
+                            public void OnSuccess() {
+                                Toast.makeText(getApplicationContext(),"Profile Edited Successfully", Toast.LENGTH_LONG).show();
+                            }
 
+                            @Override
+                            public void OnFail()
+                            {
+                                Toast.makeText(getApplicationContext(),"Failed to Update Profile", Toast.LENGTH_LONG).show();
+                            }
+                        });
                     }
                 });
 

@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".Activities.MainActivity"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#E4E3E3">
+    android:layout_height="wrap_content"
+    android:background="#D1C87B">
 <!--
         tools:context=".MainActivity"
 -->
@@ -22,6 +22,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:background="#6C6106"
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -38,9 +39,6 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
-<!--
-                android:src="@drawable/download"                  // TODO: missing drawable/download
--->
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/view"
@@ -56,7 +54,7 @@
 
             </androidx.cardview.widget.CardView>
 
-            <EditText
+            <TextView
                 android:id="@+id/textViewMealCardName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -69,7 +67,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/textViewMealCardPrice"
                 android:layout_marginLeft="12dp" />
 
-            <EditText
+            <TextView
                 android:id="@+id/textViewMealCardPrice"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -107,7 +105,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
 
-                <EditText
+                <TextView
                     android:id="@+id/textViewMealCardDescription"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -120,7 +118,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginLeft="10dp" />
 
-                <EditText
+                <TextView
                     android:id="@+id/textViewMealCardCategory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -134,32 +132,34 @@
                     app:layout_constraintTop_toBottomOf="@+id/textViewMealCardDescription"
                     android:layout_marginLeft="12dp"
                     android:gravity="end" />
-                <ImageView
-                    android:id="@+id/delete_Meal_Item"
-                    android:layout_width="70dp"
-                    android:layout_height="90dp"
-                    app:srcCompat="@android:drawable/ic_menu_delete"
-                    tools:layout_editor_absoluteX="104dp"
-                    tools:layout_editor_absoluteY="362dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewMealCardCategory"
-                    android:layout_marginLeft="12dp"
-                    />
                 <Switch
                     android:id="@+id/MealItem_Availability"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawableBottom="@color/colorPrimaryDark"
                     android:text="Available"
-                    android:textSize="18dp"
-                    android:textColor="@color/colorAccent"
-                    android:layout_marginLeft="50dp"
-                    app:layout_constraintTop_toBottomOf="@+id/delete_Meal_Item"
-                    app:layout_constraintStart_toStartOf="parent"
+                    android:textSize="22dp"
+                    android:textColor="@color/colorPrimaryDark"
                     tools:layout_editor_absoluteX="107dp"
                     tools:layout_editor_absoluteY="426dp"
-                    app:layout_constraintLeft_toRightOf="@id/delete_Meal_Item"/>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewMealCardCategory"
+                    android:layout_marginLeft="12dp"/>
+
+                <ImageButton
+                    android:id="@+id/imageButton2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@android:drawable/ic_menu_edit"
+                    tools:layout_editor_absoluteX="212dp"
+                    tools:layout_editor_absoluteY="266dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintRight_toRightOf="@id/MealItem_Availability"
+                    app:layout_constraintTop_toBottomOf="@+id/MealItem_Availability"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
