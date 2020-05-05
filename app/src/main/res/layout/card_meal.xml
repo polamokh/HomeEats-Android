@@ -147,7 +147,7 @@
                     android:layout_marginLeft="12dp"/>
 
                 <ImageButton
-                    android:id="@+id/imageButton2"
+                    android:id="@+id/Food_Maker_Edit_Meal_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:srcCompat="@android:drawable/ic_menu_edit"

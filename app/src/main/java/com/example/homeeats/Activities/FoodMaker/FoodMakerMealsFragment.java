@@ -16,17 +16,21 @@ import com.example.homeeats.Dao.FoodMakerDao;
 import com.example.homeeats.Models.MealItem;
 import com.example.homeeats.R;
 import android.content.Intent;
+import android.widget.EditText;
+
 import com.example.homeeats.RetrievalEventListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
 public class FoodMakerMealsFragment extends Fragment {
     @Nullable
+
+    public FloatingActionButton addMealButton;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.foodmaker_fragment, container, false);
-
         final RecyclerView recyclerView = view.findViewById(R.id.foodMakerRecyclerView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -36,13 +40,28 @@ public class FoodMakerMealsFragment extends Fragment {
                     @Override
                     public void OnDataRetrieved(List<MealItem> mealItems) {
                         FoodMakerMealsRecycleAdapter foodMakerMealsRecycleAdapter =
-                                new FoodMakerMealsRecycleAdapter(mealItems);
+                                new FoodMakerMealsRecycleAdapter(mealItems,getActivity().getApplicationContext());
                         recyclerView.setAdapter(foodMakerMealsRecycleAdapter);
                     }
                 });
-
-
-
         return view;
+
     }
-}
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        addMealButton=getView().findViewById(R.id.food_maker_add_meal_button);
+        addMealButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), FoodMakerAddMealActivity.class);
+                String foodMakerID = getActivity().getIntent().getExtras().getString("FoodMakerID");
+                intent.putExtra("FoodMakerID", foodMakerID);
+                startActivity(intent);
+            }
+        });
+    }
+
+    }
+

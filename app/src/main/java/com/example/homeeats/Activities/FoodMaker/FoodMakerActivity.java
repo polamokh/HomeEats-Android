@@ -33,32 +33,20 @@ import static com.example.homeeats.R.id.foodMakerToolbar;
 public class FoodMakerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawerLayout;
-    private FloatingActionButton addMealButton;
+
     private ClipData.Item signOut;
     private NavigationView navigationView;
 
     @Override
     protected void onStart() {
         super.onStart();
-        addMealButton = findViewById(R.id.food_maker_add_meal_button);
-        addMealButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(FoodMakerActivity.this, FoodMakerAddMealActivity.class);
-                String foodMakerID = getIntent().getExtras().getString("FoodMakerID");
-                intent.putExtra("FoodMakerID", foodMakerID);
-                startActivity(intent);
-            }
-        });
+
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.foodmaker_activity);
-
-        addMealButton = findViewById(R.id.food_maker_add_meal_button);
-
         Toolbar toolbar = findViewById(foodMakerToolbar);
         setSupportActionBar(toolbar);
 
@@ -114,10 +102,8 @@ public class FoodMakerActivity extends AppCompatActivity implements NavigationVi
                 });
                 break;
             case R.id.foodMakerNavSettings:
-                Intent intent = new Intent(FoodMakerActivity.this, FoodMakerEditProfileActivity.class);
-                String foodMakerID = getIntent().getExtras().getString("FoodMakerID");
-                intent.putExtra("FoodMakerID", foodMakerID);
-                startActivity(intent);
+                getSupportFragmentManager().beginTransaction().replace(R.id.foodMakerFragmentContainer,
+                        new FoodMakerEditProfileFragment()).commit();
                 break;
             case R.id.foodMakerNavRequests:
                 //TODO

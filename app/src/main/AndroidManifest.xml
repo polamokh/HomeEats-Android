@@ -9,10 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.FoodMaker.FoodMakerEditProfileActivity"></activity>
+        <activity android:name=".Activities.FoodMaker.FoodMakerEditMealActivity"></activity>
         <activity
             android:name=".Activities.FoodMaker.FoodMakerActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <service android:name=".MessagingService">
             <intent-filter>

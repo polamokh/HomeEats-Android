@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.FoodMaker.FoodMakerEditProfileActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Activities.FoodMaker.FoodMakerEditProfileFragment">
 
     <EditText
-        android:id="@+id/FoodMaker_Edit_Name"
+        android:id="@+id/FoodMaker_Edit_Meal_Name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -20,13 +20,13 @@
         android:layout_centerHorizontal="true"
         />
     <EditText
-        android:id="@+id/FoodMaker_Edit_Email"
+        android:id="@+id/FoodMaker_Edit_Meal_Desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textPersonName"
+        android:inputType="textMultiLine"
         android:text="Email"
-        android:layout_below="@id/FoodMaker_Edit_Name"
+        android:layout_below="@id/FoodMaker_Edit_Meal_Name"
         android:layout_marginTop="30dp"
         tools:layout_editor_absoluteX="42dp"
         tools:layout_editor_absoluteY="43dp"
@@ -34,41 +34,61 @@
         android:layout_centerHorizontal="true"
         />
     <EditText
-        android:id="@+id/FoodMaker_Edit_Phone"
+        android:id="@+id/FoodMaker_Edit_Meal_Price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        android:text="Phone"
+        android:layout_below="@id/FoodMaker_Edit_Meal_Desc"
+        android:layout_marginTop="30dp"
+        tools:layout_editor_absoluteX="42dp"
+        tools:layout_editor_absoluteY="43dp"
+        android:layout_marginLeft="30dp"
+        android:layout_centerHorizontal="true"
+        />
+    <EditText
+        android:id="@+id/FoodMaker_Edit_Meal_Category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
         android:text="Phone"
-        android:layout_below="@id/FoodMaker_Edit_Email"
+        android:layout_below="@id/FoodMaker_Edit_Meal_Price"
         android:layout_marginTop="30dp"
         tools:layout_editor_absoluteX="42dp"
         tools:layout_editor_absoluteY="43dp"
         android:layout_marginLeft="30dp"
         android:layout_centerHorizontal="true"
         />
-    <EditText
-        android:id="@+id/FoodMaker_Edit_Location"
+    <Button
+        android:id="@+id/Food_Maker_Edit_Meal_Image_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="text"
-        android:text="Location"
-        android:layout_below="@id/FoodMaker_Edit_Phone"
+        android:layout_below="@id/FoodMaker_Edit_Meal_Category"
+        android:layout_marginLeft="126dp"
         android:layout_marginTop="30dp"
-        tools:layout_editor_absoluteX="42dp"
-        tools:layout_editor_absoluteY="43dp"
-        android:layout_marginLeft="30dp"
         android:layout_centerHorizontal="true"
-        />
+        android:text="Edit Photo"
+        android:background="@color/colorAccent"
+        android:padding="16dp"/>
 
     <ImageButton
-        android:id="@+id/Edit_Food_Maker_Button"
+        android:id="@+id/Edit_Food_Maker_Meal_btn"
         android:layout_width="188dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/FoodMaker_Edit_Location"
+        android:layout_below="@id/Food_Maker_Edit_Meal_Image_btn"
         android:layout_marginTop="56dp"
         android:layout_centerHorizontal="true"
         app:srcCompat="@android:drawable/ic_menu_edit" />
+
+    <ImageView
+        android:id="@+id/Food_maker_Edit_Meal_Photo"
+        android:layout_width="match_parent"
+        android:layout_height="211dp"
+        android:layout_below="@id/Edit_Food_Maker_Meal_btn"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp" />
 
 </RelativeLayout>
