@@ -46,6 +46,7 @@ dependencies {
     implementation 'com.sun.mail:android-mail:1.6.3'
     implementation 'com.sun.mail:android-activation:1.6.3'
     implementation 'com.github.islammohsen:FirebaseDao:0.1.0'
+    implementation 'com.github.islammohsen:GmailSender:0.1.1'
 }
 
 apply plugin: 'com.android.application'

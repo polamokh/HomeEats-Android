@@ -18,6 +18,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.firbasedao.Listeners.EventListenersListener;
+import com.example.gmailsender.GmailSender;
 import com.example.homeeats.Activities.DeliveryBoy.DeliveryBoyActivity;
 import com.example.homeeats.Activities.FoodBuyer.FoodBuyerActivity;
 import com.example.homeeats.Activities.FoodMaker.FoodMakerActivity;
@@ -40,10 +41,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.iid.FirebaseInstanceId;
-
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class MainActivity extends AppCompatActivity {
 
@@ -89,10 +88,11 @@ public class MainActivity extends AppCompatActivity {
         textViewSignup = findViewById(R.id.textViewSignup);
 
 //        testing sending emails
-//        EmailUtil.sendEmail("ramyeg26@gmail.com", "RIS", "ezy?");
-
+        GmailSender.setFrom("homeeats.ris.2020@gmail.com");
+        GmailSender.setPassword("HomeEats123");
+        GmailSender.sendEmail("ramyeg26@gmail.com", "Test", "Test email.");
 //        AddNewOrder();
-        
+
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

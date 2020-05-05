@@ -4,8 +4,8 @@ import android.util.Log;
 
 import com.example.firbasedao.FirebaseDao;
 import com.example.firbasedao.Listeners.RetrievalEventListener;
-import com.example.homeeats.EmailSender.EmailUtil;
 import com.example.firbasedao.Listeners.TaskListener;
+import com.example.gmailsender.GmailSender;
 import com.example.homeeats.MessagingService;
 import com.example.homeeats.Models.DeliveryBoy;
 import com.example.homeeats.Models.FoodBuyer;
@@ -86,7 +86,7 @@ public class OrderDao extends FirebaseDao<Order> {
                 FoodBuyerDao.GetInstance().get(order.foodBuyerId, new RetrievalEventListener<FoodBuyer>() {
                     @Override
                     public void OnDataRetrieved(FoodBuyer deliveryBoy) {
-                        EmailUtil.sendEmail(deliveryBoy.emailAddress, title, body);
+                        GmailSender.sendEmail(deliveryBoy.emailAddress, title, body);
                     }
                 });
                 //send food maker notification
@@ -108,7 +108,7 @@ public class OrderDao extends FirebaseDao<Order> {
                 FoodMakerDao.GetInstance().get(order.foodMakerId, new RetrievalEventListener<FoodMaker>() {
                     @Override
                     public void OnDataRetrieved(FoodMaker foodMaker) {
-                        EmailUtil.sendEmail(foodMaker.emailAddress, title, body);
+                        GmailSender.sendEmail(foodMaker.emailAddress, title, body);
                     }
                 });
                 //send delivery boy notification
@@ -130,7 +130,7 @@ public class OrderDao extends FirebaseDao<Order> {
                 DeliveryBoyDao.GetInstance().get(order.deliveryBoyId, new RetrievalEventListener<DeliveryBoy>() {
                     @Override
                     public void OnDataRetrieved(DeliveryBoy deliveryBoy) {
-                        EmailUtil.sendEmail(deliveryBoy.emailAddress, title, body);
+                        GmailSender.sendEmail(deliveryBoy.emailAddress, title, body);
                     }
                 });
             }
