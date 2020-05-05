@@ -1,12 +1,16 @@
 package com.example.homeeats.Dao;
 
+import android.graphics.Bitmap;
 import android.util.Pair;
 
 import androidx.annotation.NonNull;
 
 import com.example.firbasedao.FirebaseDao;
 import com.example.firbasedao.Listeners.RetrievalEventListener;
+import com.example.firbasedao.Listeners.TaskListener;
+import com.example.homeeats.FilesStorageDatabase;
 import com.example.homeeats.Models.DeliveryBoy;
+import com.example.homeeats.Models.FoodBuyer;
 import com.example.homeeats.Models.Order;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
@@ -37,6 +41,31 @@ public class DeliveryBoyDao extends FirebaseDao<DeliveryBoy> {
         return singletonObject;
     }
 
+    public void save(final DeliveryBoy deliveryBoy, final String id, Bitmap bitmap, final TaskListener taskListener){
+        if(bitmap == null){
+            save(deliveryBoy, id, taskListener);
+            return;
+        }
+        setDeliveryBoyImage(id, bitmap, new RetrievalEventListener<String>() {
+            @Override
+            public void OnDataRetrieved(String s) {
+                deliveryBoy.photo = s;
+                save(deliveryBoy, id, taskListener);
+            }
+        });
+    }
+
+    public void setDeliveryBoyImage(final String deliveryBoyId, Bitmap image, final RetrievalEventListener<String> retrievalEventListener){
+        FilesStorageDatabase.GetInstance().uploadPhoto(image, String.format("delivery boys images/%s.jpg", deliveryBoyId),
+                new RetrievalEventListener<String>() {
+                    @Override
+                    public void OnDataRetrieved(String uploadPath) {
+                        dbReference.child(tableName).child(deliveryBoyId).child("photo").setValue(uploadPath);
+                        retrievalEventListener.OnDataRetrieved(uploadPath);
+                    }
+                });
+    }
+
     @Override
     protected void parseDataSnapshot(DataSnapshot dataSnapshot, RetrievalEventListener<DeliveryBoy> retrievalEventListener) {
         final DeliveryBoy deliveryBoy = new DeliveryBoy();
@@ -45,6 +74,7 @@ public class DeliveryBoyDao extends FirebaseDao<DeliveryBoy> {
         deliveryBoy.gender = dataSnapshot.child("gender").getValue().toString();
         deliveryBoy.emailAddress = dataSnapshot.child("emailAddress").getValue().toString();
         deliveryBoy.phone = dataSnapshot.child("phone").getValue().toString();
+        deliveryBoy.photo = dataSnapshot.child("photo").getValue().toString();
         double latitude = Double.parseDouble(dataSnapshot.child("location").child("latitude").getValue().toString());
         double longitude = Double.parseDouble(dataSnapshot.child("location").child("longitude").getValue().toString());
         deliveryBoy.location = new LatLng(latitude, longitude);

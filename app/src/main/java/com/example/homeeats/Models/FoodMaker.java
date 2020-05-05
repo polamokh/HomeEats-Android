@@ -30,8 +30,8 @@ public class FoodMaker extends Client {
         });
     }
 
-    public FoodMaker(String id, String name, String gender, String emailAddress, String phone, LatLng location, double rating) {
-        super(id, name, gender, emailAddress, phone);
+    public FoodMaker(String id, String name, String gender, String emailAddress, String phone, String photo, LatLng location, double rating) {
+        super(id, name, gender, emailAddress, phone, photo);
         this.location = location;
         this.rating = rating;
     }

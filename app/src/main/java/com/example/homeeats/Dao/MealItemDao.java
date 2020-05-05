@@ -27,21 +27,15 @@ public class MealItemDao extends FirebaseDao<MealItem> {
     }
 
     public void save(final MealItem mealItem, final String id, Bitmap bitmap, final TaskListener taskListener) {
+        if(bitmap == null){
+            save(mealItem, id, taskListener);
+            return;
+        }
         setMealImage(id, mealItem.foodMakerId, bitmap, new RetrievalEventListener<String>() {
             @Override
             public void OnDataRetrieved(String s) {
                 mealItem.photo = s;
-                save(mealItem, id, new TaskListener() {
-                    @Override
-                    public void OnSuccess() {
-                        taskListener.OnSuccess();
-                    }
-
-                    @Override
-                    public void OnFail() {
-                        taskListener.OnFail();
-                    }
-                });
+                save(mealItem, id, taskListener);
             }
         });
     }
