@@ -1,49 +1,78 @@
 package com.example.homeeats.EmailSender;
 
-import java.util.Date;
+import android.os.AsyncTask;
+import android.util.Log;
+
+import java.util.Properties;
 
 import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-public class EmailUtil {
+public class EmailUtil{
 
-    /**
-     * Utility method to send simple HTML email
-     * @param session
-     * @param toEmail
-     * @param subject
-     * @param body
-     */
-    public static void sendEmail(Session session, String toEmail, String subject, String body){
-        try
-        {
-            MimeMessage msg = new MimeMessage(session);
-            //set message headers
-            msg.addHeader("Content-type", "text/HTML; charset=UTF-8");
-            msg.addHeader("format", "flowed");
-            msg.addHeader("Content-Transfer-Encoding", "8bit");
+    public static void sendEmail(final String to, final String subject, final String body) {
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                final String from = "homeeats.ris.2020@gmail.com";
+                final String password = "HomeEats123";
 
-            msg.setFrom(new InternetAddress("no_reply@example.com", "NoReply-JD"));
+                // Assuming you are sending email from through gmails smtp
+                String host = "smtp.gmail.com";
 
-            msg.setReplyTo(InternetAddress.parse("no_reply@example.com", false));
+                // Get system properties
+                Properties properties = System.getProperties();
 
-            msg.setSubject(subject, "UTF-8");
+                // Setup mail server
+                properties.put("mail.smtp.host", host);
+                properties.put("mail.smtp.port", "465");
+                properties.put("mail.smtp.ssl.enable", "true");
+                properties.put("mail.smtp.auth", "true");
 
-            msg.setText(body, "UTF-8");
+                // Get the Session object.// and pass username and password
+                Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
 
-            msg.setSentDate(new Date());
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(from, password);
+                    }
 
-            msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail, false));
-            System.out.println("Message is ready");
-            Transport.send(msg);
+                });
 
-            System.out.println("EMail Sent Successfully!!");
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+                // Used to debug SMTP issues
+                session.setDebug(true);
+
+                try {
+                    // Create a default MimeMessage object.
+                    MimeMessage message = new MimeMessage(session);
+
+                    // Set From: header field of the header.
+                    message.setFrom(new InternetAddress(from));
+
+                    // Set To: header field of the header.
+                    message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+
+                    // Set Subject: header field
+                    message.setSubject(subject);
+
+                    // Now set the actual message
+                    message.setText(body);
+
+                    Log.e("Mail", "sending");
+                    // Send message
+                    Transport transport = session.getTransport();
+                    transport.send(message, from, password);
+                    Log.e("Mail", "sent");
+                } catch (
+                        MessagingException mex) {
+                    Log.e("Exception", mex.toString());
+                }
+                return null;
+            }
+        }.execute();
     }
 }

@@ -5,6 +5,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,6 +26,7 @@ import com.example.homeeats.Activities.FoodMaker.FoodMakerActivity;
 import com.example.homeeats.Dao.MealItemDao;
 import com.example.homeeats.Dao.OrderDao;
 import com.example.homeeats.Dao.UserPrimitiveDataDao;
+import com.example.homeeats.EmailSender.EmailUtil;
 import com.example.homeeats.Listeners.EventListenersListener;
 import com.example.homeeats.Listeners.RetrievalEventListener;
 import com.example.homeeats.Listeners.TaskListener;
@@ -45,6 +47,11 @@ import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
+
+import javax.mail.Authenticator;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -61,11 +68,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void checkPermission(){
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(this,Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED
         ){//Can add more as per requirement
 
             ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.INTERNET},
                     123);
         }
     }
@@ -89,32 +97,8 @@ public class MainActivity extends AppCompatActivity {
         buttonLogin = findViewById(R.id.buttonLogin);
         textViewSignup = findViewById(R.id.textViewSignup);
 
-        //testing sending emails
-//        try {
-//            final String fromEmail = "homeeats.ris.2020@gmail.com"; //requires valid gmail id
-//            final String password = "HomeEats123"; // correct password for gmail id
-//            final String toEmail = "ramyeg26@gmail.com"; // can be any email id
-//
-//            System.out.println("TLSEmail Start");
-//            Properties props = new Properties();
-//            props.put("mail.smtp.host", "smtp.gmail.com"); //SMTP Host
-//            props.put("mail.smtp.port", "587"); //TLS Port
-//            props.put("mail.smtp.auth", "true"); //enable authentication
-//            props.put("mail.smtp.starttls.enable", "true"); //enable STARTTLS
-//
-//            //create Authenticator object to pass in Session.getInstance argument
-//            Authenticator auth = new Authenticator() {
-//                //override the getPasswordAuthentication method
-//                protected PasswordAuthentication getPasswordAuthentication() {
-//                    return new PasswordAuthentication(fromEmail, password);
-//                }
-//            };
-//            Session session = Session.getInstance(props, auth);
-//
-//            EmailUtil.sendEmail(session, toEmail,"TLSEmail Testing Subject", "TLSEmail Testing Body");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+//        testing sending emails
+//        EmailUtil.sendEmail("ramyeg26@gmail.com", "RIS", "ezy?");
 
 //        AddNewOrder();
         
