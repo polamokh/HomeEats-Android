@@ -1,11 +1,8 @@
 package com.example.homeeats.Activities;
 
 import android.Manifest;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,16 +17,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.firbasedao.Listeners.EventListenersListener;
 import com.example.homeeats.Activities.DeliveryBoy.DeliveryBoyActivity;
 import com.example.homeeats.Activities.FoodBuyer.FoodBuyerActivity;
 import com.example.homeeats.Activities.FoodMaker.FoodMakerActivity;
 import com.example.homeeats.Dao.MealItemDao;
 import com.example.homeeats.Dao.OrderDao;
 import com.example.homeeats.Dao.UserPrimitiveDataDao;
-import com.example.homeeats.EmailSender.EmailUtil;
-import com.example.homeeats.Listeners.EventListenersListener;
-import com.example.homeeats.Listeners.RetrievalEventListener;
-import com.example.homeeats.Listeners.TaskListener;
+import com.example.firbasedao.Listeners.RetrievalEventListener;
+import com.example.firbasedao.Listeners.TaskListener;
 import com.example.homeeats.LiveLocationService;
 import com.example.homeeats.Models.Client;
 import com.example.homeeats.Models.MealItem;
@@ -47,11 +43,6 @@ import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
-
-import javax.mail.Authenticator;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
 
 
 public class MainActivity extends AppCompatActivity {

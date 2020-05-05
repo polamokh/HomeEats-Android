@@ -1,12 +1,13 @@
 package com.example.homeeats.Dao;
 
+import com.example.firbasedao.FirebaseDao;
+import com.example.firbasedao.Listeners.RetrievalEventListener;
+import com.example.firbasedao.Listeners.TaskListener;
 import com.example.homeeats.Models.UserPrimitiveData;
 import com.example.homeeats.Models.UserType;
-import com.example.homeeats.Listeners.RetrievalEventListener;
-import com.example.homeeats.Listeners.TaskListener;
 import com.google.firebase.database.DataSnapshot;
 
-public class UserPrimitiveDataDao extends Dao<UserPrimitiveData> {
+public class UserPrimitiveDataDao extends FirebaseDao<UserPrimitiveData> {
     private static UserPrimitiveDataDao singletonObject;
 
     public static UserPrimitiveDataDao GetInstance(){

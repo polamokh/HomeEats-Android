@@ -11,11 +11,11 @@ import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.example.firbasedao.Listeners.EventListenersListener;
 import com.example.homeeats.Dao.UserNotificationDao;
 import com.example.homeeats.Dao.UserPrimitiveDataDao;
-import com.example.homeeats.Listeners.EventListenersListener;
-import com.example.homeeats.Listeners.RetrievalEventListener;
-import com.example.homeeats.Listeners.TaskListener;
+import com.example.firbasedao.Listeners.RetrievalEventListener;
+import com.example.firbasedao.Listeners.TaskListener;
 import com.example.homeeats.Models.UserNotification;
 import com.example.homeeats.Models.UserPrimitiveData;
 import com.google.android.gms.tasks.OnCompleteListener;

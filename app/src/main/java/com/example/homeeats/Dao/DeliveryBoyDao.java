@@ -4,9 +4,10 @@ import android.util.Pair;
 
 import androidx.annotation.NonNull;
 
+import com.example.firbasedao.FirebaseDao;
+import com.example.firbasedao.Listeners.RetrievalEventListener;
 import com.example.homeeats.Models.DeliveryBoy;
 import com.example.homeeats.Models.Order;
-import com.example.homeeats.Listeners.RetrievalEventListener;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -19,7 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DeliveryBoyDao extends Dao<DeliveryBoy> {
+public class DeliveryBoyDao extends FirebaseDao<DeliveryBoy> {
     private static DeliveryBoyDao singletonObject;
     private Map<String, DatabaseReference> deliveryBoyIdRowReferences;
     private Map<String, List<Pair<RetrievalEventListener<DeliveryBoy>, ValueEventListener>>>  deliveryBorIdRetrievalEventListeners;

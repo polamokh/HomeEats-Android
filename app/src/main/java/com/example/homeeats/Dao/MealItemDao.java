@@ -2,16 +2,17 @@ package com.example.homeeats.Dao;
 
 import android.graphics.Bitmap;
 
+import com.example.firbasedao.FirebaseDao;
+import com.example.firbasedao.Listeners.RetrievalEventListener;
 import com.example.homeeats.FilesStorageDatabase;
 import com.example.homeeats.Helpers.StringHelper;
 import com.example.homeeats.Models.MealItem;
-import com.example.homeeats.Listeners.RetrievalEventListener;
 import com.google.firebase.database.DataSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MealItemDao extends Dao<MealItem> {
+public class MealItemDao extends FirebaseDao<MealItem> {
     private MealItemDao()
     {
         super("Meals");

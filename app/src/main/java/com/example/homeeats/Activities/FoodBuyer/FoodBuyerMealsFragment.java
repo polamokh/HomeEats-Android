@@ -16,7 +16,7 @@ import com.example.homeeats.Dao.FoodBuyerDao;
 import com.example.homeeats.Dao.MealItemDao;
 import com.example.homeeats.Models.MealItem;
 import com.example.homeeats.R;
-import com.example.homeeats.Listeners.RetrievalEventListener;
+import com.example.firbasedao.Listeners.RetrievalEventListener;
 
 import java.util.List;
 

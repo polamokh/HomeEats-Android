@@ -2,8 +2,10 @@ package com.example.homeeats.Dao;
 
 import android.util.Log;
 
+import com.example.firbasedao.FirebaseDao;
+import com.example.firbasedao.Listeners.RetrievalEventListener;
 import com.example.homeeats.EmailSender.EmailUtil;
-import com.example.homeeats.Listeners.TaskListener;
+import com.example.firbasedao.Listeners.TaskListener;
 import com.example.homeeats.MessagingService;
 import com.example.homeeats.Models.DeliveryBoy;
 import com.example.homeeats.Models.FoodBuyer;
@@ -11,14 +13,13 @@ import com.example.homeeats.Models.FoodMaker;
 import com.example.homeeats.Models.Order;
 import com.example.homeeats.Models.OrderItem;
 import com.example.homeeats.Models.OrderStatus;
-import com.example.homeeats.Listeners.RetrievalEventListener;
 import com.example.homeeats.Models.UserNotification;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 
 import java.util.ArrayList;
 
-public class OrderDao extends Dao<Order> {
+public class OrderDao extends FirebaseDao<Order> {
     private static OrderDao orderDao;
     private OrderDao() {
         super("Orders");

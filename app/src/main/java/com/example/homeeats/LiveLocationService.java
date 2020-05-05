@@ -16,8 +16,8 @@ import androidx.core.app.NotificationCompat;
 
 import com.example.homeeats.Dao.DeliveryBoyDao;
 import com.example.homeeats.Dao.UserPrimitiveDataDao;
-import com.example.homeeats.Listeners.RetrievalEventListener;
-import com.example.homeeats.Listeners.TaskListener;
+import com.example.firbasedao.Listeners.RetrievalEventListener;
+import com.example.firbasedao.Listeners.TaskListener;
 import com.example.homeeats.Models.Client;
 import com.example.homeeats.Models.DeliveryBoy;
 import com.example.homeeats.Models.UserPrimitiveData;

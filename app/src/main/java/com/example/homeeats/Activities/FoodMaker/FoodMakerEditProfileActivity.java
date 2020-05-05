@@ -11,8 +11,8 @@ import android.widget.Toast;
 import com.example.homeeats.Dao.FoodMakerDao;
 import com.example.homeeats.Models.FoodMaker;
 import com.example.homeeats.R;
-import com.example.homeeats.Listeners.RetrievalEventListener;
-import com.example.homeeats.Listeners.TaskListener;
+import com.example.firbasedao.Listeners.RetrievalEventListener;
+import com.example.firbasedao.Listeners.TaskListener;
 
 public class FoodMakerEditProfileActivity extends AppCompatActivity {
 
