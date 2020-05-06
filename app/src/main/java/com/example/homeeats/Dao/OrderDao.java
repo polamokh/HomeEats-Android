@@ -45,6 +45,7 @@ public class OrderDao extends Dao<Order> {
         order.orderItems = new ArrayList<>();
         for(DataSnapshot currentSnapshot : dataSnapshot.child("orderItems").getChildren())
             order.orderItems.add(parseOrderItemDataSnapShot(currentSnapshot));
+        retrievalEventListener.OnDataRetrieved(order);
     }
 
     protected OrderItem parseOrderItemDataSnapShot(DataSnapshot dataSnapshot)

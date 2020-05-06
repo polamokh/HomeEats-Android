@@ -27,7 +27,7 @@ public class MealItemDao extends Dao<MealItem> {
         mealItem.id = dataSnapshot.getKey();
         mealItem.name = dataSnapshot.child("name").getValue().toString();
         mealItem.price = Double.parseDouble(dataSnapshot.child("price").getValue().toString());
-        mealItem.photo = dataSnapshot.child("photo").getValue().toString();
+            mealItem.photo = dataSnapshot.child("photo").getValue().toString();
         mealItem.description = dataSnapshot.child("description").getValue().toString();
         mealItem.mealCategory = dataSnapshot.child("mealCategory").getValue().toString();
         mealItem.rating = Double.parseDouble(dataSnapshot.child("rating").getValue().toString());

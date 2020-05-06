@@ -106,7 +106,8 @@ public class FoodMakerActivity extends AppCompatActivity implements NavigationVi
                         new FoodMakerEditProfileFragment()).commit();
                 break;
             case R.id.foodMakerNavRequests:
-                //TODO
+                getSupportFragmentManager().beginTransaction().replace(R.id.foodMakerFragmentContainer,
+                        new FoodMakerRequestsFragment()).commit();
                 break;
             case R.id.foodMakerNavMeals:
                 getSupportFragmentManager().beginTransaction().replace(R.id.foodMakerFragmentContainer,

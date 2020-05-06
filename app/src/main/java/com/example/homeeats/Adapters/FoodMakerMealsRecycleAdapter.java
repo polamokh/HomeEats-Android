@@ -19,16 +19,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.transition.AutoTransition;
 import androidx.transition.TransitionManager;
 
-import com.example.homeeats.Activities.FoodBuyer.FoodBuyerActivity;
 import com.example.homeeats.Activities.FoodMaker.FoodMakerEditMealActivity;
-import com.example.homeeats.Activities.MainActivity;
 import com.example.homeeats.Models.MealItem;
 import com.example.homeeats.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class FoodMakerMealsRecycleAdapter extends RecyclerView.Adapter<FoodMakerMealsRecycleAdapter.MealViewHolder> {
+public class FoodMakerMealsRecycleAdapter extends RecyclerView.Adapter<FoodMakerMealsRecycleAdapter.MealViewHolder>
+{
     List<MealItem> meals;
     private static Context context;
 
@@ -57,7 +56,7 @@ public class FoodMakerMealsRecycleAdapter extends RecyclerView.Adapter<FoodMaker
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MealViewHolder holder, int position)
+    public void onBindViewHolder(MealViewHolder holder, int position)
     {
         holder.Meal_ID=meals.get(position).id;
         holder.name.setText(meals.get(position).name);
