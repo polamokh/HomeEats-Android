@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.homeeats.Activities.FoodBuyer.FoodBuyerViewMakerActivity;
 import com.example.homeeats.Models.FoodMaker;
 import com.example.homeeats.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -42,10 +43,10 @@ public class FoodBuyerMakersRecyclerAdapter extends
 
     @Override
     public void onBindViewHolder(@NonNull MakerViewHolder holder, int position) {
-        //TODO: Add Maker Image;
         holder.name.setText(foodMakers.get(position).name);
         holder.phone.setText(foodMakers.get(position).phone);
         holder.email.setText(foodMakers.get(position).emailAddress);
+        Picasso.get().load(foodMakers.get(position).photo).into(holder.image);
 
         holder.foodMakerID = foodMakers.get(position).id;
     }

@@ -19,6 +19,7 @@ import com.example.homeeats.Models.FoodMaker;
 import com.example.homeeats.Models.MealItem;
 import com.example.homeeats.R;
 import com.example.firbasedao.Listeners.RetrievalEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -46,11 +47,11 @@ public class FoodBuyerMealsRecyclerAdapter extends
 
     @Override
     public void onBindViewHolder(@NonNull final MealViewHolder holder, int position) {
-        //TODO: Add required images(Meal and Maker)
         holder.mealName.setText(meals.get(position).name);
         holder.mealPrice.setText("EGP" + meals.get(position).price.toString());
         holder.mealDescription.setText(meals.get(position).description);
         holder.mealCategory.setText(meals.get(position).mealCategory);
+        Picasso.get().load(meals.get(position).photo).into(holder.mealImageView);
 
         FoodMakerDao.GetInstance().get(meals.get(position).foodMakerId,
                 new RetrievalEventListener<FoodMaker>() {

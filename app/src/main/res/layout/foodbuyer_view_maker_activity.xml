@@ -44,8 +44,9 @@
     <com.google.android.gms.maps.MapView
         android:id="@+id/foodBuyerViewMakerMap"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="190dp"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="20sp"
         android:layout_below="@id/foodBuyerViewMakerEmail"/>
 
     <View

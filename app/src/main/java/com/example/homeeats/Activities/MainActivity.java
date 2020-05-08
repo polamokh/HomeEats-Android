@@ -88,9 +88,9 @@ public class MainActivity extends AppCompatActivity {
         textViewSignup = findViewById(R.id.textViewSignup);
 
 //        testing sending emails
-        GmailSender.setFrom("homeeats.ris.2020@gmail.com");
-        GmailSender.setPassword("HomeEats123");
-        GmailSender.sendEmail("ramyeg26@gmail.com", "Test", "Test email.");
+//        GmailSender.setFrom("homeeats.ris.2020@gmail.com");
+//        GmailSender.setPassword("HomeEats123");
+//        GmailSender.sendEmail("ramyeg26@gmail.com", "Test", "Test email.");
 //        AddNewOrder();
 
         buttonLogin.setOnClickListener(new View.OnClickListener() {
@@ -236,6 +236,8 @@ public class MainActivity extends AppCompatActivity {
         /*
         TODO:     ATTENTION! this absolute piece art of a code is perfectly working. It preservers sessions even after closing the application.
          That's right, like facebook. We disabled it for now to make your lives more easier in testing,
+
+         */
         if (currentUser != null){
 
             UserPrimitiveDataDao.GetInstance().get(currentUser.getUid(), new RetrievalEventListener<UserPrimitiveData>() {
@@ -267,7 +269,6 @@ public class MainActivity extends AppCompatActivity {
         }
         else
             stopLiveLocationService();
-         */
 
         if (getIntent().getExtras() != null) {
             for (String key : getIntent().getExtras().keySet()) {
