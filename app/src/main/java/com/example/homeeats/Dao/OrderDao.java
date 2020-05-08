@@ -2,19 +2,24 @@ package com.example.homeeats.Dao;
 
 import android.util.Log;
 
-import com.example.homeeats.Listeners.TaskListener;
+import com.example.firbasedao.FirebaseDao;
+import com.example.firbasedao.Listeners.RetrievalEventListener;
+import com.example.firbasedao.Listeners.TaskListener;
+import com.example.gmailsender.GmailSender;
 import com.example.homeeats.MessagingService;
+import com.example.homeeats.Models.DeliveryBoy;
+import com.example.homeeats.Models.FoodBuyer;
+import com.example.homeeats.Models.FoodMaker;
 import com.example.homeeats.Models.Order;
 import com.example.homeeats.Models.OrderItem;
 import com.example.homeeats.Models.OrderStatus;
-import com.example.homeeats.Listeners.RetrievalEventListener;
 import com.example.homeeats.Models.UserNotification;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 
 import java.util.ArrayList;
 
-public class OrderDao extends Dao<Order> {
+public class OrderDao extends FirebaseDao<Order> {
     private static OrderDao orderDao;
     private OrderDao() {
         super("Orders");
@@ -78,6 +83,12 @@ public class OrderDao extends Dao<Order> {
 
                     }
                 });
+                FoodBuyerDao.GetInstance().get(order.foodBuyerId, new RetrievalEventListener<FoodBuyer>() {
+                    @Override
+                    public void OnDataRetrieved(FoodBuyer deliveryBoy) {
+                        GmailSender.sendEmail(deliveryBoy.emailAddress, title, body);
+                    }
+                });
                 //send food maker notification
                 UserNotification foodMakerNotification = new UserNotification();
                 foodMakerNotification.setUserId(order.foodMakerId);
@@ -94,6 +105,12 @@ public class OrderDao extends Dao<Order> {
 
                     }
                 });
+                FoodMakerDao.GetInstance().get(order.foodMakerId, new RetrievalEventListener<FoodMaker>() {
+                    @Override
+                    public void OnDataRetrieved(FoodMaker foodMaker) {
+                        GmailSender.sendEmail(foodMaker.emailAddress, title, body);
+                    }
+                });
                 //send delivery boy notification
                 UserNotification deliveryBoyNotification = new UserNotification();
                 deliveryBoyNotification.setUserId(order.deliveryBoyId);
@@ -108,6 +125,12 @@ public class OrderDao extends Dao<Order> {
                     @Override
                     public void OnFail() {
 
+                    }
+                });
+                DeliveryBoyDao.GetInstance().get(order.deliveryBoyId, new RetrievalEventListener<DeliveryBoy>() {
+                    @Override
+                    public void OnDataRetrieved(DeliveryBoy deliveryBoy) {
+                        GmailSender.sendEmail(deliveryBoy.emailAddress, title, body);
                     }
                 });
             }

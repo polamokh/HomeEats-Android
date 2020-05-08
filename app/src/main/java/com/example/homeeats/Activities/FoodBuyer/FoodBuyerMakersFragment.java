@@ -15,9 +15,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.firbasedao.Listeners.RetrievalEventListener;
 import com.example.homeeats.Adapters.FoodBuyerMakersRecyclerAdapter;
 import com.example.homeeats.Dao.FoodMakerDao;
-import com.example.homeeats.Listeners.RetrievalEventListener;
 import com.example.homeeats.Models.FoodMaker;
 import com.example.homeeats.R;
 

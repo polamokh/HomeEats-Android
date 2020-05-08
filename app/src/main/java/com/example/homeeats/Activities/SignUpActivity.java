@@ -13,7 +13,7 @@ import com.example.homeeats.Models.DeliveryBoy;
 import com.example.homeeats.Models.FoodBuyer;
 import com.example.homeeats.Models.FoodMaker;
 import com.example.homeeats.R;
-import com.example.homeeats.Listeners.TaskListener;
+import com.example.firbasedao.Listeners.TaskListener;
 import com.example.homeeats.UserAuthenticationDatabase;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -54,7 +54,7 @@ public class SignUpActivity extends AppCompatActivity {
         UserAuthenticationDatabase userAuthenticationDatabase = UserAuthenticationDatabase.GetInstance();
         //Food Buyer
         if(type.equals(getResources().getStringArray(R.array.user_type)[0])) {
-            final FoodBuyer foodBuyer = new FoodBuyer(null, name, "male", email, "011", new LatLng(1, 1));
+            final FoodBuyer foodBuyer = new FoodBuyer(null, name, "male", email, "011", "", new LatLng(1, 1));
             userAuthenticationDatabase.SignUpFoodBuyer(
                     foodBuyer,
                     password,
@@ -72,7 +72,7 @@ public class SignUpActivity extends AppCompatActivity {
         }
         //Food Maker
         else if(type.equals(getResources().getStringArray(R.array.user_type)[1])){
-            final FoodMaker foodMaker = new FoodMaker(null, name, "male", email, "011", new LatLng(1, 1), 4);
+            final FoodMaker foodMaker = new FoodMaker(null, name, "male", email, "011", "", new LatLng(1, 1), 4);
             userAuthenticationDatabase.SignUpFoodMaker(
                     foodMaker,
                     password,
@@ -90,7 +90,7 @@ public class SignUpActivity extends AppCompatActivity {
         }
         //Delivery Boy
         else if(type.equals(getResources().getStringArray(R.array.user_type)[2])){
-            DeliveryBoy deliveryBoy = new DeliveryBoy(null, name, "male", email, "011", true, new LatLng(1, 1), new Date().getTime());
+            DeliveryBoy deliveryBoy = new DeliveryBoy(null, name, "male", email, "011", "", true, new LatLng(1, 1), new Date().getTime());
             userAuthenticationDatabase.SignUpDeliveryBoy(
                     deliveryBoy,
                     password,

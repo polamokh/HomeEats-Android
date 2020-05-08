@@ -2,16 +2,18 @@ package com.example.homeeats.Dao;
 
 import android.graphics.Bitmap;
 
+import com.example.firbasedao.FirebaseDao;
+import com.example.firbasedao.Listeners.RetrievalEventListener;
+import com.example.firbasedao.Listeners.TaskListener;
 import com.example.homeeats.FilesStorageDatabase;
 import com.example.homeeats.Helpers.StringHelper;
 import com.example.homeeats.Models.MealItem;
-import com.example.homeeats.Listeners.RetrievalEventListener;
 import com.google.firebase.database.DataSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MealItemDao extends Dao<MealItem> {
+public class MealItemDao extends FirebaseDao<MealItem> {
     private MealItemDao()
     {
         super("Meals");
@@ -22,6 +24,20 @@ public class MealItemDao extends Dao<MealItem> {
         if(singletonObject == null)
             singletonObject = new MealItemDao();
         return singletonObject;
+    }
+
+    public void save(final MealItem mealItem, final String id, Bitmap bitmap, final TaskListener taskListener) {
+        if(bitmap == null){
+            save(mealItem, id, taskListener);
+            return;
+        }
+        setMealImage(id, mealItem.foodMakerId, bitmap, new RetrievalEventListener<String>() {
+            @Override
+            public void OnDataRetrieved(String s) {
+                mealItem.photo = s;
+                save(mealItem, id, taskListener);
+            }
+        });
     }
 
     @Override

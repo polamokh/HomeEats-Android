@@ -1,7 +1,7 @@
 package com.example.homeeats.Models;
 
 import com.example.homeeats.Dao.FoodMakerDao;
-import com.example.homeeats.Listeners.RetrievalEventListener;
+import com.example.firbasedao.Listeners.RetrievalEventListener;
 import com.google.firebase.database.Exclude;
 
 public class MealItem {

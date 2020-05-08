@@ -3,16 +3,15 @@ package com.example.homeeats.Activities.FoodBuyer;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.firbasedao.Listeners.RetrievalEventListener;
 import com.example.homeeats.Adapters.FoodBuyerMealsRecyclerAdapter;
 import com.example.homeeats.Dao.FoodMakerDao;
-import com.example.homeeats.Listeners.RetrievalEventListener;
 import com.example.homeeats.Models.FoodMaker;
 import com.example.homeeats.Models.MealItem;
 import com.example.homeeats.R;

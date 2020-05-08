@@ -19,8 +19,8 @@ import android.widget.Toast;
 import com.example.homeeats.Dao.MealItemDao;
 import com.example.homeeats.Models.MealItem;
 import com.example.homeeats.R;
-import com.example.homeeats.Listeners.RetrievalEventListener;
-import com.example.homeeats.Listeners.TaskListener;
+import com.example.firbasedao.Listeners.RetrievalEventListener;
+import com.example.firbasedao.Listeners.TaskListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 
