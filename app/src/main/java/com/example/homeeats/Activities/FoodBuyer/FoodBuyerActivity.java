@@ -85,6 +85,8 @@ public class FoodBuyerActivity extends AppCompatActivity implements NavigationVi
             case R.id.foodBuyerNavOrders:
                 break;
             case R.id.foodBuyerNavSettings:
+                getSupportFragmentManager().beginTransaction().replace(R.id.foodBuyerFragmentContainer,
+                        new FoodBuyerEditProfileFragment()).commit();
                 break;
             case R.id.foodBuyerNavLogout:
                 UserAuthenticationDatabase.GetInstance().SignOut(new TaskListener() {
