@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.transition.AutoTransition;
 import androidx.transition.TransitionManager;
 
+import com.example.firbasedao.Listeners.RetrievalEventListener;
 import com.example.homeeats.Dao.DeliveryBoyDao;
 import com.example.homeeats.Dao.FoodBuyerDao;
 import com.example.homeeats.Dao.MealItemDao;
@@ -26,7 +27,6 @@ import com.example.homeeats.Models.MealItem;
 import com.example.homeeats.Models.Order;
 import com.example.homeeats.Models.OrderItem;
 import com.example.homeeats.R;
-import com.example.homeeats.RetrievalEventListener;
 
 import java.util.List;
 

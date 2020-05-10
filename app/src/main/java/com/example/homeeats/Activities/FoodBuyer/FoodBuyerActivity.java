@@ -11,16 +11,13 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.example.homeeats.Activities.FoodMaker.FoodMakerMealsFragment;
+import com.example.firbasedao.Listeners.RetrievalEventListener;
+import com.example.firbasedao.Listeners.TaskListener;
 import com.example.homeeats.Dao.FoodBuyerDao;
 import com.example.homeeats.Models.FoodBuyer;
 import com.example.homeeats.R;
-import com.example.homeeats.RetrievalEventListener;
-import com.example.homeeats.TaskListener;
 import com.example.homeeats.UserAuthenticationDatabase;
 import com.google.android.material.navigation.NavigationView;
-
-import static com.example.homeeats.R.id.foodMakerToolbar;
 
 public class FoodBuyerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     DrawerLayout drawerLayout;
@@ -66,6 +63,11 @@ public class FoodBuyerActivity extends AppCompatActivity implements NavigationVi
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        if (item.isChecked()) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+            return true;
+        }
+
         item.setChecked(true);
 
         //TODO: Complete FoodBuyer missing fragments
@@ -83,6 +85,8 @@ public class FoodBuyerActivity extends AppCompatActivity implements NavigationVi
             case R.id.foodBuyerNavOrders:
                 break;
             case R.id.foodBuyerNavSettings:
+                getSupportFragmentManager().beginTransaction().replace(R.id.foodBuyerFragmentContainer,
+                        new FoodBuyerEditProfileFragment()).commit();
                 break;
             case R.id.foodBuyerNavLogout:
                 UserAuthenticationDatabase.GetInstance().SignOut(new TaskListener() {

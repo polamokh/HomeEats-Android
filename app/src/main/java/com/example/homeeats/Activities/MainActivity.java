@@ -1,8 +1,8 @@
 package com.example.homeeats.Activities;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,36 +14,36 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import com.example.firbasedao.Listeners.EventListenersListener;
+import com.example.gmailsender.GmailSender;
 import com.example.homeeats.Activities.DeliveryBoy.DeliveryBoyActivity;
 import com.example.homeeats.Activities.FoodBuyer.FoodBuyerActivity;
 import com.example.homeeats.Activities.FoodMaker.FoodMakerActivity;
+import com.example.homeeats.Dao.DeliveryBoyDao;
 import com.example.homeeats.Dao.MealItemDao;
 import com.example.homeeats.Dao.OrderDao;
 import com.example.homeeats.Dao.UserPrimitiveDataDao;
-import com.example.homeeats.EventListenersListener;
-import com.example.homeeats.FcmNotifier;
-import com.example.homeeats.MessagingService;
+import com.example.firbasedao.Listeners.RetrievalEventListener;
+import com.example.firbasedao.Listeners.TaskListener;
+import com.example.homeeats.LiveLocationService;
 import com.example.homeeats.Models.Client;
-import com.example.homeeats.Models.DeliveryBoy;
-import com.example.homeeats.Models.FoodBuyer;
 import com.example.homeeats.Models.MealItem;
 import com.example.homeeats.Models.Order;
 import com.example.homeeats.Models.OrderItem;
 import com.example.homeeats.Models.OrderStatus;
-import com.example.homeeats.Models.UserNotification;
 import com.example.homeeats.Models.UserPrimitiveData;
 import com.example.homeeats.Models.UserType;
 import com.example.homeeats.R;
-import com.example.homeeats.RetrievalEventListener;
-import com.example.homeeats.TaskListener;
 import com.example.homeeats.UserAuthenticationDatabase;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.example.homeeats.Activities.FoodMaker.FoodMakerActivity;
 import com.google.firebase.iid.FirebaseInstanceId;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,19 +59,15 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
 
-    private void createNotificationChannel() {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "test channel";
-            String description = "channel for testing";
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
-            channel.setDescription(description);
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
+    public void checkPermission(){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(this,Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED
+        ){//Can add more as per requirement
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.INTERNET},
+                    123);
         }
     }
 
@@ -79,8 +75,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        final String TOKEN = "eVo-hvnwC-w:APA91bGq4CdsHioP8st9hhSG_PEMyvlc4NqN2Yqj8IisXzs4u2KnEUa9tICNhz2hXTa6urtYxiChUcDcPi9wtSR-tBFA0OTdpbjkiE7k2mqN56BG2Sd5manOnE8nxdfEVgPGPvc9wBgI";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            checkPermission();
+        }
 
+        Toast.makeText(getApplicationContext(), FirebaseInstanceId.getInstance().getToken(), Toast.LENGTH_SHORT).show();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -90,10 +89,36 @@ public class MainActivity extends AppCompatActivity {
         editTextPassword = findViewById(R.id.editTextPassword);
         buttonLogin = findViewById(R.id.buttonLogin);
         textViewSignup = findViewById(R.id.textViewSignup);
+
+//        testing sending emails
+//        GmailSender.setFrom("homeeats.ris.2020@gmail.com");
+//        GmailSender.setPassword("HomeEats123");
+//        GmailSender.sendEmail("ramyeg26@gmail.com", "Test", "Test email.");
+//        AddNewOrder();
+        ArrayList<OrderItem> items = new ArrayList<>();
+        OrderItem oi = new OrderItem("-M7-jBeortD6vS16KKSa",2,"Extra Sauce", 3, 400.0);
+        items.add(oi);
+        Order order = new Order("", "FnFqPvY2VuMWrLf04ZZacTbrV293",
+                "0PT0raXD9ZUDSeIu8an69dl2MLq2",
+                "EoFGivlTt1OAKna5IXCISdg1HMI3",
+                items,
+                "VERY GOOD",
+                3,
+                400.0,
+                OrderStatus.Pending,new LatLng(5,5));
+        OrderDao.GetInstance().save(order, OrderDao.GetInstance().GetNewKey(), new TaskListener() {
+            @Override
+            public void OnSuccess() {
+                Log.e("CheckMeTOjdkfhkusfg", "Added meal, delete me please");
+            }
+
+            @Override
+            public void OnFail() { }
+        });
+
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 final Toast failedLoginToast = Toast.makeText(getApplicationContext(), "Invalid login ya 3'aby >:(",Toast.LENGTH_LONG);
                 if (editTextEmail.getText().toString().equals("") || editTextPassword.getText().toString().equals("")){
                     failedLoginToast.show();
@@ -113,20 +138,24 @@ public class MainActivity extends AppCompatActivity {
                                     public void OnDataRetrieved(UserPrimitiveData userPrimitiveData) {
 
                                         if (userPrimitiveData.userType == UserType.DeliveryBoy){
+                                            runLiveLocationService();
                                             Intent intent = new Intent(MainActivity.this, DeliveryBoyActivity.class);
                                             intent.putExtra("DeliveryBoyID", userPrimitiveData.id);
                                             startActivity(intent);
 
                                         }else if (userPrimitiveData.userType == UserType.FoodBuyer){
+                                            stopLiveLocationService();
                                             Intent intent = new Intent(MainActivity.this, FoodBuyerActivity.class);
                                             intent.putExtra("FoodBuyerID", userPrimitiveData.id);
                                             startActivity(intent);
 
                                         }else if (userPrimitiveData.userType == UserType.FoodMaker){
+                                            stopLiveLocationService();
                                             Intent intent = new Intent(MainActivity.this, FoodMakerActivity.class);
                                             intent.putExtra("FoodMakerID", userPrimitiveData.id);
                                             startActivity(intent);
                                         }else{
+                                            stopLiveLocationService();
                                             Toast.makeText(getApplicationContext(), "Invalid Login",Toast.LENGTH_LONG).show();
                                         }
 
@@ -152,65 +181,21 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "Key: " + key + " Value: " + value);
             }
         }
-//        FirebaseMessagingService firebaseMessagingService = new FirebaseMessagingService();
-//        NotificationManager notificationManager =
-//                (NotificationManager) getSystemService(getApplicationContext().NOTIFICATION_SERVICE);
-//        String channelId = "some_channel_id";
-//        CharSequence channelName = "Some Channel";
-//        int importance = NotificationManager.IMPORTANCE_DEFAULT;
-//        NotificationChannel notificationChannel = new NotificationChannel(channelId, channelName, importance);
-//        notificationChannel.enableLights(true);
-//        notificationChannel.setLightColor(Color.RED);
-//        notificationChannel.enableVibration(true);
-//        notificationChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
-//        notificationManager.createNotificationChannel(notificationChannel);
-//        final OrderDao orderDao = OrderDao.GetInstance();
-//        final List<OrderItem> orderItems = new ArrayList<OrderItem>();
-//
-//        final Order order = new Order(null, new LatLng(1, 1), null, null, null, null, "Good order", 5, null, OrderStatus.Accepted);
-//        FoodMakerDao.GetInstance().get("ctkAYZMA2sUoiQRKhAOxTy9nOc92", new RetrievalEventListener<FoodMaker>() {
-//            @Override
-//            public void OnDataRetrieved(FoodMaker foodMaker) {
-//                order.foodMaker = foodMaker;
-//                FoodBuyerDao.GetInstance().get("lrOtoBNeAfcqiDlJJCJy0zSI7Nn2", new RetrievalEventListener<FoodBuyer>() {
-//                    @Override
-//                    public void OnDataRetrieved(FoodBuyer foodBuyer) {
-//                        order.foodBuyer = foodBuyer;
-//                        DeliveryBoyDao.GetInstance().get("QKchGRN7JBh3nZUiIP9O5GW5pfD3", new RetrievalEventListener<DeliveryBoy>() {
-//                            @Override
-//                            public void OnDataRetrieved(DeliveryBoy deliveryBoy) {
-//                                order.deliveryBoy = deliveryBoy;
-//                                MealItemDao.GetInstance().get("-M64XGeazTb_HbQnboZB", new RetrievalEventListener<MealItem>() {
-//                                    @Override
-//                                    public void OnDataRetrieved(MealItem mealItem) {
-//                                        order.orderItems = new ArrayList<OrderItem>();
-//                                        order.orderItems.add(new OrderItem(mealItem, 2, "da2aa zyadaa", 5));
-//                                        orderDao.save(order, orderDao.GetNewKey());
-//                                        order.totalPrice = order.getTotalPrice();
-//                                        Toast.makeText(getApplicationContext(), "Added order", Toast.LENGTH_SHORT).show();
-//                                    }
-//                                });
-//                            }
-//                        });
-//                    }
-//                });
-//            }
-//        });
-//
-//        AddNewOrder();
 
-//        Order order;
-//        OrderDao.GetInstance().get("-M67Seiqi02gO1XNvA6T", new RetrievalEventListener<Order>() {
-//            @Override
-//            public void OnDataRetrieved(Order order) {
-//                Toast.makeText(getApplicationContext(), "Get Order", Toast.LENGTH_SHORT);
-//            }
-//        });
     }
 
     protected void AddNewOrder()
     {
-        final Order order = new Order(null, "ctkAYZMA2sUoiQRKhAOxTy9nOc92", "lrOtoBNeAfcqiDlJJCJy0zSI7Nn2", "QKchGRN7JBh3nZUiIP9O5GW5pfD3", new ArrayList<OrderItem>(), "Koshry gamd zo7l2a", 4, 0.0, OrderStatus.Accepted, new LatLng(1, 1));
+        final Order order = new Order(null,
+                "FnFqPvY2VuMWrLf04ZZacTbrV293",
+                "3cs3kGaPDIQiofGVfFw1ckrPNCr2",
+                "xdor7utP2rfQCKPUfijxLTky6X83",
+                new ArrayList<OrderItem>(),
+                "Koshry gamd zo7l2a",
+                4,
+                0.0,
+                OrderStatus.Pending,
+                new LatLng(1, 1));
         final EventListenersListener eventListenersListener = new EventListenersListener() {
             @Override
             public void onFinish() {
@@ -229,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
         };
         List<RetrievalEventListener> mealsEventListeners = new ArrayList<>();
         for(int i = 1; i <= 7; i++){
-            final OrderItem orderItem = new OrderItem(null, i, "da2aa zayada", 5);
+            final OrderItem orderItem = new OrderItem(null, i, "da2aa zayada", 5, 300.0);
             RetrievalEventListener<MealItem> mealEventListener = new RetrievalEventListener<MealItem>() {
                 @Override
                 public void OnDataRetrieved(MealItem mealItem) {
@@ -247,65 +232,20 @@ public class MainActivity extends AppCompatActivity {
             MealItemDao.GetInstance().get("-M64XGeazTb_HbQnboZB", mealsEventListeners.get(i - 1));
         }
     }
-//    protected void AddNewOrder()
-//    {
-//        final Order order = new Order(null, new LatLng(1, 1), null, null, null, null, "Good order", 5, null, OrderStatus.Accepted);
-//        order.orderItems = new ArrayList<OrderItem>();
-//        final EventListenersListener eventListenersListener = new EventListenersListener() {
-//            @Override
-//            public void onFinish() {
-//                OrderDao.GetInstance().save(order, OrderDao.GetInstance().GetNewKey());
-//                Toast.makeText(getApplicationContext(), "Order finished", Toast.LENGTH_SHORT).show();
-//            }
-//        };
-//        RetrievalEventListener foodMakerListener = new RetrievalEventListener<FoodMaker>() {
-//            @Override
-//            public void OnDataRetrieved(FoodMaker foodMaker) {
-//                order.foodMaker = foodMaker;
-//                eventListenersListener.notify(this);
-//            }
-//        };
-//        eventListenersListener.Add(foodMakerListener);
-//        RetrievalEventListener foodBuyerListener = new RetrievalEventListener<FoodBuyer>() {
-//            @Override
-//            public void OnDataRetrieved(FoodBuyer foodBuyer) {
-//                order.foodBuyer = foodBuyer;
-//                eventListenersListener.notify(this);
-//            }
-//        };
-//        eventListenersListener.Add(foodBuyerListener);
-//        RetrievalEventListener deliveryBoyEventListener = new RetrievalEventListener<DeliveryBoy>() {
-//            @Override
-//            public void OnDataRetrieved(DeliveryBoy deliveryBoy) {
-//                order.deliveryBoy = deliveryBoy;
-//                eventListenersListener.notify(this);
-//            }
-//        };
-//        eventListenersListener.Add(deliveryBoyEventListener);
-//        List<RetrievalEventListener> mealItemsEventListeners = new ArrayList<>();
-//        for(int i = 1; i <= 5; i++)
-//        {
-//            final OrderItem orderItem = new OrderItem(null, i, "da2aa zyadaa", 5);
-//            RetrievalEventListener mealItemEventListener = new RetrievalEventListener<MealItem>() {
-//                @Override
-//                public void OnDataRetrieved(MealItem mealItem) {
-//                    orderItem.mealItem = mealItem;
-//                    eventListenersListener.notify(this);
-//                }
-//            };
-//            mealItemsEventListeners.add(mealItemEventListener);
-//            eventListenersListener.Add(mealItemEventListener);
-//            order.orderItems.add(orderItem);
-//        }
-//        eventListenersListener.OnFinishAddingListeners();
-//        FoodBuyerDao.GetInstance().get("lrOtoBNeAfcqiDlJJCJy0zSI7Nn2", foodBuyerListener);
-//        FoodMakerDao.GetInstance().get("ctkAYZMA2sUoiQRKhAOxTy9nOc92", foodMakerListener);
-//        DeliveryBoyDao.GetInstance().get("QKchGRN7JBh3nZUiIP9O5GW5pfD3", deliveryBoyEventListener);
-//        for(int i = 0; i < 5; i++)
-//        {
-//            MealItemDao.GetInstance().get("-M64XGeazTb_HbQnboZB", mealItemsEventListeners.get(i));
-//        }
-//    }
+
+    public void runLiveLocationService(){
+        stopLiveLocationService();
+        startLiveLocationService();
+    }
+    public void startLiveLocationService() {
+        Intent serviceIntent = new Intent(this, LiveLocationService.class);
+        ContextCompat.startForegroundService(this, serviceIntent);
+    }
+    public void stopLiveLocationService() {
+        Intent serviceIntent = new Intent(this, LiveLocationService.class);
+        stopService(serviceIntent);
+    }
+
     @Override
     protected void onStart() {
 
@@ -318,32 +258,39 @@ public class MainActivity extends AppCompatActivity {
         /*
         TODO:     ATTENTION! this absolute piece art of a code is perfectly working. It preservers sessions even after closing the application.
          That's right, like facebook. We disabled it for now to make your lives more easier in testing,
+
+         */
         if (currentUser != null){
 
             UserPrimitiveDataDao.GetInstance().get(currentUser.getUid(), new RetrievalEventListener<UserPrimitiveData>() {
                 @Override
                 public void OnDataRetrieved(UserPrimitiveData userPrimitiveData) {
                     if (userPrimitiveData.userType == UserType.DeliveryBoy){
+                        runLiveLocationService();
                         Intent intent = new Intent(MainActivity.this, DeliveryBoyActivity.class);
                         intent.putExtra("DeliveryBoyID", userPrimitiveData.id);
                         startActivity(intent);
 
                     }else if (userPrimitiveData.userType == UserType.FoodBuyer){
+                        stopLiveLocationService();
                         Intent intent = new Intent(MainActivity.this, FoodBuyerActivity.class);
                         intent.putExtra("FoodBuyerID", userPrimitiveData.id);
                         startActivity(intent);
 
                     }else if (userPrimitiveData.userType == UserType.FoodMaker){
+                        stopLiveLocationService();
                         Intent intent = new Intent(MainActivity.this, FoodMakerActivity.class);
                         intent.putExtra("FoodMakerID", userPrimitiveData.id);
                         startActivity(intent);
                     }else{
+                        stopLiveLocationService();
                         Toast.makeText(getApplicationContext(), "Invalid Login",Toast.LENGTH_LONG).show();
                     }
                 }
             });
         }
-         */
+        else
+            stopLiveLocationService();
 
         if (getIntent().getExtras() != null) {
             for (String key : getIntent().getExtras().keySet()) {

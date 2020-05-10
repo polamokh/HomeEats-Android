@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.homeeats">
-
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="ACCESS_BACKGROUND_LOCATION"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA"/>
     <application
         android:allowBackup="true"
         android:icon="@drawable/g73vzua"
@@ -9,7 +13,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".Activities.FoodMaker.FoodMakerEditMealActivity"></activity>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDFkseBYmA6FXx256QY0gju-En3rySU3dA"/>
+
+        <activity android:name=".Activities.FoodMaker.FoodMakerEditProfileFragment"></activity>
         <activity
             android:name=".Activities.FoodMaker.FoodMakerActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -20,9 +30,14 @@
             </intent-filter>
         </service>
 
+        <service
+            android:name=".LiveLocationService"
+            android:foregroundServiceType="location">
+        </service>
         <activity android:name=".Activities.FoodMaker.FoodMakerAddMealActivity" />
         <activity android:name=".Activities.DeliveryBoy.DeliveryBoyActivity" />
         <activity android:name=".Activities.FoodBuyer.FoodBuyerActivity" />
+        <activity android:name=".Activities.FoodBuyer.FoodBuyerViewMakerActivity" />
         <activity android:name=".Activities.SignUpActivity" />
         <activity android:name=".Activities.MainActivity">
             <intent-filter>
@@ -32,5 +47,4 @@
             </intent-filter>
         </activity>
     </application>
-
 </manifest>

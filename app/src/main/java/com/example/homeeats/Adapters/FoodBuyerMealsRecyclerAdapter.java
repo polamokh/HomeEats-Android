@@ -1,5 +1,6 @@
 package com.example.homeeats.Adapters;
 
+import android.content.Intent;
 import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,11 +13,13 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.homeeats.Activities.FoodBuyer.FoodBuyerViewMakerActivity;
 import com.example.homeeats.Dao.FoodMakerDao;
 import com.example.homeeats.Models.FoodMaker;
 import com.example.homeeats.Models.MealItem;
 import com.example.homeeats.R;
-import com.example.homeeats.RetrievalEventListener;
+import com.example.firbasedao.Listeners.RetrievalEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -44,16 +47,18 @@ public class FoodBuyerMealsRecyclerAdapter extends
 
     @Override
     public void onBindViewHolder(@NonNull final MealViewHolder holder, int position) {
-        //TODO: Add required images(Meal and Maker)
         holder.mealName.setText(meals.get(position).name);
         holder.mealPrice.setText("EGP" + meals.get(position).price.toString());
         holder.mealDescription.setText(meals.get(position).description);
+        holder.mealCategory.setText(meals.get(position).mealCategory);
+        Picasso.get().load(meals.get(position).photo).into(holder.mealImageView);
 
         FoodMakerDao.GetInstance().get(meals.get(position).foodMakerId,
                 new RetrievalEventListener<FoodMaker>() {
                     @Override
                     public void OnDataRetrieved(FoodMaker foodMaker) {
-                        holder.makerName.setText(foodMaker.name);
+                        holder.makerName.setText("by " + foodMaker.name);
+                        holder.makerID = foodMaker.id;
                     }
                 });
     }
@@ -66,20 +71,22 @@ public class FoodBuyerMealsRecyclerAdapter extends
     public static class MealViewHolder extends RecyclerView.ViewHolder {
         CardView cardView;
         ImageView mealImageView;
-        ImageView makerImageView;
         TextView mealName;
         TextView mealPrice;
         TextView mealDescription;
+        TextView mealCategory;
         TextView makerName;
+
+        String makerID;
 
         public MealViewHolder(@NonNull View itemView) {
             super(itemView);
             cardView = itemView.findViewById(R.id.foodBuyerMealCardView);
             mealImageView = itemView.findViewById(R.id.foodBuyerMealCardViewImage);
-            makerImageView = itemView.findViewById(R.id.foodBuyerMealCardViewMakerImage);
             mealName = itemView.findViewById(R.id.foodBuyerMealCardViewName);
             mealPrice = itemView.findViewById(R.id.foodBuyerMealCardViewPrice);
             mealDescription = itemView.findViewById(R.id.foodBuyerMealCardViewDescription);
+            mealCategory = itemView.findViewById(R.id.foodBuyerMealCardViewCategory);
             makerName = itemView.findViewById(R.id.foodBuyerMealCardViewMakerName);
 
             makerName.setOnClickListener(new View.OnClickListener() {
@@ -88,18 +95,12 @@ public class FoodBuyerMealsRecyclerAdapter extends
                     makerClick(v);
                 }
             });
-
-            makerImageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    makerClick(v);
-                }
-            });
         }
 
         void makerClick(View view) {
-            //TODO: Add onClick maker event.
-            Toast.makeText(view.getContext(), "Clicked", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(view.getContext(), FoodBuyerViewMakerActivity.class);
+            intent.putExtra("FoodMakerID", makerID);
+            view.getContext().startActivity(intent);
         }
     }
 }

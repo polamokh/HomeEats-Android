@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.FoodBuyer.FoodBuyerViewMakerActivity"
+    android:padding="16dp">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/foodBuyerViewMakerImage"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true" />
+
+    <TextView
+        android:id="@+id/foodBuyerViewMakerName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:text="Name"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/foodBuyerViewMakerImage"/>
+
+    <TextView
+        android:id="@+id/foodBuyerViewMakerPhone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="Mobile"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/foodBuyerViewMakerName"/>
+
+    <TextView
+        android:id="@+id/foodBuyerViewMakerEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="Email"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/foodBuyerViewMakerPhone"/>
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/foodBuyerViewMakerMap"
+        android:layout_width="match_parent"
+        android:layout_height="190dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20sp"
+        android:layout_below="@id/foodBuyerViewMakerEmail"/>
+
+    <View
+        android:id="@+id/foodBuyerViewMakerDivider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        android:layout_margin="10dp"
+        android:layout_below="@id/foodBuyerViewMakerMap"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/foodBuyerViewMakerRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/foodBuyerViewMakerDivider"/>
+
+</RelativeLayout>

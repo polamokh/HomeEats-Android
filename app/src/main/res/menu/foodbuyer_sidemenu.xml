@@ -22,8 +22,8 @@
             android:title="Orders"/>
 
         <item android:id="@+id/foodBuyerNavSettings"
-            android:icon="@drawable/ic_settings"
-            android:title="Settings"/>
+            android:icon="@drawable/ic_profile"
+            android:title="Edit Profile"/>
 
         <item android:id="@+id/foodBuyerNavLogout"
             android:icon="@drawable/ic_signout"

@@ -19,8 +19,8 @@ import android.widget.Toast;
 import com.example.homeeats.Dao.MealItemDao;
 import com.example.homeeats.Models.MealItem;
 import com.example.homeeats.R;
-import com.example.homeeats.RetrievalEventListener;
-import com.example.homeeats.TaskListener;
+import com.example.firbasedao.Listeners.RetrievalEventListener;
+import com.example.firbasedao.Listeners.TaskListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -63,7 +63,7 @@ public class FoodMakerAddMealActivity extends AppCompatActivity {
                         getIntent().getExtras().getString("FoodMakerID"),
                         "",
                         Desc.getText().toString(),
-                        Double.parseDouble(Price.getText().toString()), "", 4.5);
+                        Double.parseDouble(Price.getText().toString()),Category.getText().toString(), 4.5, true);
                 final String Meal_ID = MealItemDao.GetInstance().GetNewKey();
                 MD.save(MI, Meal_ID, new TaskListener() {
                     @Override

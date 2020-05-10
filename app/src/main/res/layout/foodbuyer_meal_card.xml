@@ -51,14 +51,15 @@
                 android:layout_alignParentLeft="true"
                 android:textSize="18sp"/>
 
-            <ImageView
-                android:id="@+id/foodBuyerMealCardViewMakerImage"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:scaleType="centerInside"
-                android:layout_marginRight="6dp"
-                android:layout_below="@+id/foodBuyerMealCardViewDescription"
-                android:layout_toStartOf="@id/foodBuyerMealCardViewMakerName"/>
+            <TextView
+                android:id="@+id/foodBuyerMealCardViewCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/foodBuyerMealCardViewDescription"
+                android:text="Some text Some"
+                android:maxLines="2"
+                android:layout_alignParentLeft="true"
+                android:textSize="20sp"/>
 
             <TextView
                 android:id="@+id/foodBuyerMealCardViewMakerName"

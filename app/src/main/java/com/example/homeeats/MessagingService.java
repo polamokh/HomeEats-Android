@@ -1,15 +1,21 @@
 package com.example.homeeats;
 
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.example.firbasedao.Listeners.EventListenersListener;
 import com.example.homeeats.Dao.UserNotificationDao;
 import com.example.homeeats.Dao.UserPrimitiveDataDao;
+import com.example.firbasedao.Listeners.RetrievalEventListener;
+import com.example.firbasedao.Listeners.TaskListener;
 import com.example.homeeats.Models.UserNotification;
 import com.example.homeeats.Models.UserPrimitiveData;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -33,10 +39,26 @@ public class MessagingService extends FirebaseMessagingService {
     static int notificationID = 1;
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
+    private void createNotificationChannel(String CHANNEL_ID) {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "test channel";
+            String description = "channel for testing";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
     public static void sendNotification(final UserNotification userNotificationBuilder) {
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... params) {
+                new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected Void doInBackground(Void... params) {
                 try {
                     URL url = new URL("https://fcm.googleapis.com/fcm/send");
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -80,6 +102,7 @@ public class MessagingService extends FirebaseMessagingService {
         Log.e("Service", "received");
         String title = remoteMessage.getNotification().getTitle();
         String body = remoteMessage.getNotification().getBody();
+        createNotificationChannel("some_channel_id");
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "some_channel_id")
                 .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
                 .setContentTitle(title)

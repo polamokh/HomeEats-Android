@@ -1,17 +1,14 @@
 package com.example.homeeats.Dao;
 
-import android.app.Notification;
-
+import com.example.firbasedao.FirebaseDao;
+import com.example.firbasedao.Listeners.RetrievalEventListener;
 import com.example.homeeats.Models.UserNotification;
-import com.example.homeeats.Models.UserPrimitiveData;
-import com.example.homeeats.RetrievalEventListener;
-import com.example.homeeats.TaskListener;
 import com.google.firebase.database.DataSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserNotificationDao extends Dao<UserNotification> {
+public class UserNotificationDao extends FirebaseDao<UserNotification> {
     private static UserNotificationDao singletonObject;
     private UserNotificationDao() {
         super("userNotifications");

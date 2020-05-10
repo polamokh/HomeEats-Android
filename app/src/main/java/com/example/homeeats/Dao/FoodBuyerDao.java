@@ -1,17 +1,21 @@
 package com.example.homeeats.Dao;
 
 
-import com.example.homeeats.EventListenersListener;
+import android.graphics.Bitmap;
+
+import com.example.firbasedao.FirebaseDao;
+import com.example.firbasedao.Listeners.RetrievalEventListener;
+import com.example.firbasedao.Listeners.TaskListener;
+import com.example.homeeats.FilesStorageDatabase;
 import com.example.homeeats.Models.FoodBuyer;
 import com.example.homeeats.Models.Order;
-import com.example.homeeats.RetrievalEventListener;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FoodBuyerDao extends Dao<FoodBuyer> {
+public class FoodBuyerDao extends FirebaseDao<FoodBuyer> {
     private static FoodBuyerDao singletonObject;
     private FoodBuyerDao(){
         super("FoodBuyers");
@@ -22,6 +26,31 @@ public class FoodBuyerDao extends Dao<FoodBuyer> {
         return singletonObject;
     }
 
+    public void save(final FoodBuyer foodBuyer, final String id, Bitmap bitmap, final TaskListener taskListener){
+        if(bitmap == null){
+            save(foodBuyer, id, taskListener);
+            return;
+        }
+        setFoodBuyerImage(id, bitmap, new RetrievalEventListener<String>() {
+            @Override
+            public void OnDataRetrieved(String s) {
+                foodBuyer.photo = s;
+                save(foodBuyer, id, taskListener);
+            }
+        });
+    }
+
+    public void setFoodBuyerImage(final String foodBuyerId, Bitmap image, final RetrievalEventListener<String> retrievalEventListener){
+        FilesStorageDatabase.GetInstance().uploadPhoto(image, String.format("food buyers images/%s.jpg", foodBuyerId),
+                new RetrievalEventListener<String>() {
+                    @Override
+                    public void OnDataRetrieved(String uploadPath) {
+                        dbReference.child(tableName).child(foodBuyerId).child("photo").setValue(uploadPath);
+                        retrievalEventListener.OnDataRetrieved(uploadPath);
+                    }
+                });
+    }
+
     @Override
     protected void parseDataSnapshot(DataSnapshot dataSnapshot, RetrievalEventListener<FoodBuyer> retrievalEventListener) {
         final FoodBuyer foodBuyer = new FoodBuyer();
@@ -30,6 +59,7 @@ public class FoodBuyerDao extends Dao<FoodBuyer> {
         foodBuyer.gender = dataSnapshot.child("gender").getValue().toString();
         foodBuyer.emailAddress = dataSnapshot.child("emailAddress").getValue().toString();
         foodBuyer.phone = dataSnapshot.child("phone").getValue().toString();
+        foodBuyer.photo = dataSnapshot.child("photo").getValue().toString();
         double latitude = Double.parseDouble(dataSnapshot.child("location").child("latitude").getValue().toString());
         double longitude = Double.parseDouble(dataSnapshot.child("location").child("longitude").getValue().toString());
         foodBuyer.location = new LatLng(latitude, longitude);
