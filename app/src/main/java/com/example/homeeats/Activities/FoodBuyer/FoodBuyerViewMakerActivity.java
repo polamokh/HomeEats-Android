@@ -20,6 +20,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.picasso.Picasso;
@@ -52,23 +53,23 @@ public class FoodBuyerViewMakerActivity extends AppCompatActivity implements OnM
 
         String makerID = getIntent().getExtras().getString("FoodMakerID");
         FoodMakerDao.GetInstance().get(makerID, new RetrievalEventListener<FoodMaker>() {
-                    @Override
-                    public void OnDataRetrieved(FoodMaker foodMaker) {
-                        textViewName.setText(foodMaker.name);
-                        textViewPhone.setText(foodMaker.phone);
-                        textViewEmail.setText(foodMaker.emailAddress);
-                        Picasso.get().load(foodMaker.photo).into(imageView);
-                    }
-                });
+            @Override
+            public void OnDataRetrieved(FoodMaker foodMaker) {
+                textViewName.setText(foodMaker.name);
+                textViewPhone.setText(foodMaker.phone);
+                textViewEmail.setText(foodMaker.emailAddress);
+                Picasso.get().load(foodMaker.photo).into(imageView);
+            }
+        });
 
         FoodMakerDao.GetInstance().GetFoodMakerMeals(makerID, new RetrievalEventListener<List<MealItem>>() {
-                    @Override
-                    public void OnDataRetrieved(List<MealItem> mealItems) {
-                        FoodBuyerMealsRecyclerAdapter adapter =
-                                new FoodBuyerMealsRecyclerAdapter(mealItems);
-                        recyclerView.setAdapter(adapter);
-                    }
-                });
+            @Override
+            public void OnDataRetrieved(List<MealItem> mealItems) {
+                FoodBuyerMealsRecyclerAdapter adapter =
+                        new FoodBuyerMealsRecyclerAdapter(mealItems);
+                recyclerView.setAdapter(adapter);
+            }
+        });
 
         mapView = findViewById(R.id.foodBuyerViewMakerMap);
         mapView.onCreate(mapViewBundle);
@@ -105,16 +106,19 @@ public class FoodBuyerViewMakerActivity extends AppCompatActivity implements OnM
         super.onStop();
         mapView.onStop();
     }
+
     @Override
     protected void onPause() {
         super.onPause();
         mapView.onPause();
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
     }
+
     @Override
     public void onLowMemory() {
         super.onLowMemory();
@@ -123,15 +127,24 @@ public class FoodBuyerViewMakerActivity extends AppCompatActivity implements OnM
 
     @Override
     public void onMapReady(final GoogleMap googleMap) {
-        googleMap.setMinZoomPreference(5);
         FoodMakerDao.GetInstance().get(getIntent().getExtras().getString("FoodMakerID"),
                 new RetrievalEventListener<FoodMaker>() {
                     @Override
                     public void OnDataRetrieved(FoodMaker foodMaker) {
-                        googleMap.getUiSettings().setMyLocationButtonEnabled(true);
                         googleMap.addMarker(new MarkerOptions().position(foodMaker.location));
-                        googleMap.moveCamera(CameraUpdateFactory.newLatLng(foodMaker.location));
+                        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(
+                                new CameraPosition.Builder()
+                                        .target(foodMaker.location)
+                                        .zoom(15.0f)
+                                        .build()
+                        ));
                     }
                 });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

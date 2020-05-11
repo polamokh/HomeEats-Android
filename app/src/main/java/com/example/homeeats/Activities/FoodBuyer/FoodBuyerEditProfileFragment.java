@@ -63,7 +63,6 @@ public class FoodBuyerEditProfileFragment extends Fragment implements OnMapReady
     private static final int CAMERA_REQUEST = 1888;
     private static int PICK_IMAGE_REQUEST = 1;
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
