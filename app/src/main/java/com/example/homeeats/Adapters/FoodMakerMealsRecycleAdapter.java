@@ -1,5 +1,6 @@
 package com.example.homeeats.Adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -57,13 +58,17 @@ public class FoodMakerMealsRecycleAdapter extends RecyclerView.Adapter<FoodMaker
 
     @Override
     public void onBindViewHolder(MealViewHolder holder, int position)
+    {if(meals.get(position).isAvailable)
     {
+        holder.Available.setVisibility(View.INVISIBLE);
+    }
         holder.Meal_ID=meals.get(position).id;
         holder.name.setText(meals.get(position).name);
         holder.description.setText(meals.get(position).description);
         holder.price.setText("EGP" + meals.get(position).price.toString());
         holder.category.setText(meals.get(position).mealCategory);
         Picasso.get().load(meals.get(position).photo).into(holder.image);
+
 
     }
 
@@ -81,7 +86,9 @@ public class FoodMakerMealsRecycleAdapter extends RecyclerView.Adapter<FoodMaker
         TextView price;
         TextView category;
         ImageButton Edit_Meal;
+        ImageView Available;
         String Meal_ID;
+
 
 
 
@@ -94,6 +101,8 @@ public class FoodMakerMealsRecycleAdapter extends RecyclerView.Adapter<FoodMaker
             price = (TextView)itemView.findViewById(R.id.textViewMealCardPrice);
             category = (TextView)itemView.findViewById(R.id.textViewMealCardCategory);
             Edit_Meal=(ImageButton)itemView.findViewById(R.id.Food_Maker_Edit_Meal_btn);
+            Available=(ImageView)itemView.findViewById(R.id.Availability_view_btn);
+
 
             // START OF HABD
             final ConstraintLayout expandableView;

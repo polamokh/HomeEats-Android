@@ -90,32 +90,6 @@ public class MainActivity extends AppCompatActivity {
         buttonLogin = findViewById(R.id.buttonLogin);
         textViewSignup = findViewById(R.id.textViewSignup);
 
-//        testing sending emails
-//        GmailSender.setFrom("homeeats.ris.2020@gmail.com");
-//        GmailSender.setPassword("HomeEats123");
-//        GmailSender.sendEmail("ramyeg26@gmail.com", "Test", "Test email.");
-//        AddNewOrder();
-        ArrayList<OrderItem> items = new ArrayList<>();
-        OrderItem oi = new OrderItem("-M7-jBeortD6vS16KKSa",2,"Extra Sauce", 3, 400.0);
-        items.add(oi);
-        Order order = new Order("", "FnFqPvY2VuMWrLf04ZZacTbrV293",
-                "0PT0raXD9ZUDSeIu8an69dl2MLq2",
-                "EoFGivlTt1OAKna5IXCISdg1HMI3",
-                items,
-                "VERY GOOD",
-                3,
-                400.0,
-                OrderStatus.Pending,new LatLng(5,5));
-        OrderDao.GetInstance().save(order, OrderDao.GetInstance().GetNewKey(), new TaskListener() {
-            @Override
-            public void OnSuccess() {
-                Log.e("CheckMeTOjdkfhkusfg", "Added meal, delete me please");
-            }
-
-            @Override
-            public void OnFail() { }
-        });
-
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -214,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
         };
         List<RetrievalEventListener> mealsEventListeners = new ArrayList<>();
         for(int i = 1; i <= 7; i++){
-            final OrderItem orderItem = new OrderItem(null, i, "da2aa zayada", 5, 300.0);
+            final OrderItem orderItem = new OrderItem(null, i, "da2aa zayada", 5);
             RetrievalEventListener<MealItem> mealEventListener = new RetrievalEventListener<MealItem>() {
                 @Override
                 public void OnDataRetrieved(MealItem mealItem) {

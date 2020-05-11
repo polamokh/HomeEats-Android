@@ -138,14 +138,15 @@
 
                 <ImageButton
                     android:id="@+id/FoodMaker_accept_order"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_acceptorder"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    app:srcCompat="@drawable/ic_accept_order"
                     tools:layout_editor_absoluteX="106dp"
                     tools:layout_editor_absoluteY="197dp"
                     android:foregroundGravity="left"
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginBottom="0dp"
+                    android:layout_marginLeft="30dp"
                     android:baselineAlignBottom="true"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="parent"
@@ -154,9 +155,9 @@
 
                 <ImageButton
                     android:id="@+id/FoodMaker_Reject_order"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_rejectorder"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    app:srcCompat="@drawable/ic_reject_order"
                     android:layout_marginTop="80dp"
                     android:layout_marginRight="0dp"
                     tools:layout_editor_absoluteX="150dp"
@@ -167,7 +168,22 @@
                     app:layout_constraintLeft_toLeftOf="@id/FoodMaker_accept_order"
                     app:layout_constraintBottom_toBottomOf="parent"
                     />
+                <ImageButton
+                android:id="@+id/Ready_to_Deliver"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                app:srcCompat="@drawable/ic_readytodeliver"
+                tools:layout_editor_absoluteX="216dp"
+                tools:layout_editor_absoluteY="150dp"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/FoodMaker_Reject_order"
+                    app:layout_constraintLeft_toRightOf="@id/FoodMaker_Reject_order"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

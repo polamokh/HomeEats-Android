@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.example.firbasedao.Listeners.RetrievalEventListener;
@@ -34,6 +35,7 @@ public class FoodMakerEditMealActivity extends AppCompatActivity {
     EditText edited_desc;
     EditText edited_price;
     EditText Edited_Category;
+    Switch Available;
     private int PICK_IMAGE_REQUEST = 1;
     ImageView image;
     String Foodmaker_ID;
@@ -49,7 +51,7 @@ public class FoodMakerEditMealActivity extends AppCompatActivity {
     protected void onStart()
     {
         super.onStart();
-
+        Available=findViewById(R.id.Availability_switch);
         edited_name = findViewById(R.id.FoodMaker_Edit_Meal_Name);
         edited_desc = findViewById(R.id.FoodMaker_Edit_Meal_Desc);
         final Button selectImage = (Button) findViewById(R.id.Food_Maker_Edit_Meal_Image_btn);
@@ -77,6 +79,7 @@ public class FoodMakerEditMealActivity extends AppCompatActivity {
                 Edited_Category.setText(mealItem.mealCategory);
                 Picasso.get().load(mealItem.photo).into(image);
                 Foodmaker_ID = mealItem.foodMakerId;
+                Available.setChecked(mealItem.isAvailable);
                 //selectedImage = ((BitmapDrawable)image.getDrawable()).getBitmap();
 
             }
@@ -92,7 +95,7 @@ public class FoodMakerEditMealActivity extends AppCompatActivity {
                         Foodmaker_ID,
                         "",
                         edited_desc.getText().toString(),
-                        Double.parseDouble(edited_price.getText().toString()), Edited_Category.getText().toString(), 4.5, true);
+                        Double.parseDouble(edited_price.getText().toString()), Edited_Category.getText().toString(), 4.5, Available.isChecked());
                          MealItemDao.GetInstance().save(MI, Meal_ID, selectedImage, new TaskListener()
                             {
                                 @Override
