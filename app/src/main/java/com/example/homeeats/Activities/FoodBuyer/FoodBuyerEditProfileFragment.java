@@ -36,6 +36,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -47,11 +48,16 @@ public class FoodBuyerEditProfileFragment extends Fragment implements OnMapReady
         GoogleMap.OnMyLocationButtonClickListener,
         GoogleMap.OnMyLocationClickListener,
         GoogleMap.OnMapClickListener {
+
     private static FoodBuyer buyer;
+
     private ImageView imageView;
+    private Bitmap image;
+
     private MapView mapView;
     private GoogleMap gMap;
     private LatLng markerLocation;
+
     private static final String MAP_VIEW_BUNDLE_KEY = "MapViewBundleKey";
     private static final int MY_CAMERA_PERMISSION_CODE = 100;
     private static final int CAMERA_REQUEST = 1888;
@@ -105,7 +111,19 @@ public class FoodBuyerEditProfileFragment extends Fragment implements OnMapReady
                 editTextName.setText(buyer.name);
                 editTextMobile.setText(buyer.phone);
                 spinnerGender.setSelection(getGenderIndex(buyer.gender));
-                Picasso.get().load(buyer.photo).into(imageView);
+                Picasso.get()
+                        .load(buyer.photo)
+                        .into(imageView, new Callback() {
+                            @Override
+                            public void onSuccess() {
+                                image = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+
+                            }
+                        });
             }
         });
 
@@ -117,19 +135,37 @@ public class FoodBuyerEditProfileFragment extends Fragment implements OnMapReady
                 buyer.gender = spinnerGender.getSelectedItem().toString().toLowerCase();
                 buyer.location = markerLocation;
 
-                FoodBuyerDao.GetInstance().save(buyer, foodBuyerID,
-                        ((BitmapDrawable) imageView.getDrawable()).getBitmap(), new TaskListener() {
-                            @Override
-                            public void OnSuccess() {
-                                Toast.makeText(v.getContext(), "Profile information updated successfully",
-                                        Toast.LENGTH_SHORT).show();
-                            }
+                Bitmap currentImage = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
+                if(currentImage != image) {
+                    image = currentImage;
+                    FoodBuyerDao.GetInstance().save(buyer, foodBuyerID, image,
+                            new TaskListener() {
+                                @Override
+                                public void OnSuccess() {
+                                    Toast.makeText(v.getContext(), "Profile information updated successfully",
+                                            Toast.LENGTH_SHORT).show();
+                                }
 
-                            @Override
-                            public void OnFail() {
+                                @Override
+                                public void OnFail() {
 
-                            }
-                        });
+                                }
+                            });
+                }
+                else {
+                    FoodBuyerDao.GetInstance().save(buyer, foodBuyerID, new TaskListener() {
+                        @Override
+                        public void OnSuccess() {
+                            Toast.makeText(v.getContext(), "Profile information updated successfully",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void OnFail() {
+
+                        }
+                    });
+                }
             }
         });
 
@@ -139,11 +175,15 @@ public class FoodBuyerEditProfileFragment extends Fragment implements OnMapReady
                 editTextName.setText(buyer.name);
                 editTextMobile.setText(buyer.phone);
                 spinnerGender.setSelection(getGenderIndex(buyer.gender));
-                Picasso.get().load(buyer.photo).into(imageView);
+                imageView.setImageBitmap(image);
 
-                gMap.clear();
-                gMap.addMarker(new MarkerOptions().position(buyer.location));
-                gMap.animateCamera(CameraUpdateFactory.newLatLng(buyer.location));
+                addMarkerLocation(buyer.location);
+                gMap.animateCamera(CameraUpdateFactory.newCameraPosition(
+                        new CameraPosition.Builder()
+                                .target(buyer.location)
+                                .zoom(15.0f)
+                                .build()
+                ));
             }
         });
 
@@ -265,7 +305,7 @@ public class FoodBuyerEditProfileFragment extends Fragment implements OnMapReady
         gMap.getUiSettings().setMyLocationButtonEnabled(true);
         gMap.getUiSettings().setZoomControlsEnabled(true);
 
-        gMap.addMarker(new MarkerOptions().position(buyer.location));
+        addMarkerLocation(buyer.location);
         gMap.animateCamera(CameraUpdateFactory.newCameraPosition(
                 new CameraPosition.Builder()
                 .target(buyer.location)
