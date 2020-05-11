@@ -65,7 +65,7 @@ public class FoodBuyerViewMakerActivity extends AppCompatActivity implements OnM
                     @Override
                     public void OnDataRetrieved(List<MealItem> mealItems) {
                         FoodBuyerMealsRecyclerAdapter adapter =
-                                new FoodBuyerMealsRecyclerAdapter(mealItems);
+                                new FoodBuyerMealsRecyclerAdapter(mealItems, getSupportFragmentManager());
                         recyclerView.setAdapter(adapter);
                     }
                 });

@@ -15,17 +15,40 @@ import com.example.firbasedao.Listeners.RetrievalEventListener;
 import com.example.firbasedao.Listeners.TaskListener;
 import com.example.homeeats.Dao.FoodBuyerDao;
 import com.example.homeeats.Models.FoodBuyer;
+import com.example.homeeats.Models.Order;
+import com.example.homeeats.Models.OrderItem;
+import com.example.homeeats.Models.OrderStatus;
 import com.example.homeeats.R;
 import com.example.homeeats.UserAuthenticationDatabase;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FoodBuyerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     DrawerLayout drawerLayout;
     NavigationView navigationView;
+    public ArrayList<Order> cart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        /*
+            testing adding cart items throught activites & fragments
+            Order(String id, String foodMakerId, String foodBuyerId, String deliveryBoyId, List<OrderItem> orderItems,
+            String review, Integer rating, Double totalPrice, OrderStatus orderStatus, LatLng buyerLocation)
+
+         */
+        cart = new ArrayList<>();
+        Order dummyOrder = new Order("", "FnFqPvY2VuMWrLf04ZZacTbrV293", getIntent().getExtras().getString("FoodBuyerID"), "QKchGRN7JBh3nZUiIP9O5GW5pfD3",
+                new ArrayList<OrderItem>(), "meya meya wel akl genaaaan (Y)", 5, 432.234, OrderStatus.Pending, new LatLng(400, 313));
+        cart.add(dummyOrder);
+
+
+
+
         setContentView(R.layout.foodbuyer_activity);
 
         Toolbar toolbar = findViewById(R.id.foodBuyerToolbar);

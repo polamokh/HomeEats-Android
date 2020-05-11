@@ -7,11 +7,11 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/foodBuyerMealCardView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="424dp">
 
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="439dp"
             android:padding="16dp">
 
             <ImageView
@@ -21,54 +21,62 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginBottom="5dp"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop" />
 
             <TextView
                 android:id="@+id/foodBuyerMealCardViewName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/foodBuyerMealCardViewImage"
-                android:text="Pizza"
                 android:layout_alignParentLeft="true"
-                android:textSize="24sp"/>
+                android:text="Pizza"
+                android:textSize="24sp" />
 
             <TextView
                 android:id="@+id/foodBuyerMealCardViewPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/foodBuyerMealCardViewImage"
-                android:text="EGP50"
                 android:layout_alignParentRight="true"
-                android:textSize="24sp"/>
+                android:text="EGP50"
+                android:textSize="24sp" />
 
             <TextView
                 android:id="@+id/foodBuyerMealCardViewDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/foodBuyerMealCardViewName"
-                android:text="Some text Some text Some text Some text Some text Some text Some text "
-                android:maxLines="2"
                 android:layout_alignParentLeft="true"
-                android:textSize="18sp"/>
+                android:maxLines="2"
+                android:text="Some text Some text Some text Some text Some text Some text Some text "
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/foodBuyerMealCardViewCategory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/foodBuyerMealCardViewDescription"
-                android:text="Some text Some"
-                android:maxLines="2"
                 android:layout_alignParentLeft="true"
-                android:textSize="20sp"/>
+                android:maxLines="2"
+                android:text="Some text Some"
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/foodBuyerMealCardViewMakerName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/foodBuyerMealCardViewDescription"
-                android:text="Maker"
                 android:layout_alignParentRight="true"
-                android:textSize="24sp"/>
+                android:text="Maker"
+                android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/foodBuyerAddOrderItemButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/foodBuyerMealCardViewMakerName"
+                android:layout_marginTop="5sp"
+                android:text="Add To Cart"/>
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>

@@ -11,11 +11,12 @@ public class OrderItem {
     public Double totalPrice;
 
     public OrderItem(){}
-    public OrderItem(String mealItemId, Integer quantity, String notes, Integer rating) {
+    public OrderItem(String mealItemId, Integer quantity, String notes, Integer rating, Double totalPrice) {
         this.mealItemId = mealItemId;
         this.quantity = quantity;
         this.notes = notes;
         this.rating = rating;
+        this.totalPrice = totalPrice;
     }
 
     public void GetMealItem(final RetrievalEventListener<MealItem> mealItemRetrievalEventListener)

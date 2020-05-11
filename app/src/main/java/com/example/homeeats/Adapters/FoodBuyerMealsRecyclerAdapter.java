@@ -5,20 +5,26 @@ import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.homeeats.Activities.FoodBuyer.FoodBuyerMealsFragment;
+import com.example.homeeats.Activities.FoodBuyer.FoodBuyerOrderItemDialog;
 import com.example.homeeats.Activities.FoodBuyer.FoodBuyerViewMakerActivity;
 import com.example.homeeats.Dao.FoodMakerDao;
 import com.example.homeeats.Models.FoodMaker;
 import com.example.homeeats.Models.MealItem;
+import com.example.homeeats.Models.Order;
 import com.example.homeeats.R;
 import com.example.firbasedao.Listeners.RetrievalEventListener;
+import com.google.firebase.database.core.Context;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -26,9 +32,19 @@ import java.util.List;
 public class FoodBuyerMealsRecyclerAdapter extends
         RecyclerView.Adapter<FoodBuyerMealsRecyclerAdapter.MealViewHolder> {
     List<MealItem> meals;
+    FragmentManager fragmentManager;
+    Order currentOrder;
 
-    public FoodBuyerMealsRecyclerAdapter(List<MealItem> meals) {
+    public FoodBuyerMealsRecyclerAdapter(List<MealItem> meals, FragmentManager Fm, Order currentOrder) {
         this.meals = meals;
+        this.fragmentManager = Fm;
+        this.currentOrder = currentOrder;
+    }
+
+    public FoodBuyerMealsRecyclerAdapter(List<MealItem> meals, FragmentManager Fm) {
+        this.meals = meals;
+        this.fragmentManager = Fm;
+
     }
 
     @Override
@@ -46,7 +62,17 @@ public class FoodBuyerMealsRecyclerAdapter extends
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final MealViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final MealViewHolder holder, final int position) {
+
+        holder.addOrderItemBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FoodBuyerOrderItemDialog dialog = new FoodBuyerOrderItemDialog(meals.get(position).id, currentOrder);
+                dialog.show(fragmentManager, "HELLO!");
+            }
+        });
+
+
         holder.mealName.setText(meals.get(position).name);
         holder.mealPrice.setText("EGP" + meals.get(position).price.toString());
         holder.mealDescription.setText(meals.get(position).description);
@@ -76,8 +102,8 @@ public class FoodBuyerMealsRecyclerAdapter extends
         TextView mealDescription;
         TextView mealCategory;
         TextView makerName;
-
         String makerID;
+        Button addOrderItemBtn;
 
         public MealViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -88,7 +114,7 @@ public class FoodBuyerMealsRecyclerAdapter extends
             mealDescription = itemView.findViewById(R.id.foodBuyerMealCardViewDescription);
             mealCategory = itemView.findViewById(R.id.foodBuyerMealCardViewCategory);
             makerName = itemView.findViewById(R.id.foodBuyerMealCardViewMakerName);
-
+            addOrderItemBtn = itemView.findViewById(R.id.foodBuyerAddOrderItemButton);
             makerName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

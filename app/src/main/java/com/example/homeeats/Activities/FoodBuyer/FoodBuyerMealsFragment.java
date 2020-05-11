@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -28,6 +29,7 @@ public class FoodBuyerMealsFragment extends Fragment {
     private static final String[] searchBy = new String[] {"Search by", "Name", "Category"};
     private List<MealItem> meals;
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -47,7 +49,7 @@ public class FoodBuyerMealsFragment extends Fragment {
             @Override
             public void OnDataRetrieved(List<MealItem> mealItems) {
                 meals = mealItems;
-                FoodBuyerMealsRecyclerAdapter adapter = new FoodBuyerMealsRecyclerAdapter(meals);
+                FoodBuyerMealsRecyclerAdapter adapter = new FoodBuyerMealsRecyclerAdapter(meals, getFragmentManager(), ((FoodBuyerActivity) getActivity()).cart.get(0));
                 recyclerView.setAdapter(adapter);
             }
         });
@@ -65,7 +67,7 @@ public class FoodBuyerMealsFragment extends Fragment {
                     FoodBuyerMealsRecyclerAdapter adapter = new FoodBuyerMealsRecyclerAdapter(
                             MealItemDao.GetInstance().FilterMealsByNameAndCategory(
                                     meals, s.toString(), ""
-                            )
+                            ), getFragmentManager(), ((FoodBuyerActivity) getActivity()).cart.get(0)
                     );
                     recyclerView.setAdapter(adapter);
                 }
@@ -73,7 +75,7 @@ public class FoodBuyerMealsFragment extends Fragment {
                     FoodBuyerMealsRecyclerAdapter adapter = new FoodBuyerMealsRecyclerAdapter(
                             MealItemDao.GetInstance().FilterMealsByNameAndCategory(
                                     meals, "", s.toString()
-                            )
+                            ), getFragmentManager(), ((FoodBuyerActivity) getActivity()).cart.get(0)
                     );
                     recyclerView.setAdapter(adapter);
                 }
