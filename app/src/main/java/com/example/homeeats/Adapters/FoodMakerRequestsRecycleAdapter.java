@@ -67,6 +67,12 @@ public class FoodMakerRequestsRecycleAdapter extends RecyclerView.Adapter<FoodMa
             holder.Reject.setVisibility(View.INVISIBLE);
             holder.accept.setVisibility(View.INVISIBLE);
         }
+        else if(Requests.get(position).orderStatus.toString()=="ReadyForDelivery")
+        {
+            holder.change_status.setVisibility(View.INVISIBLE);
+            holder.Reject.setVisibility(View.INVISIBLE);
+            holder.accept.setVisibility(View.INVISIBLE);
+        }
 
         holder.price.setText("EGP" + Requests.get(position).totalPrice.toString());
         holder.status.setText(Requests.get(position).orderStatus.toString());
