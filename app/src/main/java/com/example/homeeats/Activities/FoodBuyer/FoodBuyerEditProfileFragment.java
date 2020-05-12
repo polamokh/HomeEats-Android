@@ -68,7 +68,6 @@ public class FoodBuyerEditProfileFragment extends Fragment implements OnMapReady
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.foodbuyer_edit_profile_fragment, container, false);
 
-        //TODO: Update food buyer new location
         imageView = view.findViewById(R.id.foodBuyerSettingsImageView);
         Button buttonBrowse = view.findViewById(R.id.foodBuyerSettingsImageButtonBrowse);
         Button buttonCamera = view.findViewById(R.id.foodBuyerSettingsImageButtonCamera);

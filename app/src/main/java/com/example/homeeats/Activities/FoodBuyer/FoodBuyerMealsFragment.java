@@ -6,6 +6,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -25,8 +26,8 @@ import com.example.homeeats.R;
 import java.util.List;
 
 public class FoodBuyerMealsFragment extends Fragment {
-    private static final String[] searchBy = new String[] {"Search by", "Name", "Category"};
-    private List<MealItem> meals;
+    private static final String[] searchBy = new String[] {"Name", "Category"};
+    private static List<MealItem> meals;
 
     @Nullable
     @Override
@@ -47,8 +48,14 @@ public class FoodBuyerMealsFragment extends Fragment {
             @Override
             public void OnDataRetrieved(List<MealItem> mealItems) {
                 meals = mealItems;
-                FoodBuyerMealsRecyclerAdapter adapter = new FoodBuyerMealsRecyclerAdapter(meals);
-                recyclerView.setAdapter(adapter);
+
+                for (int i = 0; i < meals.size(); i++)
+                    if (!meals.get(i).isAvailable)
+                        meals.remove(i);
+
+                FoodBuyerMealsRecyclerAdapter mealsRecyclerAdapter =
+                        new FoodBuyerMealsRecyclerAdapter(meals);
+                recyclerView.setAdapter(mealsRecyclerAdapter);
             }
         });
 
@@ -61,7 +68,7 @@ public class FoodBuyerMealsFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (spinner.getSelectedItemPosition() == 1) {
+                if (spinner.getSelectedItemPosition() == 0) {
                     FoodBuyerMealsRecyclerAdapter adapter = new FoodBuyerMealsRecyclerAdapter(
                             MealItemDao.GetInstance().FilterMealsByNameAndCategory(
                                     meals, s.toString(), ""
@@ -69,7 +76,7 @@ public class FoodBuyerMealsFragment extends Fragment {
                     );
                     recyclerView.setAdapter(adapter);
                 }
-                else if (spinner.getSelectedItemPosition() == 2) {
+                else if (spinner.getSelectedItemPosition() == 1) {
                     FoodBuyerMealsRecyclerAdapter adapter = new FoodBuyerMealsRecyclerAdapter(
                             MealItemDao.GetInstance().FilterMealsByNameAndCategory(
                                     meals, "", s.toString()
