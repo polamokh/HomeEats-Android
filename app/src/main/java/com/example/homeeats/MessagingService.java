@@ -12,12 +12,20 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.example.firbasedao.Listeners.EventListenersListener;
+import com.example.gmailsender.GmailSender;
+import com.example.homeeats.Dao.DeliveryBoyDao;
+import com.example.homeeats.Dao.FoodBuyerDao;
+import com.example.homeeats.Dao.FoodMakerDao;
 import com.example.homeeats.Dao.UserNotificationDao;
 import com.example.homeeats.Dao.UserPrimitiveDataDao;
 import com.example.firbasedao.Listeners.RetrievalEventListener;
 import com.example.firbasedao.Listeners.TaskListener;
+import com.example.homeeats.Models.DeliveryBoy;
+import com.example.homeeats.Models.FoodBuyer;
+import com.example.homeeats.Models.FoodMaker;
 import com.example.homeeats.Models.UserNotification;
 import com.example.homeeats.Models.UserPrimitiveData;
+import com.example.homeeats.Models.UserType;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -206,6 +214,42 @@ public class MessagingService extends FirebaseMessagingService {
                         sendNotification(userNotificationClone);
                     }
                     taskListener.OnSuccess();
+                }
+            }
+        });
+    }
+
+    public static void SendUserEmail(final String id, final String title, final String body, final TaskListener taskListener){
+        UserPrimitiveDataDao.GetInstance().get(id, new RetrievalEventListener<UserPrimitiveData>() {
+            @Override
+            public void OnDataRetrieved(UserPrimitiveData userPrimitiveData) {
+                //save the userNotification to database
+                if(userPrimitiveData.userType == UserType.DeliveryBoy){
+                    DeliveryBoyDao.GetInstance().get(id, new RetrievalEventListener<DeliveryBoy>() {
+                        @Override
+                        public void OnDataRetrieved(DeliveryBoy deliveryBoy) {
+                            GmailSender.sendEmail(deliveryBoy.emailAddress, title, body);
+                            taskListener.OnSuccess();
+                        }
+                    });
+                }
+                else if(userPrimitiveData.userType == UserType.FoodBuyer){
+                    FoodBuyerDao.GetInstance().get(id, new RetrievalEventListener<FoodBuyer>() {
+                        @Override
+                        public void OnDataRetrieved(FoodBuyer foodBuyer) {
+                            GmailSender.sendEmail(foodBuyer.emailAddress, title, body);
+                            taskListener.OnSuccess();
+                        }
+                    });
+                }
+                else if(userPrimitiveData.userType == UserType.FoodMaker){
+                    FoodMakerDao.GetInstance().get(id, new RetrievalEventListener<FoodMaker>() {
+                        @Override
+                        public void OnDataRetrieved(FoodMaker foodMaker) {
+                            GmailSender.sendEmail(foodMaker.emailAddress, title, body);
+                            taskListener.OnSuccess();
+                        }
+                    });
                 }
             }
         });
