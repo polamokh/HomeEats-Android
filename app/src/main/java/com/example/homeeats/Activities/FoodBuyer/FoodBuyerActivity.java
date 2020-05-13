@@ -88,6 +88,8 @@ public class FoodBuyerActivity extends AppCompatActivity implements NavigationVi
                         new FoodBuyerMakersFragment()).commit();
                 break;
             case R.id.foodBuyerNavCart:
+                getSupportFragmentManager().beginTransaction().replace(R.id.foodBuyerFragmentContainer,
+                        new FoodBuyerCartFragment()).commit();
                 break;
             case R.id.foodBuyerNavOrders:
                 break;

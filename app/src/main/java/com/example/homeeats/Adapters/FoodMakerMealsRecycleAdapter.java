@@ -71,12 +71,12 @@ public class FoodMakerMealsRecycleAdapter extends RecyclerView.Adapter<FoodMaker
 
         public MealViewHolder(@NonNull View itemView) {
             super(itemView);
-            cardView = (CardView)itemView.findViewById(R.id.cardView);
-            image = (ImageView)itemView.findViewById(R.id.imageView);
-            name = (TextView)itemView.findViewById(R.id.textViewMealCardName);
-            description = (TextView)itemView.findViewById(R.id.textViewMealCardDescription);
-            price = (TextView)itemView.findViewById(R.id.textViewMealCardPrice);
-            category = (TextView)itemView.findViewById(R.id.textViewMealCardCategory);
+            cardView = itemView.findViewById(R.id.cardView);
+            image = itemView.findViewById(R.id.imageView);
+            name = itemView.findViewById(R.id.textViewMealCardName);
+            description = itemView.findViewById(R.id.textViewMealCardDescription);
+            price = itemView.findViewById(R.id.textViewMealCardPrice);
+            category = itemView.findViewById(R.id.textViewMealCardCategory);
 
 
             // START OF HABD

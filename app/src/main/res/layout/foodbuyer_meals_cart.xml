@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="6dp">
+
+    <TextView
+        android:id="@+id/foodBuyerCartMealsName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Meal Name"
+        app:layout_constraintEnd_toStartOf="@+id/foodBuyerCartMealsQty"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/foodBuyerCartMealsQty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_toEndOf="@id/foodBuyerCartMealsName"
+        android:text="5"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="@+id/foodBuyerCartMealsName"
+        app:layout_constraintEnd_toStartOf="@+id/foodBuyerCartMealsPrice"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/foodBuyerCartMealsName"
+        app:layout_constraintTop_toTopOf="@+id/foodBuyerCartMealsName" />
+
+    <TextView
+        android:id="@+id/foodBuyerCartMealsPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_toEndOf="@id/foodBuyerCartMealsQty"
+        android:text="EGP200"
+        app:layout_constraintBottom_toBottomOf="@+id/foodBuyerCartMealsQty"
+        app:layout_constraintEnd_toStartOf="@+id/foodBuyerCartMealsRemove"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/foodBuyerCartMealsQty"
+        app:layout_constraintTop_toTopOf="@+id/foodBuyerCartMealsQty" />
+
+    <ImageButton
+        android:id="@+id/foodBuyerCartMealsRemove"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_delete"
+        app:layout_constraintBottom_toBottomOf="@+id/foodBuyerCartMealsPrice"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/foodBuyerCartMealsPrice"
+        app:layout_constraintTop_toTopOf="@+id/foodBuyerCartMealsPrice" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

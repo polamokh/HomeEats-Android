@@ -77,7 +77,7 @@ public class MealItemDao extends FirebaseDao<MealItem> {
         });
     }
     public void setMealImage(final String mealId, String mealMakerId, Bitmap image, final RetrievalEventListener<String> retrievalEventListener){
-        FilesStorageDatabase.GetInstance().uploadPhoto(image, String.format("meal images/%s/%s.jpg", mealMakerId, mealId).toString(),
+        FilesStorageDatabase.GetInstance().uploadPhoto(image, String.format("meal images/%s/%s.jpg", mealMakerId, mealId),
                 new RetrievalEventListener<String>() {
                     @Override
                     public void OnDataRetrieved(String uploadPath) {

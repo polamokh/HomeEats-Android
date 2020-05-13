@@ -20,11 +20,11 @@ public class FoodMakerEditProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_maker_edit_profile);
-        final EditText edited_name=(EditText)findViewById(R.id.FoodMaker_Edit_Name);
-        final EditText edited_Email=(EditText)findViewById(R.id.FoodMaker_Edit_Email);
-        final EditText edited_Location=(EditText)findViewById(R.id.FoodMaker_Edit_Location);
-        final EditText edited_Phone=(EditText)findViewById(R.id.FoodMaker_Edit_Phone);
-        final ImageButton edit=(ImageButton) findViewById(R.id.Edit_Food_Maker_Button);
+        final EditText edited_name= findViewById(R.id.FoodMaker_Edit_Name);
+        final EditText edited_Email= findViewById(R.id.FoodMaker_Edit_Email);
+        final EditText edited_Location= findViewById(R.id.FoodMaker_Edit_Location);
+        final EditText edited_Phone= findViewById(R.id.FoodMaker_Edit_Phone);
+        final ImageButton edit= findViewById(R.id.Edit_Food_Maker_Button);
         final String Food_maker_ID= getIntent().getExtras().getString("FoodMakerID");
         FoodMakerDao.GetInstance().get(Food_maker_ID, new RetrievalEventListener<FoodMaker>() {
             @Override
