@@ -18,6 +18,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.firbasedao.Listeners.EventListenersListener;
+import com.example.firbasedao.Listeners.RetrievalEventListener;
+import com.example.firbasedao.Listeners.TaskListener;
 import com.example.gmailsender.GmailSender;
 import com.example.homeeats.Activities.DeliveryBoy.DeliveryBoyActivity;
 import com.example.homeeats.Activities.FoodBuyer.FoodBuyerActivity;
@@ -25,8 +27,6 @@ import com.example.homeeats.Activities.FoodMaker.FoodMakerActivity;
 import com.example.homeeats.Dao.MealItemDao;
 import com.example.homeeats.Dao.OrderDao;
 import com.example.homeeats.Dao.UserPrimitiveDataDao;
-import com.example.firbasedao.Listeners.RetrievalEventListener;
-import com.example.firbasedao.Listeners.TaskListener;
 import com.example.homeeats.LiveLocationService;
 import com.example.homeeats.Models.Client;
 import com.example.homeeats.Models.MealItem;
@@ -41,6 +41,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.iid.FirebaseInstanceId;
+
 import java.util.ArrayList;
 import java.util.List;
 

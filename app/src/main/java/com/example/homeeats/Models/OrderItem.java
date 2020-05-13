@@ -19,6 +19,15 @@ public class OrderItem {
         this.totalPrice = totalPrice;
     }
 
+    public void getCurrentTotalPrice(final RetrievalEventListener<Double> retrievalEventListener){
+        MealItemDao.GetInstance().get(mealItemId, new RetrievalEventListener<MealItem>() {
+            @Override
+            public void OnDataRetrieved(MealItem mealItem) {
+                retrievalEventListener.OnDataRetrieved(mealItem.price * quantity);
+            }
+        });
+    }
+
     public void GetMealItem(final RetrievalEventListener<MealItem> mealItemRetrievalEventListener)
     {
         MealItemDao.GetInstance().get(mealItemId, new RetrievalEventListener<MealItem>() {

@@ -6,6 +6,8 @@ import com.example.firbasedao.FirebaseDao;
 import com.example.firbasedao.Listeners.RetrievalEventListener;
 import com.example.firbasedao.Listeners.TaskListener;
 import com.example.gmailsender.GmailSender;
+import com.example.homeeats.Helpers.EmailHelper;
+import com.example.homeeats.Helpers.NotificationHelper;
 import com.example.homeeats.MessagingService;
 import com.example.homeeats.Models.DeliveryBoy;
 import com.example.homeeats.Models.FoodBuyer;
@@ -68,71 +70,14 @@ public class OrderDao extends FirebaseDao<Order> {
             @Override
             public void OnDataRetrieved(Order order) {
                 //send Food buyer notification
-                UserNotification foodBuyerNotification = new UserNotification();
-                foodBuyerNotification.setUserId(order.foodBuyerId);
-                foodBuyerNotification.setTitle(title);
-                foodBuyerNotification.setBody(body);
-                MessagingService.SendUserNotification(foodBuyerNotification, new TaskListener() {
-                    @Override
-                    public void OnSuccess() {
-                        Log.e("Notification", "sent food buyer notification");
-                    }
-
-                    @Override
-                    public void OnFail() {
-
-                    }
-                });
-                FoodBuyerDao.GetInstance().get(order.foodBuyerId, new RetrievalEventListener<FoodBuyer>() {
-                    @Override
-                    public void OnDataRetrieved(FoodBuyer deliveryBoy) {
-                        GmailSender.sendEmail(deliveryBoy.emailAddress, title, body);
-                    }
-                });
+                NotificationHelper.sendUserNotification(order.foodBuyerId, title, body);
+                EmailHelper.SendUserEmail(order.foodBuyerId, title, body);
                 //send food maker notification
-                UserNotification foodMakerNotification = new UserNotification();
-                foodMakerNotification.setUserId(order.foodMakerId);
-                foodMakerNotification.setTitle(title);
-                foodMakerNotification.setBody(body);
-                MessagingService.SendUserNotification(foodMakerNotification, new TaskListener() {
-                    @Override
-                    public void OnSuccess() {
-                        Log.e("Notification", "sent food maker notification");
-                    }
-
-                    @Override
-                    public void OnFail() {
-
-                    }
-                });
-                FoodMakerDao.GetInstance().get(order.foodMakerId, new RetrievalEventListener<FoodMaker>() {
-                    @Override
-                    public void OnDataRetrieved(FoodMaker foodMaker) {
-                        GmailSender.sendEmail(foodMaker.emailAddress, title, body);
-                    }
-                });
+                NotificationHelper.sendUserNotification(order.foodMakerId, title, body);
+                EmailHelper.SendUserEmail(order.foodMakerId, title, body);
                 //send delivery boy notification
-                UserNotification deliveryBoyNotification = new UserNotification();
-                deliveryBoyNotification.setUserId(order.deliveryBoyId);
-                deliveryBoyNotification.setTitle(title);
-                deliveryBoyNotification.setBody(body);
-                MessagingService.SendUserNotification(deliveryBoyNotification, new TaskListener() {
-                    @Override
-                    public void OnSuccess() {
-                        Log.e("Notification", "sent delivery boy notification");
-                    }
-
-                    @Override
-                    public void OnFail() {
-
-                    }
-                });
-                DeliveryBoyDao.GetInstance().get(order.deliveryBoyId, new RetrievalEventListener<DeliveryBoy>() {
-                    @Override
-                    public void OnDataRetrieved(DeliveryBoy deliveryBoy) {
-                        GmailSender.sendEmail(deliveryBoy.emailAddress, title, body);
-                    }
-                });
+                NotificationHelper.sendUserNotification(order.deliveryBoyId, title, body);
+                EmailHelper.SendUserEmail(order.deliveryBoyId, title, body);
             }
         });
     }
