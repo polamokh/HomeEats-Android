@@ -10,7 +10,9 @@ public class OrderItem {
     public Integer rating;
     public Double totalPrice;
 
-    public OrderItem(){}
+    public OrderItem() {
+    }
+
     public OrderItem(String mealItemId, Integer quantity, String notes, Integer rating, Double totalPrice) {
         this.mealItemId = mealItemId;
         this.quantity = quantity;
@@ -19,7 +21,7 @@ public class OrderItem {
         this.totalPrice = totalPrice;
     }
 
-    public void getCurrentTotalPrice(final RetrievalEventListener<Double> retrievalEventListener){
+    public void getCurrentTotalPrice(final RetrievalEventListener<Double> retrievalEventListener) {
         MealItemDao.GetInstance().get(mealItemId, new RetrievalEventListener<MealItem>() {
             @Override
             public void OnDataRetrieved(MealItem mealItem) {
@@ -28,8 +30,7 @@ public class OrderItem {
         });
     }
 
-    public void GetMealItem(final RetrievalEventListener<MealItem> mealItemRetrievalEventListener)
-    {
+    public void GetMealItem(final RetrievalEventListener<MealItem> mealItemRetrievalEventListener) {
         MealItemDao.GetInstance().get(mealItemId, new RetrievalEventListener<MealItem>() {
             @Override
             public void OnDataRetrieved(MealItem mealItem) {
