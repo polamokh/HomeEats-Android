@@ -1,6 +1,7 @@
 package com.example.homeeats.Adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,27 +10,37 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.firbasedao.Listeners.RetrievalEventListener;
+import com.example.homeeats.Activities.FoodBuyer.FoodBuyerCartFragment;
 import com.example.homeeats.Dao.FoodMakerDao;
+import com.example.homeeats.Models.CartOrderItem;
 import com.example.homeeats.Models.FoodMaker;
 import com.example.homeeats.Models.Order;
 import com.example.homeeats.R;
 import com.squareup.picasso.Picasso;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 public class FoodBuyerCartOrdersRecyclerAdapter extends
         RecyclerView.Adapter<FoodBuyerCartOrdersRecyclerAdapter.MakersViewHolder> {
 
-    private List<Order> orders;
-    private Context context;
+    private HashMap<String, List<CartOrderItem>> orders;
+    private ArrayList<String> foodMakers;
+    private Fragment fragment;
 
-    public FoodBuyerCartOrdersRecyclerAdapter(List<Order> orders, Context context) {
+    public FoodBuyerCartOrdersRecyclerAdapter(HashMap<String, List<CartOrderItem>> orders,
+                                              ArrayList<String> foodMakers, Fragment fragment) {
         this.orders = orders;
-        this.context = context;
+        this.foodMakers = foodMakers;
+        this.fragment = fragment;
     }
 
     @NonNull
@@ -42,7 +53,17 @@ public class FoodBuyerCartOrdersRecyclerAdapter extends
 
     @Override
     public void onBindViewHolder(@NonNull final MakersViewHolder holder, final int position) {
-        FoodMakerDao.GetInstance().get(orders.get(position).foodMakerId,
+        Log.d("TAG", "onBindViewHolder: running" + orders.size());
+        if (orders.get(foodMakers.get(position)).size() == 0) {
+            orders.remove(foodMakers.get(position));
+            foodMakers.remove(position);
+
+            ((FoodBuyerCartFragment)fragment).recalculateTotalPrice(orders, foodMakers);
+
+            return;
+        }
+
+        FoodMakerDao.GetInstance().get(foodMakers.get(position),
                 new RetrievalEventListener<FoodMaker>() {
                     @Override
                     public void OnDataRetrieved(FoodMaker foodMaker) {
@@ -52,12 +73,18 @@ public class FoodBuyerCartOrdersRecyclerAdapter extends
                                 .into(holder.image);
                     }
                 });
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.context);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.fragment.getContext());
         holder.recyclerView.setLayoutManager(linearLayoutManager);
+
         FoodBuyerCartMealsRecyclerAdapter adapter =
-                new FoodBuyerCartMealsRecyclerAdapter(orders.get(position).orderItems);
+                new FoodBuyerCartMealsRecyclerAdapter(orders.get(foodMakers.get(position)), this);
         holder.recyclerView.setAdapter(adapter);
-        holder.totalPrice.setText(orders.get(position).totalPrice.toString());
+
+        Double orderTotalPrice = 0.0;
+        for (CartOrderItem cartOrderItem : orders.get(foodMakers.get(position))) {
+            orderTotalPrice += cartOrderItem.totalPrice;
+        }
+        holder.totalPrice.setText(orderTotalPrice.toString());
 
         holder.buttonRemoveOrder.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,6 +94,8 @@ public class FoodBuyerCartOrdersRecyclerAdapter extends
                 notifyItemRangeChanged(position, orders.size());
             }
         });
+
+        ((FoodBuyerCartFragment)fragment).recalculateTotalPrice(orders, foodMakers);
     }
 
     @Override

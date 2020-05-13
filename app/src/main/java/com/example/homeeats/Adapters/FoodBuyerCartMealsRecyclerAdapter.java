@@ -10,7 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.firbasedao.Listeners.RetrievalEventListener;
+import com.example.firbasedao.Listeners.TaskListener;
+import com.example.homeeats.Dao.CartOrderItemDao;
 import com.example.homeeats.Dao.MealItemDao;
+import com.example.homeeats.Models.CartOrderItem;
 import com.example.homeeats.Models.MealItem;
 import com.example.homeeats.Models.OrderItem;
 import com.example.homeeats.R;
@@ -20,10 +23,13 @@ import java.util.List;
 public class FoodBuyerCartMealsRecyclerAdapter extends
         RecyclerView.Adapter<FoodBuyerCartMealsRecyclerAdapter.OrderItemViewHolder> {
 
-    private List<OrderItem> orderItems;
+    private List<CartOrderItem> cartOrderItems;
+    private FoodBuyerCartOrdersRecyclerAdapter ordersRecyclerAdapter;
 
-    public FoodBuyerCartMealsRecyclerAdapter(List<OrderItem> orderItems) {
-        this.orderItems = orderItems;
+    public FoodBuyerCartMealsRecyclerAdapter(List<CartOrderItem> cartOrderItems,
+                                             FoodBuyerCartOrdersRecyclerAdapter ordersRecyclerAdapter) {
+        this.cartOrderItems = cartOrderItems;
+        this.ordersRecyclerAdapter = ordersRecyclerAdapter;
     }
 
     @NonNull
@@ -36,29 +42,42 @@ public class FoodBuyerCartMealsRecyclerAdapter extends
 
     @Override
     public void onBindViewHolder(@NonNull final OrderItemViewHolder holder, final int position) {
-        MealItemDao.GetInstance().get(orderItems.get(position).mealItemId,
+        MealItemDao.GetInstance().get(cartOrderItems.get(position).mealItemId,
                 new RetrievalEventListener<MealItem>() {
                     @Override
                     public void OnDataRetrieved(MealItem mealItem) {
                         holder.name.setText(mealItem.name);
                     }
                 });
-        holder.quantity.setText("Qty. " + orderItems.get(position).quantity.toString());
-        holder.price.setText("EGP" + orderItems.get(position).totalPrice.toString());
+        holder.quantity.setText("Qty. " + cartOrderItems.get(position).quantity.toString());
+        holder.price.setText("EGP" + cartOrderItems.get(position).totalPrice.toString());
 
         holder.buttonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                orderItems.remove(position);
-                notifyItemRemoved(position);
-                notifyItemRangeChanged(position, orderItems.size());
+                CartOrderItemDao.GetInstance().Remove(cartOrderItems.get(position),
+                        new TaskListener() {
+                            @Override
+                            public void OnSuccess() {
+                                cartOrderItems.remove(position);
+                                notifyItemRemoved(position);
+                                notifyItemRangeChanged(position, cartOrderItems.size());
+
+                                ordersRecyclerAdapter.notifyDataSetChanged();
+                            }
+
+                            @Override
+                            public void OnFail() {
+
+                            }
+                        });
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return orderItems.size();
+        return cartOrderItems.size();
     }
 
     public static class OrderItemViewHolder extends RecyclerView.ViewHolder {

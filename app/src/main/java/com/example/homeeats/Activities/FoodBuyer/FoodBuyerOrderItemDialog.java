@@ -7,13 +7,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.example.firbasedao.Listeners.RetrievalEventListener;
 import com.example.firbasedao.Listeners.TaskListener;
+import com.example.homeeats.Dao.CartOrderItemDao;
 import com.example.homeeats.Dao.OrderDao;
+import com.example.homeeats.Models.CartOrderItem;
 import com.example.homeeats.Models.Order;
 import com.example.homeeats.Models.OrderItem;
 import com.example.homeeats.R;
@@ -50,19 +54,28 @@ public class FoodBuyerOrderItemDialog extends DialogFragment {
 
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                OrderItem newOrderItem = new OrderItem(mealID, Integer.parseInt(quantity.getText().toString()), instructions.getText().toString(), -1, 432.3);
-                currentOrder.orderItems.add(newOrderItem);
-                // FIXME: hardcoded code.
-                OrderDao.GetInstance().save(currentOrder, "-M710vWwEgbXCnldG3ub", new TaskListener() {
+            public void onClick(final View v) {
+                final CartOrderItem cartOrderItem = new CartOrderItem("", getActivity().getIntent().getExtras()
+                        .getString("FoodBuyerID"), mealID, Integer.parseInt(quantity.getText().toString()),
+                        instructions.getText().toString(), 3, 0.0);
+                cartOrderItem.getCurrentTotalPrice(new RetrievalEventListener<Double>() {
                     @Override
-                    public void OnSuccess() {
-                        Log.e("200!", "success :)");
-                        getDialog().dismiss();
-                    }
-                    @Override
-                    public void OnFail() {
-                        getDialog().dismiss();
+                    public void OnDataRetrieved(Double aDouble) {
+                        cartOrderItem.totalPrice = aDouble;
+
+                        CartOrderItemDao.GetInstance().Add(cartOrderItem, new TaskListener() {
+                            @Override
+                            public void OnSuccess() {
+                                getDialog().dismiss();
+                                Toast.makeText(v.getContext(), "Added successfully", Toast.LENGTH_SHORT)
+                                        .show();
+                            }
+
+                            @Override
+                            public void OnFail() {
+
+                            }
+                        });
                     }
                 });
             }
@@ -71,7 +84,7 @@ public class FoodBuyerOrderItemDialog extends DialogFragment {
         return view;
     }
 
-    public FoodBuyerOrderItemDialog(String mealID, Order currentOrder){
+    public FoodBuyerOrderItemDialog(String mealID, Order currentOrder) {
         super();
         this.mealID = mealID;
         this.currentOrder = currentOrder;
