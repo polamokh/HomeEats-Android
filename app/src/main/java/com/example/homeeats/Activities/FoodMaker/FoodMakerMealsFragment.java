@@ -24,25 +24,19 @@ public class FoodMakerMealsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.foodmaker_fragment, container, false);
-
         final RecyclerView recyclerView = view.findViewById(R.id.foodMakerRecyclerView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
         String foodMakerID = getActivity().getIntent().getExtras().getString("FoodMakerID");
-        FoodMakerDao.GetInstance().GetFoodMakerMeals(foodMakerID,
-                new RetrievalEventListener<List<MealItem>>() {
-                    @Override
-                    public void OnDataRetrieved(List<MealItem> mealItems) {
-                        FoodMakerMealsRecycleAdapter foodMakerMealsRecycleAdapter =
-                                new FoodMakerMealsRecycleAdapter(mealItems);
-                        recyclerView.setAdapter(foodMakerMealsRecycleAdapter);
-                    }
-                });
-
-
-
+        FoodMakerDao.GetInstance().GetFoodMakerMeals(foodMakerID, new RetrievalEventListener<List<MealItem>>() {
+            @Override
+            public void OnDataRetrieved(List<MealItem> mealItems) {
+                FoodMakerMealsRecycleAdapter foodMakerMealsRecycleAdapter =
+                        new FoodMakerMealsRecycleAdapter(mealItems);
+                recyclerView.setAdapter(foodMakerMealsRecycleAdapter);
+            }
+        });
         return view;
     }
 }

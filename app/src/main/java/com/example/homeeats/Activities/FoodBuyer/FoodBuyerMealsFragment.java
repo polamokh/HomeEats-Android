@@ -81,7 +81,6 @@ public class FoodBuyerMealsFragment extends Fragment {
                 }
             }
         });
-
         return view;
     }
 }

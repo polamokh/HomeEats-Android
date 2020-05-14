@@ -29,8 +29,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class FoodBuyerMealsRecyclerAdapter extends
-        RecyclerView.Adapter<FoodBuyerMealsRecyclerAdapter.MealViewHolder> {
+public class FoodBuyerMealsRecyclerAdapter extends RecyclerView.Adapter<FoodBuyerMealsRecyclerAdapter.MealViewHolder> {
     List<MealItem> meals;
     FragmentManager fragmentManager;
     Order currentOrder;
