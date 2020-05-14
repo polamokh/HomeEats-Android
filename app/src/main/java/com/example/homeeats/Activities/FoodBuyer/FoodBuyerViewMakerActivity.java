@@ -65,6 +65,10 @@ public class FoodBuyerViewMakerActivity extends AppCompatActivity implements OnM
         FoodMakerDao.GetInstance().GetFoodMakerMeals(makerID, new RetrievalEventListener<List<MealItem>>() {
             @Override
             public void OnDataRetrieved(List<MealItem> mealItems) {
+                for (int i = 0; i < mealItems.size(); i++)
+                    if (!mealItems.get(i).isAvailable)
+                        mealItems.remove(i);
+
                 FoodBuyerMealsRecyclerAdapter adapter =
                         new FoodBuyerMealsRecyclerAdapter(mealItems, getSupportFragmentManager());
                 recyclerView.setAdapter(adapter);
