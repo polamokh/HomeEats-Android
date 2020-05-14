@@ -110,7 +110,7 @@ public class CartOrderItemDao {
         cartOrderItem.notes = dataSnapshot.child("notes").getValue().toString();
         cartOrderItem.quantity = Integer.parseInt(dataSnapshot.child("quantity").getValue().toString());
         cartOrderItem.rating = Integer.parseInt(dataSnapshot.child("rating").getValue().toString());
-//        cartOrderItem.totalPrice = Double.parseDouble(dataSnapshot.child("totalPrice").getValue().toString());
+        cartOrderItem.totalPrice = Double.parseDouble(dataSnapshot.child("totalPrice").getValue().toString());
         return cartOrderItem;
     }
 }

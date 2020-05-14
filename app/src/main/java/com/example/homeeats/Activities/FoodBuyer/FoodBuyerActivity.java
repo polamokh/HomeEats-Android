@@ -2,6 +2,7 @@ package com.example.homeeats.Activities.FoodBuyer;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -11,24 +12,45 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.example.homeeats.Activities.FoodMaker.FoodMakerMealsFragment;
-import com.example.homeeats.Dao.FoodBuyerDao;
-import com.example.homeeats.Models.FoodBuyer;
-import com.example.homeeats.R;
 import com.example.firbasedao.Listeners.RetrievalEventListener;
 import com.example.firbasedao.Listeners.TaskListener;
+import com.example.homeeats.Dao.FoodBuyerDao;
+import com.example.homeeats.Models.FoodBuyer;
+import com.example.homeeats.Models.Order;
+import com.example.homeeats.Models.OrderItem;
+import com.example.homeeats.Models.OrderStatus;
+import com.example.homeeats.R;
 import com.example.homeeats.UserAuthenticationDatabase;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.navigation.NavigationView;
+import com.squareup.picasso.Picasso;
 
-import static com.example.homeeats.R.id.foodMakerToolbar;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FoodBuyerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     DrawerLayout drawerLayout;
     NavigationView navigationView;
+    public ArrayList<Order> cart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        /*
+            testing adding cart items throught activites & fragments
+            Order(String id, String foodMakerId, String foodBuyerId, String deliveryBoyId, List<OrderItem> orderItems,
+            String review, Integer rating, Double totalPrice, OrderStatus orderStatus, LatLng buyerLocation)
+
+         */
+        cart = new ArrayList<>();
+        Order dummyOrder = new Order("", "FnFqPvY2VuMWrLf04ZZacTbrV293", getIntent().getExtras().getString("FoodBuyerID"), "QKchGRN7JBh3nZUiIP9O5GW5pfD3",
+                new ArrayList<OrderItem>(), "meya meya wel akl genaaaan (Y)", 5, 432.234, OrderStatus.Pending, new LatLng(400, 313));
+        cart.add(dummyOrder);
+
+
+
+
         setContentView(R.layout.foodbuyer_activity);
 
         Toolbar toolbar = findViewById(R.id.foodBuyerToolbar);
@@ -41,12 +63,17 @@ public class FoodBuyerActivity extends AppCompatActivity implements NavigationVi
                 .findViewById(R.id.navHeaderTextViewName);
         final TextView textViewNavHeaderEmail = navigationView.getHeaderView(0)
                 .findViewById(R.id.navHeaderTextViewEmail);
+        final ImageView imageViewNavHeader = navigationView.getHeaderView(0)
+                .findViewById(R.id.navHeaderImageView);
         FoodBuyerDao.GetInstance().get(getIntent().getExtras().getString("FoodBuyerID"),
                 new RetrievalEventListener<FoodBuyer>() {
                     @Override
                     public void OnDataRetrieved(FoodBuyer foodBuyer) {
                         textViewNavHeaderName.setText(foodBuyer.name);
                         textViewNavHeaderEmail.setText(foodBuyer.emailAddress);
+                        Picasso.get()
+                                .load(foodBuyer.photo)
+                                .into(imageViewNavHeader);
                     }
                 });
 
@@ -66,6 +93,11 @@ public class FoodBuyerActivity extends AppCompatActivity implements NavigationVi
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        if (item.isChecked()) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+            return true;
+        }
+
         item.setChecked(true);
 
         //TODO: Complete FoodBuyer missing fragments
@@ -79,10 +111,14 @@ public class FoodBuyerActivity extends AppCompatActivity implements NavigationVi
                         new FoodBuyerMakersFragment()).commit();
                 break;
             case R.id.foodBuyerNavCart:
+                getSupportFragmentManager().beginTransaction().replace(R.id.foodBuyerFragmentContainer,
+                        new FoodBuyerCartFragment()).commit();
                 break;
             case R.id.foodBuyerNavOrders:
                 break;
             case R.id.foodBuyerNavSettings:
+                getSupportFragmentManager().beginTransaction().replace(R.id.foodBuyerFragmentContainer,
+                        new FoodBuyerEditProfileFragment()).commit();
                 break;
             case R.id.foodBuyerNavLogout:
                 UserAuthenticationDatabase.GetInstance().SignOut(new TaskListener() {
