@@ -24,6 +24,7 @@ import com.example.gmailsender.GmailSender;
 import com.example.homeeats.Activities.DeliveryBoy.DeliveryBoyActivity;
 import com.example.homeeats.Activities.FoodBuyer.FoodBuyerActivity;
 import com.example.homeeats.Activities.FoodMaker.FoodMakerActivity;
+import com.example.homeeats.Dao.DeliveryBoyDao;
 import com.example.homeeats.Dao.MealItemDao;
 import com.example.homeeats.Dao.OrderDao;
 import com.example.homeeats.Dao.UserPrimitiveDataDao;
@@ -42,6 +43,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.iid.FirebaseInstanceId;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,16 +90,9 @@ public class MainActivity extends AppCompatActivity {
         buttonLogin = findViewById(R.id.buttonLogin);
         textViewSignup = findViewById(R.id.textViewSignup);
 
-//        testing sending emails
-//        GmailSender.setFrom("homeeats.ris.2020@gmail.com");
-//        GmailSender.setPassword("HomeEats123");
-//        GmailSender.sendEmail("ramyeg26@gmail.com", "Test", "Test email.");
-//        AddNewOrder();
-
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 final Toast failedLoginToast = Toast.makeText(getApplicationContext(), "Invalid login ya 3'aby >:(", Toast.LENGTH_LONG);
                 if (editTextEmail.getText().toString().equals("") || editTextPassword.getText().toString().equals("")) {
                     failedLoginToast.show();

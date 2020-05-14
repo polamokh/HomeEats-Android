@@ -5,7 +5,7 @@
     tools:context=".Activities.MainActivity"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#D1C87B">
+    android:background="@color/cardview_dark_background">
 <!--
         tools:context=".MainActivity"
 -->
@@ -81,6 +81,15 @@
                 app:layout_constraintTop_toBottomOf="@+id/textViewMealCardName"
                 android:layout_marginLeft="12dp" />
 
+            <ImageView
+                android:id="@+id/Availability_view_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_notavailable"
+                tools:layout_editor_absoluteX="335dp"
+                tools:layout_editor_absoluteY="254dp"
+                tools:ignore="MissingConstraints" />
+
             <Button
                 app:layout_constraintBottom_toBottomOf="@+id/view"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -132,32 +141,20 @@
                     app:layout_constraintTop_toBottomOf="@+id/textViewMealCardDescription"
                     android:layout_marginLeft="12dp"
                     android:gravity="end" />
-                <Switch
-                    android:id="@+id/MealItem_Availability"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableBottom="@color/colorPrimaryDark"
-                    android:text="Available"
-                    android:textSize="22dp"
-                    android:textColor="@color/colorPrimaryDark"
-                    tools:layout_editor_absoluteX="107dp"
-                    tools:layout_editor_absoluteY="426dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewMealCardCategory"
-                    android:layout_marginLeft="12dp"/>
 
                 <ImageButton
-                    android:id="@+id/imageButton2"
+                    android:id="@+id/Food_Maker_Edit_Meal_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:srcCompat="@android:drawable/ic_menu_edit"
                     tools:layout_editor_absoluteX="212dp"
                     tools:layout_editor_absoluteY="266dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintRight_toRightOf="@id/MealItem_Availability"
-                    app:layout_constraintTop_toBottomOf="@+id/MealItem_Availability"/>
+                    app:layout_constraintRight_toRightOf="@id/textViewMealCardCategory"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewMealCardCategory"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 
 

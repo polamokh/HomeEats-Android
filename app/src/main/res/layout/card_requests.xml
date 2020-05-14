@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cardview_dark_background"
+    tools:context=".Activities.MainActivity">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/Requests_Card_View"
+        style="@style/CardView.Light"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="#6C6106"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="12dp">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/view_Requests"
+                android:layout_width="1dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="16dp"
+                android:elevation="12dp"
+                app:cardCornerRadius="25dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView"></androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/textViewRequestName"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginLeft="12dp"
+                android:text="Chicken Pizza"
+                android:textColor="@color/cardview_dark_background"
+                app:layout_constraintBottom_toTopOf="@+id/textViewRequestPrice"
+                app:layout_constraintStart_toEndOf="@+id/view"
+                app:layout_constraintTop_toTopOf="@+id/view" />
+
+            <TextView
+                android:id="@+id/textViewRequestPrice"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="12dp"
+                android:inputType="numberDecimal"
+                android:text="500"
+                android:textColor="@color/cardview_dark_background"
+                android:textSize="24dp"
+                app:layout_constraintStart_toEndOf="@+id/view_Requests"
+                app:layout_constraintTop_toBottomOf="@+id/textViewRequestName" />
+
+            <Button
+                android:id="@+id/arrowBtn_Requests"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginRight="12dp"
+                android:background="@drawable/ic_expand"
+                app:layout_constraintBottom_toBottomOf="@+id/view_Requests"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/view_Requests" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/requests_expandableView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:paddingBottom="12dp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewRequestPrice">
+
+                <TextView
+                    android:id="@+id/textViewRequestBuyerName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:inputType="textMultiLine"
+                    android:maxLines="3"
+                    android:text="The pizza is a meal so you can eat it it it it it it it "
+                    android:textColor="@color/cardview_dark_background"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textViewRequestDeliveryBoyName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textViewRequestBuyerName"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="12dp"
+                    android:gravity="end"
+                    android:text="Savory"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/cardview_dark_background"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewRequestBuyerName" />
+
+                <TextView
+                    android:id="@+id/textViewRequestItems"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    app:layout_constraintStart_toEndOf="@id/textViewRequestDeliveryBoyName"
+                    app:layout_constraintLeft_toLeftOf="@id/textViewRequestDeliveryBoyName"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:gravity="right"
+                    android:inputType="textMultiLine"
+                    android:text="Savory"
+                    android:textAlignment="gravity"
+                    android:textColor="@color/cardview_dark_background"
+                    android:textSize="18sp"
+                    android:paddingBottom="50dp"
+                    android:layout_marginBottom="0dp"
+                    app:layout_constraintTop_toBottomOf="@id/textViewRequestDeliveryBoyName"
+                    android:layout_marginEnd="50dp"
+
+                     />
+
+                <ImageButton
+                    android:id="@+id/FoodMaker_accept_order"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    app:srcCompat="@drawable/ic_accept_order"
+                    tools:layout_editor_absoluteX="106dp"
+                    tools:layout_editor_absoluteY="197dp"
+                    android:foregroundGravity="left"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginBottom="0dp"
+                    android:layout_marginLeft="30dp"
+                    android:baselineAlignBottom="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/textViewRequestItems"
+                    />
+
+                <ImageButton
+                    android:id="@+id/FoodMaker_Reject_order"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    app:srcCompat="@drawable/ic_reject_order"
+                    android:layout_marginTop="80dp"
+                    android:layout_marginRight="0dp"
+                    tools:layout_editor_absoluteX="150dp"
+                    tools:layout_editor_absoluteY="436dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/FoodMaker_accept_order"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintLeft_toLeftOf="@id/FoodMaker_accept_order"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+                <ImageButton
+                android:id="@+id/Ready_to_Deliver"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                app:srcCompat="@drawable/ic_readytodeliver"
+                tools:layout_editor_absoluteX="216dp"
+                tools:layout_editor_absoluteY="150dp"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/FoodMaker_Reject_order"
+                    app:layout_constraintLeft_toRightOf="@id/FoodMaker_Reject_order"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

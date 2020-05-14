@@ -1,10 +1,14 @@
 package com.example.homeeats.Adapters;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,17 +20,26 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.transition.AutoTransition;
 import androidx.transition.TransitionManager;
 
+import com.example.homeeats.Activities.FoodMaker.FoodMakerEditMealActivity;
 import com.example.homeeats.Models.MealItem;
 import com.example.homeeats.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class FoodMakerMealsRecycleAdapter extends RecyclerView.Adapter<FoodMakerMealsRecycleAdapter.MealViewHolder> {
+public class FoodMakerMealsRecycleAdapter extends RecyclerView.Adapter<FoodMakerMealsRecycleAdapter.MealViewHolder>
+{
     List<MealItem> meals;
+    private static Context context;
 
     public FoodMakerMealsRecycleAdapter(List<MealItem> meals) {
         this.meals = meals;
+
+    }
+    public FoodMakerMealsRecycleAdapter(List<MealItem> meals,Context context) {
+        this.meals = meals;
+        this.context=context;
+
     }
 
     @Override
@@ -44,12 +57,18 @@ public class FoodMakerMealsRecycleAdapter extends RecyclerView.Adapter<FoodMaker
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MealViewHolder holder, int position) {
+    public void onBindViewHolder(MealViewHolder holder, int position)
+    {if(meals.get(position).isAvailable)
+    {
+        holder.Available.setVisibility(View.INVISIBLE);
+    }
+        holder.Meal_ID=meals.get(position).id;
         holder.name.setText(meals.get(position).name);
         holder.description.setText(meals.get(position).description);
         holder.price.setText("EGP" + meals.get(position).price.toString());
         holder.category.setText(meals.get(position).mealCategory);
         Picasso.get().load(meals.get(position).photo).into(holder.image);
+
 
     }
 
@@ -66,17 +85,23 @@ public class FoodMakerMealsRecycleAdapter extends RecyclerView.Adapter<FoodMaker
         TextView description;
         TextView price;
         TextView category;
+        ImageButton Edit_Meal;
+        ImageView Available;
+        String Meal_ID;
+
 
 
 
         public MealViewHolder(@NonNull View itemView) {
             super(itemView);
-            cardView = itemView.findViewById(R.id.cardView);
-            image = itemView.findViewById(R.id.imageView);
-            name = itemView.findViewById(R.id.textViewMealCardName);
-            description = itemView.findViewById(R.id.textViewMealCardDescription);
-            price = itemView.findViewById(R.id.textViewMealCardPrice);
-            category = itemView.findViewById(R.id.textViewMealCardCategory);
+            cardView = (CardView)itemView.findViewById(R.id.cardView);
+            image = (ImageView)itemView.findViewById(R.id.imageView);
+            name = (TextView)itemView.findViewById(R.id.textViewMealCardName);
+            description = (TextView)itemView.findViewById(R.id.textViewMealCardDescription);
+            price = (TextView)itemView.findViewById(R.id.textViewMealCardPrice);
+            category = (TextView)itemView.findViewById(R.id.textViewMealCardCategory);
+            Edit_Meal=(ImageButton)itemView.findViewById(R.id.Food_Maker_Edit_Meal_btn);
+            Available=(ImageView)itemView.findViewById(R.id.Availability_view_btn);
 
 
             // START OF HABD
@@ -103,16 +128,15 @@ public class FoodMakerMealsRecycleAdapter extends RecyclerView.Adapter<FoodMaker
                     }
                 }
             });
-            // END OF HABD
-
-
-            /*
-            cardView = (CardView)itemView.findViewById(R.id.mealCardView);
-            image = (ImageView)itemView.findViewById(R.id.mealCardImageView);
-            name = (TextView)itemView.findViewById(R.id.mealCardTextViewName);
-            description = (TextView)itemView.findViewById(R.id.mealCardTextViewDescription);
-            price = (TextView)itemView.findViewById(R.id.mealCardTextViewDescription);
-             */
+            Edit_Meal.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v)
+                {
+                    Intent intent = new Intent(expandableView.getContext(), FoodMakerEditMealActivity.class);
+                    intent.putExtra("MealID",Meal_ID );
+                    expandableView.getContext().startActivity(intent);
+                }
+            });
         }
     }
 }
