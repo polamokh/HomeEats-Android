@@ -72,14 +72,14 @@ public class FoodBuyerCartFragment extends Fragment {
 
     public void recalculateTotalPrice(HashMap<String, List<CartOrderItem>> stringListHashMap,
                                       List<String> foodMakerKeys) {
-        Double ordersTotalPrice = 0.0;
-        for (int i = 0; i < foodMakerKeys.size(); i++) {
-            for (CartOrderItem cartOrderItem : stringListHashMap.get(foodMakerKeys.get(i))) {
-                ordersTotalPrice += cartOrderItem.totalPrice;
-            }
-        }
-
         if (foodMakerKeys.size() > 0) {
+            Double ordersTotalPrice = 0.0;
+            for (int i = 0; i < foodMakerKeys.size(); i++) {
+                for (CartOrderItem cartOrderItem : stringListHashMap.get(foodMakerKeys.get(i))) {
+                    ordersTotalPrice += cartOrderItem.totalPrice;
+                }
+            }
+
             textViewTotalPrice.setVisibility(View.VISIBLE);
             textViewTotalPriceLabel.setVisibility(View.VISIBLE);
             buttonCheckout.setVisibility(View.VISIBLE);
