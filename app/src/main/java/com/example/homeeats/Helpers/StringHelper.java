@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 public class StringHelper {
     private static ArrayList<Integer> prefix_function(String s) {
-        int n = (int)s.length();
+        int n = s.length();
         ArrayList<Integer> pi = new ArrayList<Integer>(Arrays.asList(new Integer[n]));
         pi.set(0, 0);
         for (int i = 1; i < n; i++) {

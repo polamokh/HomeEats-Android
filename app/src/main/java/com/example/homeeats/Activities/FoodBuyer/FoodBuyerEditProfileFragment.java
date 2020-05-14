@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -32,7 +33,10 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -40,23 +44,79 @@ import java.io.IOException;
 import static android.app.Activity.RESULT_OK;
 import static androidx.core.content.PermissionChecker.checkSelfPermission;
 
-public class FoodBuyerEditProfileFragment extends Fragment implements OnMapReadyCallback {
+public class FoodBuyerEditProfileFragment extends Fragment implements OnMapReadyCallback,
+        GoogleMap.OnMyLocationButtonClickListener,
+        GoogleMap.OnMyLocationClickListener,
+        GoogleMap.OnMapClickListener {
+
     private static FoodBuyer buyer;
-    ImageView imageView;
-    MapView mapView;
+
+    private ImageView imageView;
+    private Bitmap image;
+
+    private MapView mapView;
+    private GoogleMap gMap;
+    private LatLng markerLocation;
+
     private static final String MAP_VIEW_BUNDLE_KEY = "MapViewBundleKey";
     private static final int MY_CAMERA_PERMISSION_CODE = 100;
     private static final int CAMERA_REQUEST = 1888;
     private static int PICK_IMAGE_REQUEST = 1;
-
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.foodbuyer_edit_profile_fragment, container, false);
 
-        //TODO: Update food buyer new location
         imageView = view.findViewById(R.id.foodBuyerSettingsImageView);
+        final EditText editTextName = view.findViewById(R.id.foodBuyerSettingsEditTextName);
+        final EditText editTextMobile = view.findViewById(R.id.foodBuyerSettingsEditTextMobile);
+        final Spinner spinnerGender = view.findViewById(R.id.foodBuyerSettingsSpinnerGender);
+
+        final String foodBuyerID = getActivity().getIntent().getExtras().getString("FoodBuyerID");
+        if (buyer == null)
+            FoodBuyerDao.GetInstance().get(foodBuyerID, new RetrievalEventListener<FoodBuyer>() {
+                @Override
+                public void OnDataRetrieved(FoodBuyer foodBuyer) {
+                    buyer = foodBuyer;
+
+                    editTextName.setText(buyer.name);
+                    editTextMobile.setText(buyer.phone);
+                    spinnerGender.setSelection(getGenderIndex(buyer.gender));
+                    Picasso.get()
+                            .load(buyer.photo)
+                            .into(imageView, new Callback() {
+                                @Override
+                                public void onSuccess() {
+                                    image = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+                                }
+
+                                @Override
+                                public void onError(Exception e) {
+
+                                }
+                            });
+                }
+            });
+        else {
+            editTextName.setText(buyer.name);
+            editTextMobile.setText(buyer.phone);
+            spinnerGender.setSelection(getGenderIndex(buyer.gender));
+            Picasso.get()
+                    .load(buyer.photo)
+                    .into(imageView, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            image = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+
+                        }
+                    });
+        }
+
         Button buttonBrowse = view.findViewById(R.id.foodBuyerSettingsImageButtonBrowse);
         Button buttonCamera = view.findViewById(R.id.foodBuyerSettingsImageButtonCamera);
 
@@ -71,38 +131,17 @@ public class FoodBuyerEditProfileFragment extends Fragment implements OnMapReady
             @Override
             public void onClick(View v) {
                 if (checkSelfPermission(view.getContext()
-                        , Manifest.permission.CAMERA) != PermissionChecker.PERMISSION_GRANTED)
-                {
+                        , Manifest.permission.CAMERA) != PermissionChecker.PERMISSION_GRANTED) {
                     requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_PERMISSION_CODE);
-                }
-                else
-                {
+                } else {
                     Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     startActivityForResult(cameraIntent, CAMERA_REQUEST);
                 }
             }
         });
 
-        final EditText editTextName = view.findViewById(R.id.foodBuyerSettingsEditTextName);
-        final EditText editTextMobile = view.findViewById(R.id.foodBuyerSettingsEditTextMobile);
-        final Spinner spinnerGender = view.findViewById(R.id.foodBuyerSettingsSpinnerGender);
-
-        mapView = view.findViewById(R.id.foodBuyerSettingsMapView);
-
         Button buttonSave = view.findViewById(R.id.foodBuyerSettingsButtonSave);
         TextView textViewDiscard = view.findViewById(R.id.foodBuyerSettingsTextViewDiscard);
-
-        final String foodBuyerID = getActivity().getIntent().getExtras().getString("FoodBuyerID");
-        FoodBuyerDao.GetInstance().get(foodBuyerID, new RetrievalEventListener<FoodBuyer>() {
-            @Override
-            public void OnDataRetrieved(FoodBuyer foodBuyer) {
-                buyer = foodBuyer;
-                editTextName.setText(buyer.name);
-                editTextMobile.setText(buyer.phone);
-                spinnerGender.setSelection(getGenderIndex(buyer.gender));
-                Picasso.get().load(buyer.photo).into(imageView);
-            }
-        });
 
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,20 +149,38 @@ public class FoodBuyerEditProfileFragment extends Fragment implements OnMapReady
                 buyer.name = editTextName.getText().toString();
                 buyer.phone = editTextMobile.getText().toString();
                 buyer.gender = spinnerGender.getSelectedItem().toString().toLowerCase();
+                buyer.location = markerLocation;
 
-                FoodBuyerDao.GetInstance().save(buyer, foodBuyerID,
-                        ((BitmapDrawable)imageView.getDrawable()).getBitmap(), new TaskListener() {
-                    @Override
-                    public void OnSuccess() {
-                        Toast.makeText(v.getContext(), "Profile information updated successfully",
-                                Toast.LENGTH_SHORT).show();
-                    }
+                Bitmap currentImage = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+                if (currentImage != image) {
+                    image = currentImage;
+                    FoodBuyerDao.GetInstance().save(buyer, foodBuyerID, image,
+                            new TaskListener() {
+                                @Override
+                                public void OnSuccess() {
+                                    Toast.makeText(v.getContext(), "Profile information updated successfully",
+                                            Toast.LENGTH_SHORT).show();
+                                }
 
-                    @Override
-                    public void OnFail() {
+                                @Override
+                                public void OnFail() {
 
-                    }
-                });
+                                }
+                            });
+                } else {
+                    FoodBuyerDao.GetInstance().save(buyer, foodBuyerID, new TaskListener() {
+                        @Override
+                        public void OnSuccess() {
+                            Toast.makeText(v.getContext(), "Profile information updated successfully",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void OnFail() {
+
+                        }
+                    });
+                }
             }
         });
 
@@ -133,9 +190,19 @@ public class FoodBuyerEditProfileFragment extends Fragment implements OnMapReady
                 editTextName.setText(buyer.name);
                 editTextMobile.setText(buyer.phone);
                 spinnerGender.setSelection(getGenderIndex(buyer.gender));
-                Picasso.get().load(buyer.photo).into(imageView);
+                imageView.setImageBitmap(image);
+
+                addMarkerLocation(buyer.location);
+                gMap.animateCamera(CameraUpdateFactory.newCameraPosition(
+                        new CameraPosition.Builder()
+                                .target(buyer.location)
+                                .zoom(15.0f)
+                                .build()
+                ));
             }
         });
+
+        mapView = view.findViewById(R.id.foodBuyerSettingsMapView);
 
         Bundle mapViewBundle = null;
         if (savedInstanceState != null) {
@@ -147,13 +214,13 @@ public class FoodBuyerEditProfileFragment extends Fragment implements OnMapReady
         return view;
     }
 
-    int getGenderIndex(String gender) {
+    private int getGenderIndex(String gender) {
         if (gender.equals("male"))
             return 0;
         return 1;
     }
 
-    public void chooseImage() {
+    private void chooseImage() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -163,16 +230,12 @@ public class FoodBuyerEditProfileFragment extends Fragment implements OnMapReady
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == MY_CAMERA_PERMISSION_CODE)
-        {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
-            {
+        if (requestCode == MY_CAMERA_PERMISSION_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(getContext(), "Camera permission granted", Toast.LENGTH_LONG).show();
                 Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(cameraIntent, CAMERA_REQUEST);
-            }
-            else
-            {
+            } else {
                 Toast.makeText(getContext(), "Camera permission denied", Toast.LENGTH_LONG).show();
             }
         }
@@ -191,8 +254,7 @@ public class FoodBuyerEditProfileFragment extends Fragment implements OnMapReady
             }
         }
 
-        if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK)
-        {
+        if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
             Bitmap photo = (Bitmap) data.getExtras().get("data");
             imageView.setImageBitmap(photo);
         }
@@ -228,16 +290,19 @@ public class FoodBuyerEditProfileFragment extends Fragment implements OnMapReady
         super.onStop();
         mapView.onStop();
     }
+
     @Override
     public void onPause() {
         super.onPause();
         mapView.onPause();
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
     }
+
     @Override
     public void onLowMemory() {
         super.onLowMemory();
@@ -246,8 +311,66 @@ public class FoodBuyerEditProfileFragment extends Fragment implements OnMapReady
 
     @Override
     public void onMapReady(final GoogleMap googleMap) {
-        googleMap.setMinZoomPreference(5);
-        googleMap.addMarker(new MarkerOptions().position(buyer.location));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(buyer.location));
+        gMap = googleMap;
+
+        gMap.setOnMapClickListener(this);
+        gMap.setOnMyLocationClickListener(this);
+        gMap.setOnMyLocationButtonClickListener(this);
+
+        gMap.setMyLocationEnabled(true);
+
+        gMap.getUiSettings().setMyLocationButtonEnabled(true);
+        gMap.getUiSettings().setZoomControlsEnabled(true);
+
+        if (buyer == null)
+            FoodBuyerDao.GetInstance().get(getActivity().getIntent().getExtras()
+                            .getString("FoodBuyerID"),
+                    new RetrievalEventListener<FoodBuyer>() {
+                        @Override
+                        public void OnDataRetrieved(FoodBuyer foodBuyer) {
+                            buyer = foodBuyer;
+
+                            addMarkerLocation(buyer.location);
+                            gMap.animateCamera(CameraUpdateFactory.newCameraPosition(
+                                    new CameraPosition.Builder()
+                                            .target(buyer.location)
+                                            .zoom(15.0f)
+                                            .build()
+                            ));
+                        }
+                    });
+        else {
+            addMarkerLocation(buyer.location);
+            gMap.animateCamera(CameraUpdateFactory.newCameraPosition(
+                    new CameraPosition.Builder()
+                            .target(buyer.location)
+                            .zoom(15.0f)
+                            .build()
+            ));
+        }
+    }
+
+    @Override
+    public boolean onMyLocationButtonClick() {
+        Toast.makeText(getContext(), "Click on MAP to mark your current location",
+                Toast.LENGTH_LONG).show();
+        return false;
+    }
+
+    @Override
+    public void onMapClick(LatLng latLng) {
+        addMarkerLocation(latLng);
+    }
+
+    private void addMarkerLocation(LatLng latLng) {
+        gMap.clear();
+
+        markerLocation = latLng;
+        gMap.addMarker(new MarkerOptions().position(markerLocation));
+    }
+
+    @Override
+    public void onMyLocationClick(@NonNull Location location) {
+        addMarkerLocation(new LatLng(location.getLatitude(), location.getLongitude()));
     }
 }

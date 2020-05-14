@@ -39,7 +39,7 @@ public class FoodMakerAddMealActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Button selectImage = (Button) findViewById(R.id.uploadImage);
+        Button selectImage = findViewById(R.id.uploadImage);
         selectImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -48,11 +48,11 @@ public class FoodMakerAddMealActivity extends AppCompatActivity {
         });
         final MealItemDao MD = MealItemDao.GetInstance();
         final FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        ImageButton fab = (ImageButton) findViewById(R.id.add);
-        final EditText Name = (EditText) findViewById(R.id.Name_textbox);
-        final EditText Desc = (EditText) findViewById(R.id.Desc_textbox);
-        final EditText Price = (EditText) findViewById(R.id.Price_textbox);
-        final EditText Category = (EditText) findViewById(R.id.Category_textbox);
+        ImageButton fab = findViewById(R.id.add);
+        final EditText Name = findViewById(R.id.Name_textbox);
+        final EditText Desc = findViewById(R.id.Desc_textbox);
+        final EditText Price = findViewById(R.id.Price_textbox);
+        final EditText Category = findViewById(R.id.Category_textbox);
         imageView = findViewById(R.id.imageView2);
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -63,7 +63,7 @@ public class FoodMakerAddMealActivity extends AppCompatActivity {
                         getIntent().getExtras().getString("FoodMakerID"),
                         "",
                         Desc.getText().toString(),
-                        Double.parseDouble(Price.getText().toString()), "", 4.5, true);
+                        Double.parseDouble(Price.getText().toString()),Category.getText().toString(), 4.5, true);
                 final String Meal_ID = MealItemDao.GetInstance().GetNewKey();
                 MD.save(MI, Meal_ID, new TaskListener() {
                     @Override

@@ -35,7 +35,7 @@ public class OrderDao extends FirebaseDao<Order> {
     @Override
     protected void parseDataSnapshot(final DataSnapshot dataSnapshot, final RetrievalEventListener<Order> retrievalEventListener) {
         final Order order = new Order();
-        order.id = dataSnapshot.getKey().toString();
+        order.id = dataSnapshot.getKey();
         order.review = dataSnapshot.child("review").getValue().toString();
         order.rating = Integer.parseInt(dataSnapshot.child("rating").getValue().toString());
         order.totalPrice = Double.parseDouble(dataSnapshot.child("totalPrice").getValue().toString());

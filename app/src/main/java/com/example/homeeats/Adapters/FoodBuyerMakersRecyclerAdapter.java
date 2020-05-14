@@ -22,9 +22,11 @@ import java.util.List;
 public class FoodBuyerMakersRecyclerAdapter extends
         RecyclerView.Adapter<FoodBuyerMakersRecyclerAdapter.MakerViewHolder> {
     List<FoodMaker> foodMakers;
+    String foodBuyerID;
 
-    public FoodBuyerMakersRecyclerAdapter(List<FoodMaker> foodMakers) {
+    public FoodBuyerMakersRecyclerAdapter(List<FoodMaker> foodMakers, String foodBuyerID) {
         this.foodMakers = foodMakers;
+        this.foodBuyerID = foodBuyerID;
     }
 
     @Override
@@ -42,13 +44,23 @@ public class FoodBuyerMakersRecyclerAdapter extends
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MakerViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MakerViewHolder holder, final int position) {
         holder.name.setText(foodMakers.get(position).name);
         holder.phone.setText(foodMakers.get(position).phone);
         holder.email.setText(foodMakers.get(position).emailAddress);
         Picasso.get().load(foodMakers.get(position).photo).into(holder.image);
 
         holder.foodMakerID = foodMakers.get(position).id;
+
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), FoodBuyerViewMakerActivity.class);
+                intent.putExtra("FoodMakerID", foodMakers.get(position).id);
+                intent.putExtra("FoodBuyerID", foodBuyerID);
+                v.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -72,19 +84,6 @@ public class FoodBuyerMakersRecyclerAdapter extends
             name = itemView.findViewById(R.id.foodBuyerMakerCardViewName);
             phone = itemView.findViewById(R.id.foodBuyerMakerCardViewPhone);
             email = itemView.findViewById(R.id.foodBuyerMakerCardViewEmail);
-
-            cardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    cardClick(v);
-                }
-            });
-        }
-
-        void cardClick(View view) {
-            Intent intent = new Intent(view.getContext(), FoodBuyerViewMakerActivity.class);
-            intent.putExtra("FoodMakerID", foodMakerID);
-            view.getContext().startActivity(intent);
         }
     }
 }

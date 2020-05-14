@@ -91,6 +91,17 @@ public class CartOrderItemDao {
         });
     }
 
+    public void removeFoodBuyerCart(String foodBuyerId)
+    {
+        dbReference.child(tableName).child(foodBuyerId).setValue(null);
+    }
+
+    public void removeFoodMakerFromFoodBuyerCart(String foodBuyerId, String foodMakerId)
+    {
+        dbReference.child(tableName).child(foodBuyerId).child(foodMakerId).setValue(null);
+    }
+
+
     private CartOrderItem parseFoodBuyerFoodMakerDataSnapshot(DataSnapshot dataSnapshot){
         CartOrderItem cartOrderItem = new CartOrderItem();
         cartOrderItem.id = dataSnapshot.getKey();
@@ -99,7 +110,7 @@ public class CartOrderItemDao {
         cartOrderItem.notes = dataSnapshot.child("notes").getValue().toString();
         cartOrderItem.quantity = Integer.parseInt(dataSnapshot.child("quantity").getValue().toString());
         cartOrderItem.rating = Integer.parseInt(dataSnapshot.child("rating").getValue().toString());
-//        cartOrderItem.totalPrice = Double.parseDouble(dataSnapshot.child("totalPrice").getValue().toString());
+        cartOrderItem.totalPrice = Double.parseDouble(dataSnapshot.child("totalPrice").getValue().toString());
         return cartOrderItem;
     }
 }

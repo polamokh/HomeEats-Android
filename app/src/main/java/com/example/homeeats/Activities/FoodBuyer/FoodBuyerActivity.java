@@ -2,6 +2,7 @@ package com.example.homeeats.Activities.FoodBuyer;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,6 +23,7 @@ import com.example.homeeats.R;
 import com.example.homeeats.UserAuthenticationDatabase;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.navigation.NavigationView;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,12 +63,17 @@ public class FoodBuyerActivity extends AppCompatActivity implements NavigationVi
                 .findViewById(R.id.navHeaderTextViewName);
         final TextView textViewNavHeaderEmail = navigationView.getHeaderView(0)
                 .findViewById(R.id.navHeaderTextViewEmail);
+        final ImageView imageViewNavHeader = navigationView.getHeaderView(0)
+                .findViewById(R.id.navHeaderImageView);
         FoodBuyerDao.GetInstance().get(getIntent().getExtras().getString("FoodBuyerID"),
                 new RetrievalEventListener<FoodBuyer>() {
                     @Override
                     public void OnDataRetrieved(FoodBuyer foodBuyer) {
                         textViewNavHeaderName.setText(foodBuyer.name);
                         textViewNavHeaderEmail.setText(foodBuyer.emailAddress);
+                        Picasso.get()
+                                .load(foodBuyer.photo)
+                                .into(imageViewNavHeader);
                     }
                 });
 
@@ -104,6 +111,8 @@ public class FoodBuyerActivity extends AppCompatActivity implements NavigationVi
                         new FoodBuyerMakersFragment()).commit();
                 break;
             case R.id.foodBuyerNavCart:
+                getSupportFragmentManager().beginTransaction().replace(R.id.foodBuyerFragmentContainer,
+                        new FoodBuyerCartFragment()).commit();
                 break;
             case R.id.foodBuyerNavOrders:
                 getSupportFragmentManager().beginTransaction().replace(R.id.foodBuyerFragmentContainer,

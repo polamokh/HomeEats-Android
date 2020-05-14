@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="180dp"
-    android:background="@color/colorAccent"
+    android:background="@color/cardview_dark_background"
     android:maxHeight="160dp"
     android:gravity="bottom"
     android:padding="16dp"
@@ -10,9 +10,10 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/navHeaderImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/ic_launcher_round"/>
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@mipmap/ic_launcher_round"
+        android:scaleType="centerCrop"/>
 
     <TextView
         android:id="@+id/navHeaderTextViewName"
