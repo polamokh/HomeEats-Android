@@ -91,6 +91,17 @@ public class CartOrderItemDao {
         });
     }
 
+    public void removeFoodBuyerCart(String foodBuyerId)
+    {
+        dbReference.child(tableName).child(foodBuyerId).setValue(null);
+    }
+
+    public void removeFoodMakerFromFoodBuyerCart(String foodBuyerId, String foodMakerId)
+    {
+        dbReference.child(tableName).child(foodBuyerId).child(foodMakerId).setValue(null);
+    }
+
+
     private CartOrderItem parseFoodBuyerFoodMakerDataSnapshot(DataSnapshot dataSnapshot){
         CartOrderItem cartOrderItem = new CartOrderItem();
         cartOrderItem.id = dataSnapshot.getKey();
