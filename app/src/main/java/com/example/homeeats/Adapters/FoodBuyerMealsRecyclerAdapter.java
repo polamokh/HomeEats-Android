@@ -34,17 +34,20 @@ public class FoodBuyerMealsRecyclerAdapter extends
     List<MealItem> meals;
     FragmentManager fragmentManager;
     Order currentOrder;
+    String foodBuyerID;
 
-    public FoodBuyerMealsRecyclerAdapter(List<MealItem> meals, FragmentManager Fm, Order currentOrder) {
+    public FoodBuyerMealsRecyclerAdapter(List<MealItem> meals, FragmentManager fragmentManager,
+                                         Order currentOrder, String foodBuyerID) {
         this.meals = meals;
-        this.fragmentManager = Fm;
+        this.fragmentManager = fragmentManager;
         this.currentOrder = currentOrder;
+        this.foodBuyerID = foodBuyerID;
     }
 
-    public FoodBuyerMealsRecyclerAdapter(List<MealItem> meals, FragmentManager Fm) {
+    public FoodBuyerMealsRecyclerAdapter(List<MealItem> meals, FragmentManager fragmentManager, String foodBuyerID) {
         this.meals = meals;
-        this.fragmentManager = Fm;
-
+        this.fragmentManager = fragmentManager;
+        this.foodBuyerID = foodBuyerID;
     }
 
     @Override
@@ -87,6 +90,15 @@ public class FoodBuyerMealsRecyclerAdapter extends
                         holder.makerID = foodMaker.id;
                     }
                 });
+        holder.makerName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), FoodBuyerViewMakerActivity.class);
+                intent.putExtra("FoodMakerID", meals.get(position).foodMakerId);
+                intent.putExtra("FoodBuyerID", foodBuyerID);
+                v.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -115,18 +127,6 @@ public class FoodBuyerMealsRecyclerAdapter extends
             mealCategory = itemView.findViewById(R.id.foodBuyerMealCardViewCategory);
             makerName = itemView.findViewById(R.id.foodBuyerMealCardViewMakerName);
             addOrderItemBtn = itemView.findViewById(R.id.foodBuyerAddOrderItemButton);
-            makerName.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    makerClick(v);
-                }
-            });
-        }
-
-        void makerClick(View view) {
-            Intent intent = new Intent(view.getContext(), FoodBuyerViewMakerActivity.class);
-            intent.putExtra("FoodMakerID", makerID);
-            view.getContext().startActivity(intent);
         }
     }
 }

@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.firbasedao.Listeners.RetrievalEventListener;
 import com.example.homeeats.Activities.FoodBuyer.FoodBuyerCartFragment;
+import com.example.homeeats.Dao.CartOrderItemDao;
 import com.example.homeeats.Dao.FoodMakerDao;
 import com.example.homeeats.Models.CartOrderItem;
 import com.example.homeeats.Models.FoodMaker;
@@ -53,7 +54,6 @@ public class FoodBuyerCartOrdersRecyclerAdapter extends
 
     @Override
     public void onBindViewHolder(@NonNull final MakersViewHolder holder, final int position) {
-        Log.d("TAG", "onBindViewHolder: running" + orders.size());
         if (orders.get(foodMakers.get(position)).size() == 0) {
             orders.remove(foodMakers.get(position));
             foodMakers.remove(position);
@@ -89,9 +89,17 @@ public class FoodBuyerCartOrdersRecyclerAdapter extends
         holder.buttonRemoveOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                orders.remove(position);
+                CartOrderItemDao.GetInstance().removeFoodMakerFromFoodBuyerCart(
+                        orders.get(foodMakers.get(position)).get(0).foodBuyerId,
+                        foodMakers.get(position)
+                );
+
+                orders.remove(foodMakers.get(position));
+                foodMakers.remove(position);
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position, orders.size());
+
+                ((FoodBuyerCartFragment)fragment).recalculateTotalPrice(orders, foodMakers);
             }
         });
 

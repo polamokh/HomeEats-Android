@@ -52,7 +52,9 @@ public class FoodBuyerMealsFragment extends Fragment {
                 for (int i = 0; i < meals.size(); i++)
                     if (!meals.get(i).isAvailable)
                         meals.remove(i);
-                FoodBuyerMealsRecyclerAdapter adapter = new FoodBuyerMealsRecyclerAdapter(meals, getFragmentManager(), ((FoodBuyerActivity) getActivity()).cart.get(0));
+                FoodBuyerMealsRecyclerAdapter adapter = new FoodBuyerMealsRecyclerAdapter(meals, getFragmentManager(),
+                        ((FoodBuyerActivity) getActivity()).cart.get(0),
+                        getActivity().getIntent().getExtras().getString("FoodBuyerID"));
                 recyclerView.setAdapter(adapter);
             }
         });
@@ -72,14 +74,16 @@ public class FoodBuyerMealsFragment extends Fragment {
                     FoodBuyerMealsRecyclerAdapter adapter = new FoodBuyerMealsRecyclerAdapter(
                             MealItemDao.GetInstance().FilterMealsByNameAndCategory(
                                     meals, s.toString(), ""
-                            ), getFragmentManager(), ((FoodBuyerActivity) getActivity()).cart.get(0)
+                            ), getFragmentManager(), ((FoodBuyerActivity) getActivity()).cart.get(0),
+                            getActivity().getIntent().getExtras().getString("FoodBuyerID")
                     );
                     recyclerView.setAdapter(adapter);
                 } else if (spinner.getSelectedItemPosition() == 1) {
                     FoodBuyerMealsRecyclerAdapter adapter = new FoodBuyerMealsRecyclerAdapter(
                             MealItemDao.GetInstance().FilterMealsByNameAndCategory(
                                     meals, "", s.toString()
-                            ), getFragmentManager(), ((FoodBuyerActivity) getActivity()).cart.get(0)
+                            ), getFragmentManager(), ((FoodBuyerActivity) getActivity()).cart.get(0),
+                            getActivity().getIntent().getExtras().getString("FoodBuyerID")
                     );
                     recyclerView.setAdapter(adapter);
                 }

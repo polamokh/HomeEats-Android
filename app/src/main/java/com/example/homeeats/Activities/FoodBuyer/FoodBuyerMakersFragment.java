@@ -50,7 +50,8 @@ public class FoodBuyerMakersFragment extends Fragment {
                 autoCompleteTextView.setAdapter(makersArrayAdapter);
 
                 FoodBuyerMakersRecyclerAdapter adapter =
-                        new FoodBuyerMakersRecyclerAdapter(makers);
+                        new FoodBuyerMakersRecyclerAdapter(makers,
+                                getActivity().getIntent().getExtras().getString("FoodBuyerID"));
                 recyclerView.setAdapter(adapter);
             }
         });
@@ -66,7 +67,8 @@ public class FoodBuyerMakersFragment extends Fragment {
             public void afterTextChanged(Editable s) {
                 FoodBuyerMakersRecyclerAdapter adapter =
                         new FoodBuyerMakersRecyclerAdapter(
-                                FoodMakerDao.GetInstance().FilterMakersByName(makers, s.toString())
+                                FoodMakerDao.GetInstance().FilterMakersByName(makers, s.toString()),
+                                getActivity().getIntent().getExtras().getString("FoodBuyerID")
                         );
                 recyclerView.setAdapter(adapter);
             }
