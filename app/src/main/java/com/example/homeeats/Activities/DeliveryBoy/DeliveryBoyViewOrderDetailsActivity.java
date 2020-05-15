@@ -12,9 +12,11 @@ import android.widget.Toast;
 
 import com.example.firbasedao.Listeners.RetrievalEventListener;
 import com.example.firbasedao.Listeners.TaskListener;
+import com.example.homeeats.Dao.DeliveryBoyDao;
 import com.example.homeeats.Dao.FoodBuyerDao;
 import com.example.homeeats.Dao.FoodMakerDao;
 import com.example.homeeats.Dao.OrderDao;
+import com.example.homeeats.Models.DeliveryBoy;
 import com.example.homeeats.Models.FoodBuyer;
 import com.example.homeeats.Models.FoodMaker;
 import com.example.homeeats.Models.Order;
@@ -46,36 +48,50 @@ public class DeliveryBoyViewOrderDetailsActivity extends AppCompatActivity imple
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delivery_boy_view_order_details);
-        final TextView MakerNumber = (TextView) findViewById(R.id.DeliveryBoyRequestMakerPhoneNumber);
-        final TextView BuyerNumber = (TextView) findViewById(R.id.DeliveryBoyRequestBuyerPhoneNumber);
-        final TextView Status = (TextView) findViewById(R.id.DeliveryBoyRequestMakerStatus);
-        Locations = (MapView) findViewById(R.id.DeliverBoyViewOrderMap);
-        final TextView Price = (TextView) findViewById(R.id.DeliveryBoyRequestPrice);
-        ImageView Delivering = (ImageView) findViewById(R.id.Delivering);
-        ImageView Delivered = (ImageView) findViewById(R.id.Delivered);
-        Delivering.setOnClickListener(new View.OnClickListener() {
+        final TextView MakerNumber=(TextView)findViewById(R.id.DeliveryBoyRequestMakerPhoneNumber);
+        final TextView BuyerNumber=(TextView)findViewById(R.id.DeliveryBoyRequestBuyerPhoneNumber);
+        final TextView Status=(TextView)findViewById(R.id.DeliveryBoyRequestMakerStatus);
+         Locations=(MapView)findViewById(R.id.DeliverBoyViewOrderMap);
+        final TextView Price=(TextView)findViewById(R.id.DeliveryBoyRequestPrice);
+        final ImageView Delivering=(ImageView)findViewById(R.id.Delivering);
+        final ImageView Delivered=(ImageView)findViewById(R.id.Delivered);
+        if(currentOrder.orderStatus==OrderStatus.getValue("Delivering"))
+        {
+            Delivering.setVisibility(View.INVISIBLE);
+            Delivered.setVisibility(View.VISIBLE);
+        }
+        else if(currentOrder.orderStatus==OrderStatus.getValue("Delivered"))
+        {
+            Delivering.setVisibility(View.INVISIBLE);
+            Delivered.setVisibility(View.INVISIBLE);
+        }
+        Delivering.setOnClickListener(new View.OnClickListener()
+        {
             String OrderID = getIntent().getExtras().getString("OrderID");
 
             @Override
             public void onClick(View view) {
                 OrderDao.GetInstance().get(OrderID, new RetrievalEventListener<Order>() {
                     @Override
-                    public void OnDataRetrieved(Order order) {
-                        order.orderStatus = OrderStatus.getValue("Delivering");
+                    public void OnDataRetrieved(final Order order)
+                    {
+                        order.orderStatus=OrderStatus.getValue("Delivering");
                         OrderDao.GetInstance().save(order, order.id, new TaskListener() {
                             @Override
                             public void OnSuccess() {
-                                Toast.makeText(getApplicationContext(), "Status Updated Successfully", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(),"Status Updated Successfully", Toast.LENGTH_LONG).show();
+                                OrderDao.GetInstance().SendOrderNotifications(order.id,"Order Is Delivering","Your Order is Currently on Its way");
                             }
 
                             @Override
                             public void OnFail() {
-                                Toast.makeText(getApplicationContext(), "Failed to Update Status", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(),"Failed to Update Status", Toast.LENGTH_LONG).show();
                             }
                         });
                     }
                 });
             }
+
 
 
         });
@@ -87,22 +103,44 @@ public class DeliveryBoyViewOrderDetailsActivity extends AppCompatActivity imple
             public void onClick(View view) {
                 OrderDao.GetInstance().get(OrderID, new RetrievalEventListener<Order>() {
                     @Override
-                    public void OnDataRetrieved(Order order) {
-                        order.orderStatus = OrderStatus.getValue("Delivered");
+                    public void OnDataRetrieved(final Order order)
+                    {
+                        order.orderStatus=OrderStatus.getValue("Delivered");
                         OrderDao.GetInstance().save(order, order.id, new TaskListener() {
                             @Override
                             public void OnSuccess() {
-                                Toast.makeText(getApplicationContext(), "Status Updated Successfully", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(),"Status Updated Successfully", Toast.LENGTH_LONG).show();
+                                OrderDao.GetInstance().SendOrderNotifications(order.id,"Order Is Delivered","Your Order is Now Here");
+                                DeliveryBoyDao.GetInstance().get(order.deliveryBoyId, new RetrievalEventListener<DeliveryBoy>() {
+                                    @Override
+                                    public void OnDataRetrieved(DeliveryBoy deliveryBoy) {
+                                        deliveryBoy.availability=true;
+                                        DeliveryBoyDao.GetInstance().save(deliveryBoy, deliveryBoy.id, new TaskListener() {
+                                            @Override
+                                            public void OnSuccess() {
+                                                Toast.makeText(getApplicationContext(),"You are now free for another order", Toast.LENGTH_LONG).show();
+                                            }
+
+                                            @Override
+                                            public void OnFail() {
+
+                                            }
+                                        });
+                                    }
+                                });
+
+
                             }
 
                             @Override
                             public void OnFail() {
-                                Toast.makeText(getApplicationContext(), "Failed to Update Status", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(),"Failed to Update Status", Toast.LENGTH_LONG).show();
                             }
                         });
                     }
                 });
             }
+
 
 
         });
@@ -112,27 +150,30 @@ public class DeliveryBoyViewOrderDetailsActivity extends AppCompatActivity imple
 
 
             @Override
-            public void OnDataRetrieved(final Order order) {
-                currentOrder = order;
+            public void OnDataRetrieved(final Order order)
+            {
+                currentOrder=order;
                 Status.setText(order.orderStatus.toString());
                 Price.setText(order.totalPrice.toString());
                 FoodMakerDao.GetInstance().get(order.foodMakerId, new RetrievalEventListener<FoodMaker>() {
                     @Override
                     public void OnDataRetrieved(FoodMaker foodMaker) {
-                        maker = foodMaker;
+                        maker=foodMaker;
                         MakerNumber.setText(foodMaker.phone);
-                        if (order.orderStatus == OrderStatus.Accepted) {
-                            Location = foodMaker.location;
+                        if(order.orderStatus==OrderStatus.Accepted)
+                        {
+                            Location =foodMaker.location;
                         }
                     }
                 });
                 FoodBuyerDao.GetInstance().get(order.foodBuyerId, new RetrievalEventListener<FoodBuyer>() {
                     @Override
                     public void OnDataRetrieved(FoodBuyer foodBuyer) {
-                        buyer = foodBuyer;
+                        buyer=foodBuyer;
                         BuyerNumber.setText(foodBuyer.phone);
-                        if (order.orderStatus == OrderStatus.Delivered) {
-                            Location = foodBuyer.location;
+                        if(order.orderStatus==OrderStatus.Delivered)
+                        {
+                            Location =foodBuyer.location;
                         }
                     }
 
@@ -287,13 +328,13 @@ public class DeliveryBoyViewOrderDetailsActivity extends AppCompatActivity imple
         }
     }
 
+    }
     private void addMarkerLocation(LatLng latLng) {
         gMap.clear();
 
         markerLocation = latLng;
         gMap.addMarker(new MarkerOptions().position(markerLocation));
     }
-
     @Override
     public void onMapClick(LatLng latLng) {
 

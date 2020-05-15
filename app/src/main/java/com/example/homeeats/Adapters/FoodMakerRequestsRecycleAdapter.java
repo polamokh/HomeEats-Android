@@ -168,6 +168,7 @@ public class FoodMakerRequestsRecycleAdapter extends RecyclerView.Adapter<FoodMa
                         OrderDao.GetInstance().SendOrderNotifications(order.id,"Order Done","Your Order is Cooked With Love and ready to be delivered");
                     }
                 });
+                holder.change_status.setVisibility(View.INVISIBLE);
             }
         });
         FoodBuyerDao.GetInstance().get(Requests.get(position).foodBuyerId, new RetrievalEventListener<FoodBuyer>() {
