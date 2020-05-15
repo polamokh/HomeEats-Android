@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".Activities.FoodBuyer.FoodBuyerViewMakerActivity">
+
+
+    <TextView
+        android:id="@+id/DeliveryBoyRequestMakerPhoneNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="40dp"
+        android:text="Maker Phone"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/DeliveryBoyRequestBuyerPhoneNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/DeliveryBoyRequestMakerPhoneNumber"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="52dp"
+        android:text="Buyer Phone"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@+id/DeliveryBoyRequestMakerPhoneNumber"
+        app:layout_constraintTop_toBottomOf="@+id/DeliveryBoyRequestMakerPhoneNumber" />
+
+    <TextView
+        android:id="@+id/DeliveryBoyRequestMakerStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/DeliveryBoyRequestBuyerPhoneNumber"
+        android:layout_centerHorizontal="false"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="48dp"
+        android:text="Status"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/DeliveryBoyRequestBuyerPhoneNumber" />
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/DeliverBoyViewOrderMap"
+        android:layout_width="407dp"
+        android:layout_height="300dp"
+        android:layout_below="@id/DeliveryBoyRequestMakerStatus"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="48dp"
+        app:layout_constraintBottom_toTopOf="@id/Delivering"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/DeliveryBoyRequestMakerStatus"
+        app:layout_constraintVertical_bias="0.106"
+        app:layout_goneMarginTop="20dp" />
+
+
+    <ImageView
+        android:id="@+id/Delivering"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="150dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@id/DeliverBoyViewOrderMap"
+        app:srcCompat="@drawable/ic_delivering" />
+
+    <ImageView
+        android:id="@+id/Delivered"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.21"
+        app:layout_constraintLeft_toRightOf="@id/Delivering"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toEndOf="@id/Delivering"
+        app:srcCompat="@drawable/ic_delivered" />
+
+    <TextView
+        android:id="@+id/DeliveryBoyRequestPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/DeliverBoyViewOrderMap"
+        android:layout_centerHorizontal="false"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="28dp"
+        android:text="Price"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/DeliverBoyViewOrderMap" />
+</androidx.constraintlayout.widget.ConstraintLayout>

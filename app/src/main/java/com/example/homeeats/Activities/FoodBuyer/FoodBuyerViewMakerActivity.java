@@ -70,7 +70,8 @@ public class FoodBuyerViewMakerActivity extends AppCompatActivity implements OnM
                         mealItems.remove(i);
 
                 FoodBuyerMealsRecyclerAdapter adapter =
-                        new FoodBuyerMealsRecyclerAdapter(mealItems, getSupportFragmentManager());
+                        new FoodBuyerMealsRecyclerAdapter(mealItems, getSupportFragmentManager(),
+                                getIntent().getExtras().getString("FoodBuyerID"));
                 recyclerView.setAdapter(adapter);
             }
         });

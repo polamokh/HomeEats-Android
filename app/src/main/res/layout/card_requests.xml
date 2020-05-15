@@ -77,7 +77,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/requests_expandableView"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:paddingBottom="12dp"
@@ -181,9 +181,13 @@
                     app:layout_constraintLeft_toRightOf="@id/FoodMaker_Reject_order"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintRight_toRightOf="parent"/>
+
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

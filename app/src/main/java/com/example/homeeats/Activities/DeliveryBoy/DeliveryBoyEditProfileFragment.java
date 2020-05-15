@@ -1,4 +1,4 @@
-package com.example.homeeats.Activities.FoodMaker;
+package com.example.homeeats.Activities.DeliveryBoy;
 
 import android.Manifest;
 import android.content.Intent;
@@ -8,31 +8,29 @@ import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.PermissionChecker;
-import androidx.fragment.app.Fragment;
-
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.homeeats.Dao.FoodBuyerDao;
-import com.example.homeeats.Dao.FoodMakerDao;
-import com.example.homeeats.Models.FoodBuyer;
-import com.example.homeeats.Models.FoodMaker;
-import com.example.homeeats.R;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.PermissionChecker;
+import androidx.fragment.app.Fragment;
+
 import com.example.firbasedao.Listeners.RetrievalEventListener;
 import com.example.firbasedao.Listeners.TaskListener;
+import com.example.homeeats.Dao.DeliveryBoyDao;
+
+import com.example.homeeats.Models.DeliveryBoy;
+
+import com.example.homeeats.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -46,12 +44,14 @@ import com.squareup.picasso.Picasso;
 import java.io.IOException;
 
 import static android.app.Activity.RESULT_OK;
+import static androidx.core.content.PermissionChecker.checkSelfPermission;
 
-public class FoodMakerEditProfileFragment extends Fragment implements OnMapReadyCallback,
+public class DeliveryBoyEditProfileFragment extends Fragment implements OnMapReadyCallback,
         GoogleMap.OnMyLocationButtonClickListener,
         GoogleMap.OnMyLocationClickListener,
         GoogleMap.OnMapClickListener {
-    private static FoodMaker maker;
+
+    private static DeliveryBoy Db;
 
     private ImageView imageView;
     private Bitmap image;
@@ -64,33 +64,30 @@ public class FoodMakerEditProfileFragment extends Fragment implements OnMapReady
     private static final int MY_CAMERA_PERMISSION_CODE = 100;
     private static final int CAMERA_REQUEST = 1888;
     private static int PICK_IMAGE_REQUEST = 1;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        final View view = inflater.inflate(R.layout.fragment_food_maker_edit_profile, container, false);
+        final View view = inflater.inflate(R.layout.fragment_delivery_boy_edit_profile, container, false);
 
-        final ImageView imageView = view.findViewById(R.id.foodMakerSettingsImageView);
-        final EditText editTextName = view.findViewById(R.id.foodMakerSettingsEditTextName);
-        final EditText editTextMobile = view.findViewById(R.id.foodMakerSettingsEditTextMobile);
-        final Spinner spinnerGender = view.findViewById(R.id.foodMakerSettingsSpinnerGender);
+        imageView = view.findViewById(R.id.DeliveryBoySettingsImageView);
+        final EditText editTextName = view.findViewById(R.id.DeliveryBoySettingsEditTextName);
+        final EditText editTextMobile = view.findViewById(R.id.DeliveryBoySettingsEditTextMobile);
+        final Spinner spinnerGender = view.findViewById(R.id.DeliveryBoySettingsSpinnerGender);
 
-        final String foodmakerID = getActivity().getIntent().getExtras().getString("FoodMakerID");
-
-        if (maker == null) {
-            FoodMakerDao.GetInstance().get(foodmakerID, new RetrievalEventListener<FoodMaker>() {
+        final String DeliveryBoy_Id = getActivity().getIntent().getExtras().getString("DeliveryBoyID");
+        if (Db == null)
+            DeliveryBoyDao.GetInstance().get(DeliveryBoy_Id, new RetrievalEventListener<DeliveryBoy>() {
                 @Override
-                public void OnDataRetrieved(FoodMaker foodMaker)
-                {
-                    maker = foodMaker;
+                public void OnDataRetrieved(DeliveryBoy deliveryBoy) {
+                    Db = deliveryBoy;
 
-                    editTextName.setText(maker.name);
-                    editTextMobile.setText(maker.phone);
-                    spinnerGender.setSelection(getGenderIndex(maker.gender));
+                    editTextName.setText(Db.name);
+                    editTextMobile.setText(Db.phone);
+                    spinnerGender.setSelection(getGenderIndex(Db.gender));
                     Picasso.get()
-                            .load(maker.photo)
-                            .into(imageView, new Callback()
-                            {
+                            .load(Db.photo)
+                            .into(imageView, new Callback() {
                                 @Override
                                 public void onSuccess() {
                                     image = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
@@ -102,19 +99,13 @@ public class FoodMakerEditProfileFragment extends Fragment implements OnMapReady
                                 }
                             });
                 }
-
-
-
-
             });
-        }
-
         else {
-            editTextName.setText(maker.name);
-            editTextMobile.setText(maker.phone);
-            spinnerGender.setSelection(getGenderIndex(maker.gender));
+            editTextName.setText(Db.name);
+            editTextMobile.setText(Db.phone);
+            spinnerGender.setSelection(getGenderIndex(Db.gender));
             Picasso.get()
-                    .load(maker.photo)
+                    .load(Db.photo)
                     .into(imageView, new Callback() {
                         @Override
                         public void onSuccess() {
@@ -128,8 +119,8 @@ public class FoodMakerEditProfileFragment extends Fragment implements OnMapReady
                     });
         }
 
-        Button buttonBrowse = view.findViewById(R.id.foodMakerSettingsImageButtonBrowse);
-        Button buttonCamera = view.findViewById(R.id.foodMakerSettingsImageButtonCamera);
+        Button buttonBrowse = view.findViewById(R.id.DeliveryBoySettingsImageButtonBrowse);
+        Button buttonCamera = view.findViewById(R.id.DeliveryBoySettingsImageButtonCamera);
 
         buttonBrowse.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,9 +130,10 @@ public class FoodMakerEditProfileFragment extends Fragment implements OnMapReady
         });
 
         buttonCamera.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
-                if (PermissionChecker.checkSelfPermission(view.getContext()
+                if (checkSelfPermission(view.getContext()
                         , Manifest.permission.CAMERA) != PermissionChecker.PERMISSION_GRANTED) {
                     requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_PERMISSION_CODE);
                 } else {
@@ -151,21 +143,21 @@ public class FoodMakerEditProfileFragment extends Fragment implements OnMapReady
             }
         });
 
-        Button buttonSave = view.findViewById(R.id.foodMakerSettingsButtonSave);
-        TextView textViewDiscard = view.findViewById(R.id.foodMakerSettingsTextViewDiscard);
+        Button buttonSave = view.findViewById(R.id.DeliveryBoySettingsButtonSave);
+        TextView textViewDiscard = view.findViewById(R.id.DeliveryBoySettingsTextViewDiscard);
 
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                maker.name = editTextName.getText().toString();
-                maker.phone = editTextMobile.getText().toString();
-                maker.gender = spinnerGender.getSelectedItem().toString().toLowerCase();
-                maker.location = markerLocation;
+                Db.name = editTextName.getText().toString();
+                Db.phone = editTextMobile.getText().toString();
+                Db.gender = spinnerGender.getSelectedItem().toString().toLowerCase();
+                Db.location = markerLocation;
 
                 Bitmap currentImage = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
                 if (currentImage != image) {
                     image = currentImage;
-                    FoodMakerDao.GetInstance().save(maker, foodmakerID, image,
+                    DeliveryBoyDao.GetInstance().save(Db, DeliveryBoy_Id, image,
                             new TaskListener() {
                                 @Override
                                 public void OnSuccess() {
@@ -179,7 +171,7 @@ public class FoodMakerEditProfileFragment extends Fragment implements OnMapReady
                                 }
                             });
                 } else {
-                    FoodMakerDao.GetInstance().save(maker,foodmakerID, new TaskListener() {
+                    DeliveryBoyDao.GetInstance().save(Db, DeliveryBoy_Id, new TaskListener() {
                         @Override
                         public void OnSuccess() {
                             Toast.makeText(v.getContext(), "Profile information updated successfully",
@@ -198,22 +190,22 @@ public class FoodMakerEditProfileFragment extends Fragment implements OnMapReady
         textViewDiscard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editTextName.setText(maker.name);
-                editTextMobile.setText(maker.phone);
-                spinnerGender.setSelection(getGenderIndex(maker.gender));
+                editTextName.setText(Db.name);
+                editTextMobile.setText(Db.phone);
+                spinnerGender.setSelection(getGenderIndex(Db.gender));
                 imageView.setImageBitmap(image);
 
-                addMarkerLocation(maker.location);
+                addMarkerLocation(Db.location);
                 gMap.animateCamera(CameraUpdateFactory.newCameraPosition(
                         new CameraPosition.Builder()
-                                .target(maker.location)
+                                .target(Db.location)
                                 .zoom(15.0f)
                                 .build()
                 ));
             }
         });
 
-        mapView = view.findViewById(R.id.foodMakerSettingsMapView);
+        mapView = view.findViewById(R.id.DeliveryBoySettingsMapView);
 
         Bundle mapViewBundle = null;
         if (savedInstanceState != null) {
@@ -333,32 +325,29 @@ public class FoodMakerEditProfileFragment extends Fragment implements OnMapReady
         gMap.getUiSettings().setMyLocationButtonEnabled(true);
         gMap.getUiSettings().setZoomControlsEnabled(true);
 
-        if (maker == null)
-        {
-            FoodMakerDao.GetInstance().get(getActivity().getIntent().getExtras()
-                            .getString("FoodMakerID"),
-                    new RetrievalEventListener<FoodMaker>() {
-                        @Override
-                        public void OnDataRetrieved(FoodMaker foodMaker) {
-                            maker = foodMaker;
+        if (Db == null)
+            DeliveryBoyDao.GetInstance().get(getActivity().getIntent().getExtras()
+                    .getString("DeliveryBoyID"), new RetrievalEventListener<DeliveryBoy>() {
+                @Override
+                public void OnDataRetrieved(DeliveryBoy deliveryBoy) {
+                    Db = deliveryBoy;
 
-                            addMarkerLocation(maker.location);
-                            gMap.animateCamera(CameraUpdateFactory.newCameraPosition(
-                                    new CameraPosition.Builder()
-                                            .target(maker.location)
-                                            .zoom(15.0f)
-                                            .build()
-                            ));
-                        }
+                    addMarkerLocation(Db.location);
+                    gMap.animateCamera(CameraUpdateFactory.newCameraPosition(
+                            new CameraPosition.Builder()
+                                    .target(Db.location)
+                                    .zoom(15.0f)
+                                    .build()
+                    ));
 
-                    });
-        }
+                }
+            });
 
         else {
-            addMarkerLocation(maker.location);
+            addMarkerLocation(Db.location);
             gMap.animateCamera(CameraUpdateFactory.newCameraPosition(
                     new CameraPosition.Builder()
-                            .target(maker.location)
+                            .target(Db.location)
                             .zoom(15.0f)
                             .build()
             ));
@@ -388,8 +377,6 @@ public class FoodMakerEditProfileFragment extends Fragment implements OnMapReady
     public void onMyLocationClick(@NonNull Location location) {
         addMarkerLocation(new LatLng(location.getLatitude(), location.getLongitude()));
     }
-
-
-
-
 }
+
+
