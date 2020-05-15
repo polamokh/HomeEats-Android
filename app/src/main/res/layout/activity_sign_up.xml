@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".Activities.SignUpActivity">
 
-    <!--<ImageView
+    <ImageView
         android:id="@id/imageViewBg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -21,14 +21,12 @@
         android:layout_height="match_parent"
         app:srcCompat="@drawable/gardient"
         tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="97dp" />-->
+        tools:layout_editor_absoluteY="97dp" />
 
     <TextView
         android:id="@id/textViewLogo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="32dp"
         android:text="HOME EATS"
         android:textColor="#fff"
@@ -39,11 +37,11 @@
 
     <EditText
         android:id="@+id/editTextSignUpName"
-        android:layout_width="250dp"
-        android:layout_height="40dp"
-        android:layout_below="@id/textViewLogo"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="44dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginBottom="4dp"
         android:background="@color/colorTransparent"
         android:ems="10"
         android:hint="Full name"
@@ -51,35 +49,18 @@
         android:padding="5dp"
         android:textColor="#fff"
         android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/editTextSignUpEmail"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewLogo" />
-
-    <EditText
-        android:id="@+id/editTextSignUpEmail"
-        android:layout_width="250dp"
-        android:layout_height="40dp"
-        android:layout_below="@id/editTextSignUpName"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:background="@color/colorTransparent"
-        android:ems="10"
-        android:hint="Email address"
-        android:inputType="textEmailAddress"
-        android:padding="5dp"
-        android:textColor="#fff"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextSignUpName" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/editTextSignUpPassword"
-        android:layout_width="250dp"
-        android:layout_height="40dp"
-        android:layout_below="@id/editTextSignUpEmail"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginBottom="4dp"
         android:background="@color/colorTransparent"
         android:ems="10"
         android:hint="Password"
@@ -87,41 +68,65 @@
         android:padding="5dp"
         android:textColor="#fff"
         android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/spinnerSignUpUserGender"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextSignUpEmail" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Spinner
         android:id="@+id/spinnerSignUpUserGender"
-        android:layout_width="250dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="0dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginBottom="4dp"
         android:background="@color/colorTransparent"
         android:entries="@array/user_gender"
+        app:layout_constraintBottom_toTopOf="@+id/spinnerSignUpType"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextSignUpPassword" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Spinner
         android:id="@+id/spinnerSignUpType"
-        android:layout_width="250dp"
-        android:layout_height="40dp"
-        android:layout_below="@id/editTextSignUpPassword"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
+        android:layout_width="0dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginBottom="16dp"
         android:background="@color/colorTransparent"
         android:entries="@array/user_type"
+        app:layout_constraintBottom_toTopOf="@+id/mapViewSignUpLocation"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerSignUpUserGender" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextSignUpEmail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginBottom="4dp"
+        android:background="@color/colorTransparent"
+        android:ems="10"
+        android:hint="Email address"
+        android:inputType="textEmailAddress"
+        android:padding="5dp"
+        android:textColor="#fff"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/editTextSignUpPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapViewSignUpLocation"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toTopOf="@+id/buttonSignUp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -129,10 +134,10 @@
 
     <Button
         android:id="@+id/buttonSignUp"
-        android:layout_width="300dp"
+        android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_below="@id/spinnerSignUpType"
-        android:layout_centerHorizontal="true"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
         android:layout_marginBottom="16dp"
         android:background="@color/colorOrange"
         android:text="CREATE ACCOUNT"
@@ -147,6 +152,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.55" />
+        app:layout_constraintGuide_percent="0.6" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

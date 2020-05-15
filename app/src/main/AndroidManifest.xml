@@ -8,9 +8,9 @@
     <uses-permission android:name="android.permission.CAMERA"/>
     <application
         android:allowBackup="true"
-        android:icon="@drawable/g73vzua"
+        android:icon="@drawable/logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
