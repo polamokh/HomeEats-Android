@@ -70,7 +70,7 @@ public class FoodMakerEditProfileFragment extends Fragment implements OnMapReady
         super.onCreate(savedInstanceState);
         final View view = inflater.inflate(R.layout.fragment_food_maker_edit_profile, container, false);
 
-        final ImageView imageView = view.findViewById(R.id.foodMakerSettingsImageView);
+        imageView = view.findViewById(R.id.foodMakerSettingsImageView);
         final EditText editTextName = view.findViewById(R.id.foodMakerSettingsEditTextName);
         final EditText editTextMobile = view.findViewById(R.id.foodMakerSettingsEditTextMobile);
         final Spinner spinnerGender = view.findViewById(R.id.foodMakerSettingsSpinnerGender);
