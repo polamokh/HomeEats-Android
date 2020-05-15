@@ -1,74 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.example.homeeats.Activities.FoodBuyer.FoodBuyerActivity"
-    >
+    android:layout_height="wrap_content"
+    tools:context="com.example.homeeats.Activities.FoodBuyer.FoodBuyerActivity">
 
-    <RelativeLayout
+    <TextView
+        android:id="@+id/heading"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:padding="10dp">
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:padding="8dp"
+        android:text="Your Custom Dialog Heading"
+        android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/heading"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Your Custom Dialog Heading"
-            android:textColor="#000"
-            android:textSize="18sp" />
-
-        <EditText
-            android:id="@+id/foodbuyer_dialog_qty_input"
-            android:inputType="number"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/heading"
-            android:layout_marginTop="20dp"
-            android:background="@null"
-            android:hint="enter quantity..."
-            android:textColor="#000" />
+    <EditText
+        android:id="@+id/foodbuyer_dialog_qty_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/heading"
+        android:layout_margin="16dp"
+        android:hint="Quantity"
+        android:inputType="number"
+        android:padding="8dp" />
 
 
-        <EditText
-            android:id="@+id/foodbuyer_dialog_notes_input"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/foodbuyer_dialog_qty_input"
-            android:layout_marginTop="20dp"
-            android:background="@null"
-            android:hint="enter custom instructions..."
-            android:gravity="top"
-            android:lines="7"
-            android:textColor="#000" />
+    <EditText
+        android:id="@+id/foodbuyer_dialog_notes_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/foodbuyer_dialog_qty_input"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:hint="Notes"
+        android:inputType="textMultiLine"
+        android:maxLines="5"
+        android:padding="8dp" />
 
-        <TextView
-            android:id="@+id/foodbuyer_action_add_order_item"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/foodbuyer_dialog_notes_input"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:text="Add item!"
-            android:textColor="#33bbff"
-            android:textSize="18sp" />
+    <TextView
+        android:id="@+id/foodbuyer_action_add_order_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/foodbuyer_dialog_notes_input"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="16dp"
+        android:padding="16dp"
+        android:text="Add"
+        android:textColor="#00ff00"
+        android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/foodbuyer_action_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/foodbuyer_dialog_notes_input"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginRight="20dp"
-            android:text="Cancel :("
-            android:textColor="#33bbff"
-            android:textSize="18sp" />
-
-    </RelativeLayout>
-
+    <TextView
+        android:id="@+id/foodbuyer_action_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/foodbuyer_dialog_notes_input"
+        android:layout_alignParentStart="true"
+        android:layout_margin="16dp"
+        android:padding="16dp"
+        android:text="Discard"
+        android:textColor="#ff0000"
+        android:textSize="18sp" />
 
 </RelativeLayout>

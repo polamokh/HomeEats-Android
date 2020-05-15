@@ -6,138 +6,127 @@
     android:layout_height="match_parent">
 
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/foodMakerSettingsImageView"
-            android:layout_width="180dp"
-            android:layout_height="180dp"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="16dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_profile"
-            app:layout_constraintEnd_toStartOf="@+id/foodMakerSettingsImageButtonCamera"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/foodMakerSettingsImageView"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="16dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_profile"
+        app:layout_constraintEnd_toStartOf="@+id/foodMakerSettingsImageButtonCamera"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/foodMakerSettingsImageButtonCamera"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/foodMakerSettingsImageView"
-            android:text="Use Camera"
-            app:layout_constraintBottom_toBottomOf="@+id/foodMakerSettingsImageView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/foodMakerSettingsImageView" />
+    <Button
+        android:id="@+id/foodMakerSettingsImageButtonCamera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Use Camera"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/foodMakerSettingsImageView"
+        app:layout_constraintTop_toBottomOf="@id/foodMakerSettingsImageButtonBrowse" />
 
-        <Button
-            android:id="@+id/foodMakerSettingsImageButtonBrowse"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/foodMakerSettingsImageButtonCamera"
-            android:layout_toEndOf="@id/foodMakerSettingsImageView"
-            android:text="Browse"
-            app:layout_constraintBottom_toTopOf="@+id/foodMakerSettingsImageButtonCamera"
-            app:layout_constraintStart_toEndOf="@+id/foodMakerSettingsImageView" />
+    <Button
+        android:id="@+id/foodMakerSettingsImageButtonBrowse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Browse"
+        app:layout_constraintStart_toEndOf="@+id/foodMakerSettingsImageView"
+        app:layout_constraintTop_toTopOf="@id/foodMakerSettingsImageView" />
 
-        <EditText
-            android:id="@+id/foodMakerSettingsEditTextName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/foodMakerSettingsImageView"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            android:hint="Name"
-            android:inputType="textPersonName"
-            app:layout_constraintBottom_toTopOf="@+id/foodMakerSettingsSpinnerGender"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/foodMakerSettingsImageView" />
+    <EditText
+        android:id="@+id/foodMakerSettingsEditTextName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="8dp"
+        android:hint="Name"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/foodMakerSettingsSpinnerGender"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/foodMakerSettingsSpinnerGender"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_below="@id/foodMakerSettingsEditTextName"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            android:entries="@array/user_gender"
-            app:layout_constraintBottom_toTopOf="@+id/foodMakerSettingsEditTextMobile"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/foodMakerSettingsEditTextName" />
+    <androidx.appcompat.widget.AppCompatSpinner
+        android:id="@+id/foodMakerSettingsSpinnerGender"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="8dp"
+        android:entries="@array/user_gender"
+        app:layout_constraintBottom_toTopOf="@+id/foodMakerSettingsEditTextMobile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <EditText
-            android:id="@+id/foodMakerSettingsEditTextMobile"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/foodMakerSettingsSpinnerGender"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            android:hint="Mobile number"
-            android:inputType="phone"
-            app:layout_constraintBottom_toTopOf="@+id/foodMakerSettingsMapView"
-            app:layout_constraintTop_toBottomOf="@+id/foodMakerSettingsSpinnerGender"
-            tools:layout_editor_absoluteX="10dp" />
+    <EditText
+        android:id="@+id/foodMakerSettingsEditTextMobile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="8dp"
+        android:hint="Mobile number"
+        android:inputType="phone"
+        app:layout_constraintBottom_toTopOf="@id/guideline3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <com.google.android.gms.maps.MapView
-            android:id="@+id/foodMakerSettingsMapView"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_below="@id/foodMakerSettingsEditTextMobile"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            app:layout_constraintBottom_toTopOf="@+id/guideline4"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline3" />
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/foodMakerSettingsMapView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
-        <Button
-            android:id="@+id/foodMakerSettingsButtonSave"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="16dp"
-            android:drawableTop="@drawable/ic_save"
-            android:padding="18dp"
-            android:text="Save changes"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/foodMakerSettingsTextViewDiscard"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent" />
+    <Button
+        android:id="@+id/foodMakerSettingsButtonSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:drawableTop="@drawable/ic_save"
+        android:padding="18dp"
+        android:text="Save changes"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/foodMakerSettingsTextViewDiscard"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <TextView
-            android:id="@+id/foodMakerSettingsTextViewDiscard"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_toEndOf="@id/foodMakerSettingsButtonSave"
-            android:padding="15dp"
-            android:text="Discard"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="@+id/foodMakerSettingsButtonSave"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/foodMakerSettingsButtonSave"
-            app:layout_constraintTop_toTopOf="@+id/foodMakerSettingsButtonSave"
-            app:layout_constraintVertical_bias="0.484" />
+    <TextView
+        android:id="@+id/foodMakerSettingsTextViewDiscard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:text="Discard"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/foodMakerSettingsButtonSave"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/foodMakerSettingsButtonSave"
+        app:layout_constraintTop_toTopOf="@+id/foodMakerSettingsButtonSave"
+        app:layout_constraintVertical_bias="0.484" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.5" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.55" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.85" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.8" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

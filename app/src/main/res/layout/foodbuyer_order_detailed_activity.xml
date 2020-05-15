@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/foodBuyerOrderDetailedView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="16dp">
+
+                <ImageView
+                    android:id="@+id/foodBuyerOrderDetailedMakerImage"
+                    android:layout_width="103dp"
+                    android:layout_height="101dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginBottom="5dp"
+                    android:scaleType="centerCrop" />
+
+                <TextView
+                    android:id="@+id/foodBuyerOrderDetailedMakerName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/foodBuyerOrderDetailedMakerImage"
+                    android:text="Placeholder Name"
+                    android:textSize="24sp" />
+
+
+                <TextView
+                    android:id="@+id/foodBuyerOrderDetailedID"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/foodBuyerOrderDetailedMakerName"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/foodBuyerOrderDetailedMakerImage"
+                    android:text="Placeholder ID"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/foodBuyerOrderDetailedStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/foodBuyerOrderDetailedID"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/foodBuyerOrderDetailedMakerImage"
+                    android:text="Placeholder Status"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/foodBuyerOrderDetailsDeliveryBoyName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/foodBuyerOrderDetailedStatus"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/foodBuyerOrderDetailedMakerImage"
+                    android:text="Placeholder DB Name"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/foodBuyerOrderDetailsTotalPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/foodBuyerOrderDetailsDeliveryBoyName"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/foodBuyerOrderDetailedMakerImage"
+                    android:text="Placeholder Tot. Price"
+                    android:textSize="24sp" />
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+<!--        start of row-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/foodBuyerOrderHeaderRow"
+            android:layout_below="@id/foodBuyerOrderDetailedMapView"
+            android:padding="6dp">
+
+            <TextView
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Meal Name"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Quantity"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline10"
+                app:layout_constraintStart_toStartOf="@+id/guideline9"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Item Price"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.43" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.64" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+<!--        end of row-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/foodBuyerOrderDetailedRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_below="@id/foodBuyerOrderHeaderRow" />
+
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/foodBuyerOrderDetailedMapView"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_below="@id/foodBuyerOrderDetailedView"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"/>
+    </RelativeLayout>
+</ScrollView>

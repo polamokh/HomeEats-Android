@@ -60,6 +60,5 @@ public class FoodMakerMealsFragment extends Fragment {
             }
         });
     }
-
-    }
+}
 

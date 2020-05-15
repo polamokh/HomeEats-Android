@@ -37,12 +37,13 @@ public class DeliveryBoyViewOrderDetailsActivity extends AppCompatActivity imple
 
     private GoogleMap gMap;
     private LatLng markerLocation;
-    LatLng Location;
+    LatLng Location = new LatLng(1, 1);
     Order currentOrder;
     FoodBuyer buyer;
     FoodMaker maker;
     MapView Locations;
     private static final String MAP_VIEW_BUNDLE_KEY = "MapViewBundleKey";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,8 +70,7 @@ public class DeliveryBoyViewOrderDetailsActivity extends AppCompatActivity imple
             String OrderID = getIntent().getExtras().getString("OrderID");
 
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 OrderDao.GetInstance().get(OrderID, new RetrievalEventListener<Order>() {
                     @Override
                     public void OnDataRetrieved(final Order order)
@@ -96,13 +96,11 @@ public class DeliveryBoyViewOrderDetailsActivity extends AppCompatActivity imple
 
         });
 
-        Delivered.setOnClickListener(new View.OnClickListener()
-        {
+        Delivered.setOnClickListener(new View.OnClickListener() {
             String OrderID = getIntent().getExtras().getString("OrderID");
 
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 OrderDao.GetInstance().get(OrderID, new RetrievalEventListener<Order>() {
                     @Override
                     public void OnDataRetrieved(final Order order)
@@ -191,6 +189,7 @@ public class DeliveryBoyViewOrderDetailsActivity extends AppCompatActivity imple
         Locations.getMapAsync(this);
 
     }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -203,6 +202,7 @@ public class DeliveryBoyViewOrderDetailsActivity extends AppCompatActivity imple
 
         Locations.onSaveInstanceState(mapViewBundle);
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -258,22 +258,53 @@ public class DeliveryBoyViewOrderDetailsActivity extends AppCompatActivity imple
                         .zoom(15.0f)
                         .build()));
 
-if(currentOrder.orderStatus==OrderStatus.getValue("Delivering"))
-{
+        if (currentOrder.orderStatus == OrderStatus.Accepted || currentOrder.orderStatus == OrderStatus.Pending || currentOrder.orderStatus == OrderStatus.Making) {
 
-    if (buyer == null)
-    {
-        OrderDao.GetInstance().get(getIntent().getExtras().getString("OrderID"), new RetrievalEventListener<Order>()
-        {
+            if (maker == null) {
+                OrderDao.GetInstance().get(getIntent().getExtras().getString("OrderID"), new RetrievalEventListener<Order>() {
 
 
-            @Override
+                    @Override
                     public void OnDataRetrieved(Order order) {
-                        FoodBuyerDao.GetInstance().get(order.foodBuyerId, new RetrievalEventListener<FoodBuyer>()
-                        {
+
+                        FoodMakerDao.GetInstance().get(order.foodMakerId, new RetrievalEventListener<FoodMaker>() {
+                            @Override
+                            public void OnDataRetrieved(FoodMaker foodMaker) {
+                                maker = foodMaker;
+                                addMarkerLocation(maker.location);
+                                gMap.animateCamera(CameraUpdateFactory.newCameraPosition(
+                                        new CameraPosition.Builder()
+                                                .target(maker.location)
+                                                .zoom(15.0f)
+                                                .build()));
+                            }
+                        });
+
+
+                    }
+                });
+
+            } else {
+                addMarkerLocation(maker.location);
+                gMap.animateCamera(CameraUpdateFactory.newCameraPosition(
+                        new CameraPosition.Builder()
+                                .target(maker.location)
+                                .zoom(15.0f)
+                                .build()
+                ));
+            }
+        } else {
+
+            if (buyer == null) {
+                OrderDao.GetInstance().get(getIntent().getExtras().getString("OrderID"), new RetrievalEventListener<Order>() {
+
+
+                    @Override
+                    public void OnDataRetrieved(Order order) {
+                        FoodBuyerDao.GetInstance().get(order.foodBuyerId, new RetrievalEventListener<FoodBuyer>() {
                             @Override
                             public void OnDataRetrieved(FoodBuyer foodBuyer) {
-                                buyer=foodBuyer;
+                                buyer = foodBuyer;
                                 addMarkerLocation(buyer.location);
                                 gMap.animateCamera(CameraUpdateFactory.newCameraPosition(
                                         new CameraPosition.Builder()
@@ -283,65 +314,19 @@ if(currentOrder.orderStatus==OrderStatus.getValue("Delivering"))
                             }
                         });
                     }
-            });
+                });
 
-    }
-    else
-        {
-        addMarkerLocation(buyer.location);
-        gMap.animateCamera(CameraUpdateFactory.newCameraPosition(
-                new CameraPosition.Builder()
-                        .target(buyer.location)
-                        .zoom(15.0f)
-                        .build()
-        ));
-    }
-}
-else if(currentOrder.orderStatus==OrderStatus.getValue("Accepted"))
-{
-
-    if (maker == null)
-    {
-        OrderDao.GetInstance().get(getIntent().getExtras().getString("OrderID"), new RetrievalEventListener<Order>()
-        {
-
-
-            @Override
-            public void OnDataRetrieved(Order order)
-            {
-
-            FoodMakerDao.GetInstance().get(order.foodMakerId, new RetrievalEventListener<FoodMaker>()
-            {
-                @Override
-                public void OnDataRetrieved(FoodMaker foodMaker) {
-                    maker=foodMaker;
-                    addMarkerLocation(maker.location);
-                    gMap.animateCamera(CameraUpdateFactory.newCameraPosition(
-                            new CameraPosition.Builder()
-                                    .target(maker.location)
-                                    .zoom(15.0f)
-                                    .build()));
-                }
-            }) ;
-
-
-
+            } else {
+                addMarkerLocation(buyer.location);
+                gMap.animateCamera(CameraUpdateFactory.newCameraPosition(
+                        new CameraPosition.Builder()
+                                .target(buyer.location)
+                                .zoom(15.0f)
+                                .build()
+                ));
             }
-        });
-
+        }
     }
-    else
-    {
-        addMarkerLocation(maker.location);
-        gMap.animateCamera(CameraUpdateFactory.newCameraPosition(
-                new CameraPosition.Builder()
-                        .target(maker.location)
-                        .zoom(15.0f)
-                        .build()
-        ));
-    }
-}
-
 
     }
     private void addMarkerLocation(LatLng latLng) {
