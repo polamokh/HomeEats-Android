@@ -16,38 +16,37 @@
         android:id="@+id/foodBuyerCartOrdersTotalPriceLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:text="TOTAL"
         android:textSize="20dp"
         android:textStyle="bold"
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/foodBuyerCartOrdersCheckout"
         app:layout_constraintEnd_toStartOf="@+id/foodBuyerCartOrdersTotalPrice"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/foodBuyerCartOrdersRecyclerView" />
 
     <TextView
         android:id="@+id/foodBuyerCartOrdersTotalPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="8dp"
         android:text="EGP1000"
         android:textSize="20sp"
         android:textStyle="bold"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/foodBuyerCartOrdersTotalPriceLabel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/foodBuyerCartOrdersTotalPriceLabel"
-        app:layout_constraintTop_toTopOf="@+id/foodBuyerCartOrdersTotalPriceLabel" />
+        app:layout_constraintTop_toBottomOf="@+id/foodBuyerCartOrdersRecyclerView" />
 
     <Button
         android:id="@+id/foodBuyerCartOrdersCheckout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:text="Checkout"
         android:textSize="20sp"
@@ -62,7 +61,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.85772914" />
+        app:layout_constraintGuide_percent="0.8" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
