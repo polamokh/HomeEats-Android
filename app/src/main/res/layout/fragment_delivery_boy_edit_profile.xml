@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/DeliveryBoySettingsImageView"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="16dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_profile"
+        app:layout_constraintEnd_toStartOf="@+id/DeliveryBoySettingsImageButtonCamera"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/DeliveryBoySettingsImageButtonCamera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/DeliveryBoySettingsImageView"
+        android:text="Use Camera"
+        app:layout_constraintBottom_toBottomOf="@+id/DeliveryBoySettingsImageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/DeliveryBoySettingsImageView" />
+
+    <Button
+        android:id="@+id/DeliveryBoySettingsImageButtonBrowse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/DeliveryBoySettingsImageButtonCamera"
+        android:layout_toEndOf="@id/DeliveryBoySettingsImageView"
+        android:text="Browse"
+        app:layout_constraintBottom_toTopOf="@+id/DeliveryBoySettingsImageButtonCamera"
+        app:layout_constraintStart_toEndOf="@+id/DeliveryBoySettingsImageView" />
+
+    <EditText
+        android:id="@+id/DeliveryBoySettingsEditTextName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/DeliveryBoySettingsImageView"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:hint="Name"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/DeliveryBoySettingsSpinnerGender"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/DeliveryBoySettingsImageView" />
+
+    <androidx.appcompat.widget.AppCompatSpinner
+        android:id="@+id/DeliveryBoySettingsSpinnerGender"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/DeliveryBoySettingsEditTextName"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:entries="@array/user_gender"
+        app:layout_constraintBottom_toTopOf="@+id/DeliveryBoySettingsEditTextMobile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/DeliveryBoySettingsEditTextName" />
+
+    <EditText
+        android:id="@+id/DeliveryBoySettingsEditTextMobile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/DeliveryBoySettingsSpinnerGender"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:hint="Mobile number"
+        android:inputType="phone"
+        app:layout_constraintBottom_toTopOf="@+id/DeliveryBoySettingsMapView"
+        app:layout_constraintTop_toBottomOf="@+id/DeliveryBoySettingsSpinnerGender"
+        tools:layout_editor_absoluteX="10dp" />
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/DeliveryBoySettingsMapView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@id/DeliveryBoySettingsEditTextMobile"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline5" />
+
+    <Button
+        android:id="@+id/DeliveryBoySettingsButtonSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:drawableTop="@drawable/ic_save"
+        android:padding="18dp"
+        android:text="Save changes"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/DeliveryBoySettingsTextViewDiscard"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/DeliveryBoySettingsTextViewDiscard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@id/DeliveryBoySettingsButtonSave"
+        android:padding="15dp"
+        android:text="Discard"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/DeliveryBoySettingsButtonSave"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/DeliveryBoySettingsButtonSave"
+        app:layout_constraintTop_toTopOf="@+id/DeliveryBoySettingsButtonSave"
+        app:layout_constraintVertical_bias="0.484" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.85" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
