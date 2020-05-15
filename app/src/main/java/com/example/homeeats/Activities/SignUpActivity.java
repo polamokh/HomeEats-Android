@@ -83,7 +83,19 @@ public class SignUpActivity extends AppCompatActivity implements OnMapReadyCallb
                         editTextSignUpPassword.getText().toString(),
                         spinnerSignUpUserGender.getSelectedItem().toString().toLowerCase(),
                         spinnerSignUpType.getSelectedItem().toString(),
-                        location);
+                        location, new TaskListener() {
+                            @Override
+                            public void OnSuccess() {
+                                SignUpActivity.this.onBackPressed();
+                            }
+
+                            @Override
+                            public void OnFail() {
+
+                            }
+                        });
+
+
             }
         });
 
@@ -96,7 +108,7 @@ public class SignUpActivity extends AppCompatActivity implements OnMapReadyCallb
     }
 
     private void signUp(final String name, String email, String password, String gender, String type,
-                        LatLng location) {
+                        LatLng location, final TaskListener taskListener) {
         UserAuthenticationDatabase userAuthenticationDatabase = UserAuthenticationDatabase.GetInstance();
         //Food Buyer
         if (type.equals(getResources().getStringArray(R.array.user_type)[0])) {
@@ -110,12 +122,14 @@ public class SignUpActivity extends AppCompatActivity implements OnMapReadyCallb
                         public void OnSuccess() {
                             Toast.makeText(getApplicationContext(), foodBuyer.id,
                                     Toast.LENGTH_SHORT).show();
+                            taskListener.OnSuccess();
                         }
 
                         @Override
                         public void OnFail() {
                             Toast.makeText(getApplicationContext(), "Sign up failed",
                                     Toast.LENGTH_SHORT).show();
+                            taskListener.OnFail();
                         }
                     });
         }
@@ -131,11 +145,14 @@ public class SignUpActivity extends AppCompatActivity implements OnMapReadyCallb
                         public void OnSuccess() {
                             Toast.makeText(getApplicationContext(), foodMaker.id,
                                     Toast.LENGTH_SHORT).show();
+                            taskListener.OnSuccess();
                         }
 
                         @Override
                         public void OnFail() {
-                            Toast.makeText(getApplicationContext(), "Sign up failed", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Sign up failed",
+                                    Toast.LENGTH_SHORT).show();
+                            taskListener.OnFail();
                         }
                     });
         }
@@ -152,16 +169,19 @@ public class SignUpActivity extends AppCompatActivity implements OnMapReadyCallb
                         public void OnSuccess() {
                             Toast.makeText(getApplicationContext(), "Signed up",
                                     Toast.LENGTH_SHORT).show();
+                            taskListener.OnSuccess();
                         }
 
                         @Override
                         public void OnFail() {
                             Toast.makeText(getApplicationContext(), "Sign up failed",
                                     Toast.LENGTH_SHORT).show();
+                            taskListener.OnFail();
                         }
                     });
         } else {
             Toast.makeText(this, "Invalid type", Toast.LENGTH_SHORT).show();
+            taskListener.OnFail();
         }
     }
 

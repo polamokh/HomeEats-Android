@@ -29,6 +29,16 @@ import java.io.IOException;
 public class FoodMakerAddMealActivity extends AppCompatActivity {
     private int PICK_IMAGE_REQUEST = 1;
     ImageView imageView;
+    Boolean isUploaded = false;
+
+    @Override
+    public void onBackPressed() {
+        if (isUploaded)
+            super.onBackPressed();
+        else
+            Toast.makeText(getApplicationContext(), "Waiting to upload your photo",
+                    Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +73,7 @@ public class FoodMakerAddMealActivity extends AppCompatActivity {
                         getIntent().getExtras().getString("FoodMakerID"),
                         "",
                         Desc.getText().toString(),
-                        Double.parseDouble(Price.getText().toString()),Category.getText().toString(), 4.5, true);
+                        Double.parseDouble(Price.getText().toString()), Category.getText().toString(), 4.5, true);
                 final String Meal_ID = MealItemDao.GetInstance().GetNewKey();
                 MD.save(MI, Meal_ID, new TaskListener() {
                     @Override
@@ -71,6 +81,7 @@ public class FoodMakerAddMealActivity extends AppCompatActivity {
                         MealItemDao.GetInstance().setMealImage(Meal_ID, getIntent().getExtras().getString("FoodMakerID"), ((BitmapDrawable) imageView.getDrawable()).getBitmap(), new RetrievalEventListener<String>() {
                             @Override
                             public void OnDataRetrieved(String s) {
+                                isUploaded = true;
                                 Toast.makeText(getApplicationContext(), "Meal Added Successfully", Toast.LENGTH_LONG).show();
                             }
                         });

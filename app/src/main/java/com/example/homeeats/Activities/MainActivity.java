@@ -79,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
             checkPermission();
         }
 
-        Toast.makeText(getApplicationContext(), FirebaseInstanceId.getInstance().getToken(), Toast.LENGTH_SHORT).show();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -93,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Toast failedLoginToast = Toast.makeText(getApplicationContext(), "Invalid login ya 3'aby >:(", Toast.LENGTH_LONG);
+                final Toast failedLoginToast = Toast.makeText(getApplicationContext(), "Invalid login", Toast.LENGTH_LONG);
                 if (editTextEmail.getText().toString().equals("") || editTextPassword.getText().toString().equals("")) {
                     failedLoginToast.show();
                     return;
@@ -110,7 +109,6 @@ public class MainActivity extends AppCompatActivity {
                                 UserPrimitiveDataDao.GetInstance().get(client.id, new RetrievalEventListener<UserPrimitiveData>() {
                                     @Override
                                     public void OnDataRetrieved(UserPrimitiveData userPrimitiveData) {
-
                                         if (userPrimitiveData.userType == UserType.DeliveryBoy) {
                                             runLiveLocationService();
                                             Intent intent = new Intent(MainActivity.this, DeliveryBoyActivity.class);
@@ -132,7 +130,6 @@ public class MainActivity extends AppCompatActivity {
                                             stopLiveLocationService();
                                             Toast.makeText(getApplicationContext(), "Invalid Login", Toast.LENGTH_LONG).show();
                                         }
-
                                     }
                                 });
                             }
@@ -147,66 +144,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        if (getIntent().getExtras() != null) {
-            for (String key : getIntent().getExtras().keySet()) {
-                Log.e("Tag", key + " , " + getIntent().getExtras().get(key).toString());
-                String value = getIntent().getExtras().get(key).toString();
-                Log.d(TAG, "Key: " + key + " Value: " + value);
-            }
-        }
-
-    }
-
-    protected void AddNewOrder() {
-        final Order order = new Order(null,
-                "FnFqPvY2VuMWrLf04ZZacTbrV293",
-                "3cs3kGaPDIQiofGVfFw1ckrPNCr2",
-                "xdor7utP2rfQCKPUfijxLTky6X83",
-                new ArrayList<OrderItem>(),
-                "Koshry gamd zo7l2a",
-                4,
-                0.0,
-                OrderStatus.Pending,
-                new LatLng(1, 1));
-        final EventListenersListener eventListenersListener = new EventListenersListener() {
-            @Override
-            public void onFinish() {
-                order.totalPrice = order.totalPrice;
-                OrderDao.GetInstance().save(order, OrderDao.GetInstance().GetNewKey(), new TaskListener() {
-                    @Override
-                    public void OnSuccess() {
-                        Toast.makeText(getApplicationContext(), "Added order", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void OnFail() {
-
-                    }
-                });
-            }
-        };
-        List<RetrievalEventListener> mealsEventListeners = new ArrayList<>();
-
-        for (int i = 1; i <= 7; i++) {
-
-            final OrderItem orderItem = new OrderItem(null, i, "da2aa zayada", 5, 3242.3);
-            RetrievalEventListener<MealItem> mealEventListener = new RetrievalEventListener<MealItem>() {
-                @Override
-                public void OnDataRetrieved(MealItem mealItem) {
-                    orderItem.mealItemId = mealItem.id;
-                    orderItem.totalPrice = orderItem.quantity * mealItem.price;
-                    order.orderItems.add(orderItem);
-                    eventListenersListener.notify(this);
-                }
-            };
-            mealsEventListeners.add(mealEventListener);
-            eventListenersListener.Add(mealEventListener);
-        }
-        eventListenersListener.OnFinishAddingListeners();
-        for (int i = 1; i <= 7; i++) {
-            MealItemDao.GetInstance().get("-M64XGeazTb_HbQnboZB", mealsEventListeners.get(i - 1));
-        }
     }
 
     public void runLiveLocationService() {
@@ -226,22 +163,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-
-
         super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-
-
-        /*
-        TODO:     ATTENTION! this absolute piece art of a code is perfectly working. It preservers sessions even after closing the application.
-         That's right, like facebook. We disabled it for now to make your lives more easier in testing,
-
-         */
+        final FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-
             UserPrimitiveDataDao.GetInstance().get(currentUser.getUid(), new RetrievalEventListener<UserPrimitiveData>() {
                 @Override
                 public void OnDataRetrieved(UserPrimitiveData userPrimitiveData) {
+                    Toast.makeText(getApplicationContext(), "Welcome",
+                            Toast.LENGTH_LONG).show();
                     if (userPrimitiveData.userType == UserType.DeliveryBoy) {
                         runLiveLocationService();
                         Intent intent = new Intent(MainActivity.this, DeliveryBoyActivity.class);
@@ -267,12 +196,5 @@ public class MainActivity extends AppCompatActivity {
             });
         } else
             stopLiveLocationService();
-
-        if (getIntent().getExtras() != null) {
-            for (String key : getIntent().getExtras().keySet()) {
-                String value = getIntent().getExtras().getString(key);
-                Log.d(TAG, "Key: " + key + " Value: " + value);
-            }
-        }
     }
 }
