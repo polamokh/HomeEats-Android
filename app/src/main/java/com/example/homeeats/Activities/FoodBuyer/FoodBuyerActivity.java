@@ -115,6 +115,8 @@ public class FoodBuyerActivity extends AppCompatActivity implements NavigationVi
                         new FoodBuyerCartFragment()).commit();
                 break;
             case R.id.foodBuyerNavOrders:
+                getSupportFragmentManager().beginTransaction().replace(R.id.foodBuyerFragmentContainer,
+                        new FoodBuyerOrdersFragment()).commit();
                 break;
             case R.id.foodBuyerNavSettings:
                 getSupportFragmentManager().beginTransaction().replace(R.id.foodBuyerFragmentContainer,

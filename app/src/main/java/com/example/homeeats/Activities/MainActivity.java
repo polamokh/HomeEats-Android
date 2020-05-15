@@ -187,7 +187,9 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         List<RetrievalEventListener> mealsEventListeners = new ArrayList<>();
+
         for (int i = 1; i <= 7; i++) {
+
             final OrderItem orderItem = new OrderItem(null, i, "da2aa zayada", 5, 3242.3);
             RetrievalEventListener<MealItem> mealEventListener = new RetrievalEventListener<MealItem>() {
                 @Override
