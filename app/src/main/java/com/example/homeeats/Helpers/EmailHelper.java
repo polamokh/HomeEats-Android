@@ -14,28 +14,31 @@ import com.example.homeeats.Models.UserPrimitiveData;
 import com.example.homeeats.Models.UserType;
 
 public class EmailHelper {
-    public static void SendUserEmail(final String id, final String title, final String body){
+
+
+    public static void SendUserEmail(final String id, final String title, final String body) {
+        GmailSender.setFrom("homeeats.ris.2020@gmail.com");
+        GmailSender.setPassword("HomeEats123");
+
         UserPrimitiveDataDao.GetInstance().get(id, new RetrievalEventListener<UserPrimitiveData>() {
             @Override
             public void OnDataRetrieved(UserPrimitiveData userPrimitiveData) {
                 //save the userNotification to database
-                if(userPrimitiveData.userType == UserType.DeliveryBoy){
+                if (userPrimitiveData.userType == UserType.DeliveryBoy) {
                     DeliveryBoyDao.GetInstance().get(id, new RetrievalEventListener<DeliveryBoy>() {
                         @Override
                         public void OnDataRetrieved(DeliveryBoy deliveryBoy) {
                             GmailSender.sendEmail(deliveryBoy.emailAddress, title, body);
                         }
                     });
-                }
-                else if(userPrimitiveData.userType == UserType.FoodBuyer){
+                } else if (userPrimitiveData.userType == UserType.FoodBuyer) {
                     FoodBuyerDao.GetInstance().get(id, new RetrievalEventListener<FoodBuyer>() {
                         @Override
                         public void OnDataRetrieved(FoodBuyer foodBuyer) {
                             GmailSender.sendEmail(foodBuyer.emailAddress, title, body);
                         }
                     });
-                }
-                else if(userPrimitiveData.userType == UserType.FoodMaker){
+                } else if (userPrimitiveData.userType == UserType.FoodMaker) {
                     FoodMakerDao.GetInstance().get(id, new RetrievalEventListener<FoodMaker>() {
                         @Override
                         public void OnDataRetrieved(FoodMaker foodMaker) {
