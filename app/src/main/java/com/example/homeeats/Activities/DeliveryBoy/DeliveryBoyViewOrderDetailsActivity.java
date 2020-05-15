@@ -12,9 +12,11 @@ import android.widget.Toast;
 
 import com.example.firbasedao.Listeners.RetrievalEventListener;
 import com.example.firbasedao.Listeners.TaskListener;
+import com.example.homeeats.Dao.DeliveryBoyDao;
 import com.example.homeeats.Dao.FoodBuyerDao;
 import com.example.homeeats.Dao.FoodMakerDao;
 import com.example.homeeats.Dao.OrderDao;
+import com.example.homeeats.Models.DeliveryBoy;
 import com.example.homeeats.Models.FoodBuyer;
 import com.example.homeeats.Models.FoodMaker;
 import com.example.homeeats.Models.Order;
@@ -50,8 +52,18 @@ public class DeliveryBoyViewOrderDetailsActivity extends AppCompatActivity imple
         final TextView Status=(TextView)findViewById(R.id.DeliveryBoyRequestMakerStatus);
          Locations=(MapView)findViewById(R.id.DeliverBoyViewOrderMap);
         final TextView Price=(TextView)findViewById(R.id.DeliveryBoyRequestPrice);
-        ImageView Delivering=(ImageView)findViewById(R.id.Delivering);
-        ImageView Delivered=(ImageView)findViewById(R.id.Delivered);
+        final ImageView Delivering=(ImageView)findViewById(R.id.Delivering);
+        final ImageView Delivered=(ImageView)findViewById(R.id.Delivered);
+        if(currentOrder.orderStatus==OrderStatus.getValue("Delivering"))
+        {
+            Delivering.setVisibility(View.INVISIBLE);
+            Delivered.setVisibility(View.VISIBLE);
+        }
+        else if(currentOrder.orderStatus==OrderStatus.getValue("Delivered"))
+        {
+            Delivering.setVisibility(View.INVISIBLE);
+            Delivered.setVisibility(View.INVISIBLE);
+        }
         Delivering.setOnClickListener(new View.OnClickListener()
         {
             String OrderID = getIntent().getExtras().getString("OrderID");
@@ -61,13 +73,14 @@ public class DeliveryBoyViewOrderDetailsActivity extends AppCompatActivity imple
             {
                 OrderDao.GetInstance().get(OrderID, new RetrievalEventListener<Order>() {
                     @Override
-                    public void OnDataRetrieved(Order order)
+                    public void OnDataRetrieved(final Order order)
                     {
                         order.orderStatus=OrderStatus.getValue("Delivering");
                         OrderDao.GetInstance().save(order, order.id, new TaskListener() {
                             @Override
                             public void OnSuccess() {
                                 Toast.makeText(getApplicationContext(),"Status Updated Successfully", Toast.LENGTH_LONG).show();
+                                OrderDao.GetInstance().SendOrderNotifications(order.id,"Order Is Delivering","Your Order is Currently on Its way");
                             }
 
                             @Override
@@ -92,13 +105,33 @@ public class DeliveryBoyViewOrderDetailsActivity extends AppCompatActivity imple
             {
                 OrderDao.GetInstance().get(OrderID, new RetrievalEventListener<Order>() {
                     @Override
-                    public void OnDataRetrieved(Order order)
+                    public void OnDataRetrieved(final Order order)
                     {
                         order.orderStatus=OrderStatus.getValue("Delivered");
                         OrderDao.GetInstance().save(order, order.id, new TaskListener() {
                             @Override
                             public void OnSuccess() {
                                 Toast.makeText(getApplicationContext(),"Status Updated Successfully", Toast.LENGTH_LONG).show();
+                                OrderDao.GetInstance().SendOrderNotifications(order.id,"Order Is Delivered","Your Order is Now Here");
+                                DeliveryBoyDao.GetInstance().get(order.deliveryBoyId, new RetrievalEventListener<DeliveryBoy>() {
+                                    @Override
+                                    public void OnDataRetrieved(DeliveryBoy deliveryBoy) {
+                                        deliveryBoy.availability=true;
+                                        DeliveryBoyDao.GetInstance().save(deliveryBoy, deliveryBoy.id, new TaskListener() {
+                                            @Override
+                                            public void OnSuccess() {
+                                                Toast.makeText(getApplicationContext(),"You are now free for another order", Toast.LENGTH_LONG).show();
+                                            }
+
+                                            @Override
+                                            public void OnFail() {
+
+                                            }
+                                        });
+                                    }
+                                });
+
+
                             }
 
                             @Override
