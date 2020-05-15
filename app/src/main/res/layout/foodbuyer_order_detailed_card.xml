@@ -19,24 +19,22 @@
         android:id="@+id/foodBuyerOrderDetailedMealQty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/foodBuyerOrderDetailedMealName"
         android:text="5"
         android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="@+id/foodBuyerOrderDetailedMealName"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline8"
         app:layout_constraintStart_toStartOf="@+id/guideline7"
-        app:layout_constraintTop_toTopOf="@+id/foodBuyerOrderDetailedMealName"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/foodBuyerOrderDetailedPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/foodBuyerOrderDetailedMealQty"
         android:text="EGP200"
-        app:layout_constraintBottom_toBottomOf="@+id/foodBuyerOrderDetailedMealQty"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/foodBuyerOrderDetailedMealQty" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline7"
