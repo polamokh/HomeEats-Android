@@ -14,6 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <activity android:name=".Activities.DeliveryBoy.DeliveryBoyViewOrderDetailsActivity"/>
+
         <activity android:name=".Activities.FoodMaker.FoodMakerEditMealActivity"></activity>
         <meta-data
             android:name="com.google.android.geo.API_KEY"

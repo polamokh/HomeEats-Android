@@ -35,81 +35,74 @@ public class DeliveryBoyViewOrderDetailsActivity extends AppCompatActivity imple
 
     private GoogleMap gMap;
     private LatLng markerLocation;
-    LatLng Location;
+    LatLng Location = new LatLng(1, 1);
     Order currentOrder;
     FoodBuyer buyer;
     FoodMaker maker;
     MapView Locations;
     private static final String MAP_VIEW_BUNDLE_KEY = "MapViewBundleKey";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delivery_boy_view_order_details);
-        final TextView MakerNumber=(TextView)findViewById(R.id.DeliveryBoyRequestMakerPhoneNumber);
-        final TextView BuyerNumber=(TextView)findViewById(R.id.DeliveryBoyRequestBuyerPhoneNumber);
-        final TextView Status=(TextView)findViewById(R.id.DeliveryBoyRequestMakerStatus);
-         Locations=(MapView)findViewById(R.id.DeliverBoyViewOrderMap);
-        final TextView Price=(TextView)findViewById(R.id.DeliveryBoyRequestPrice);
-        ImageView Delivering=(ImageView)findViewById(R.id.Delivering);
-        ImageView Delivered=(ImageView)findViewById(R.id.Delivered);
-        Delivering.setOnClickListener(new View.OnClickListener()
-        {
+        final TextView MakerNumber = (TextView) findViewById(R.id.DeliveryBoyRequestMakerPhoneNumber);
+        final TextView BuyerNumber = (TextView) findViewById(R.id.DeliveryBoyRequestBuyerPhoneNumber);
+        final TextView Status = (TextView) findViewById(R.id.DeliveryBoyRequestMakerStatus);
+        Locations = (MapView) findViewById(R.id.DeliverBoyViewOrderMap);
+        final TextView Price = (TextView) findViewById(R.id.DeliveryBoyRequestPrice);
+        ImageView Delivering = (ImageView) findViewById(R.id.Delivering);
+        ImageView Delivered = (ImageView) findViewById(R.id.Delivered);
+        Delivering.setOnClickListener(new View.OnClickListener() {
             String OrderID = getIntent().getExtras().getString("OrderID");
 
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 OrderDao.GetInstance().get(OrderID, new RetrievalEventListener<Order>() {
                     @Override
-                    public void OnDataRetrieved(Order order)
-                    {
-                        order.orderStatus=OrderStatus.getValue("Delivering");
+                    public void OnDataRetrieved(Order order) {
+                        order.orderStatus = OrderStatus.getValue("Delivering");
                         OrderDao.GetInstance().save(order, order.id, new TaskListener() {
                             @Override
                             public void OnSuccess() {
-                                Toast.makeText(getApplicationContext(),"Status Updated Successfully", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "Status Updated Successfully", Toast.LENGTH_LONG).show();
                             }
 
                             @Override
                             public void OnFail() {
-                                Toast.makeText(getApplicationContext(),"Failed to Update Status", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "Failed to Update Status", Toast.LENGTH_LONG).show();
                             }
                         });
                     }
                 });
             }
-
 
 
         });
 
-        Delivered.setOnClickListener(new View.OnClickListener()
-        {
+        Delivered.setOnClickListener(new View.OnClickListener() {
             String OrderID = getIntent().getExtras().getString("OrderID");
 
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 OrderDao.GetInstance().get(OrderID, new RetrievalEventListener<Order>() {
                     @Override
-                    public void OnDataRetrieved(Order order)
-                    {
-                        order.orderStatus=OrderStatus.getValue("Delivered");
+                    public void OnDataRetrieved(Order order) {
+                        order.orderStatus = OrderStatus.getValue("Delivered");
                         OrderDao.GetInstance().save(order, order.id, new TaskListener() {
                             @Override
                             public void OnSuccess() {
-                                Toast.makeText(getApplicationContext(),"Status Updated Successfully", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "Status Updated Successfully", Toast.LENGTH_LONG).show();
                             }
 
                             @Override
                             public void OnFail() {
-                                Toast.makeText(getApplicationContext(),"Failed to Update Status", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "Failed to Update Status", Toast.LENGTH_LONG).show();
                             }
                         });
                     }
                 });
             }
-
 
 
         });
@@ -119,30 +112,27 @@ public class DeliveryBoyViewOrderDetailsActivity extends AppCompatActivity imple
 
 
             @Override
-            public void OnDataRetrieved(final Order order)
-            {
-                currentOrder=order;
+            public void OnDataRetrieved(final Order order) {
+                currentOrder = order;
                 Status.setText(order.orderStatus.toString());
                 Price.setText(order.totalPrice.toString());
                 FoodMakerDao.GetInstance().get(order.foodMakerId, new RetrievalEventListener<FoodMaker>() {
                     @Override
                     public void OnDataRetrieved(FoodMaker foodMaker) {
-                        maker=foodMaker;
+                        maker = foodMaker;
                         MakerNumber.setText(foodMaker.phone);
-                        if(order.orderStatus==OrderStatus.Accepted)
-                        {
-                            Location =foodMaker.location;
+                        if (order.orderStatus == OrderStatus.Accepted) {
+                            Location = foodMaker.location;
                         }
                     }
                 });
                 FoodBuyerDao.GetInstance().get(order.foodBuyerId, new RetrievalEventListener<FoodBuyer>() {
                     @Override
                     public void OnDataRetrieved(FoodBuyer foodBuyer) {
-                        buyer=foodBuyer;
+                        buyer = foodBuyer;
                         BuyerNumber.setText(foodBuyer.phone);
-                        if(order.orderStatus==OrderStatus.Delivered)
-                        {
-                            Location =foodBuyer.location;
+                        if (order.orderStatus == OrderStatus.Delivered) {
+                            Location = foodBuyer.location;
                         }
                     }
 
@@ -158,6 +148,7 @@ public class DeliveryBoyViewOrderDetailsActivity extends AppCompatActivity imple
         Locations.getMapAsync(this);
 
     }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -170,6 +161,7 @@ public class DeliveryBoyViewOrderDetailsActivity extends AppCompatActivity imple
 
         Locations.onSaveInstanceState(mapViewBundle);
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -225,22 +217,53 @@ public class DeliveryBoyViewOrderDetailsActivity extends AppCompatActivity imple
                         .zoom(15.0f)
                         .build()));
 
-if(currentOrder.orderStatus==OrderStatus.getValue("Delivering"))
-{
+        if (currentOrder.orderStatus == OrderStatus.Accepted || currentOrder.orderStatus == OrderStatus.Pending || currentOrder.orderStatus == OrderStatus.Making) {
 
-    if (buyer == null)
-    {
-        OrderDao.GetInstance().get(getIntent().getExtras().getString("OrderID"), new RetrievalEventListener<Order>()
-        {
+            if (maker == null) {
+                OrderDao.GetInstance().get(getIntent().getExtras().getString("OrderID"), new RetrievalEventListener<Order>() {
 
 
-            @Override
+                    @Override
                     public void OnDataRetrieved(Order order) {
-                        FoodBuyerDao.GetInstance().get(order.foodBuyerId, new RetrievalEventListener<FoodBuyer>()
-                        {
+
+                        FoodMakerDao.GetInstance().get(order.foodMakerId, new RetrievalEventListener<FoodMaker>() {
+                            @Override
+                            public void OnDataRetrieved(FoodMaker foodMaker) {
+                                maker = foodMaker;
+                                addMarkerLocation(maker.location);
+                                gMap.animateCamera(CameraUpdateFactory.newCameraPosition(
+                                        new CameraPosition.Builder()
+                                                .target(maker.location)
+                                                .zoom(15.0f)
+                                                .build()));
+                            }
+                        });
+
+
+                    }
+                });
+
+            } else {
+                addMarkerLocation(maker.location);
+                gMap.animateCamera(CameraUpdateFactory.newCameraPosition(
+                        new CameraPosition.Builder()
+                                .target(maker.location)
+                                .zoom(15.0f)
+                                .build()
+                ));
+            }
+        } else {
+
+            if (buyer == null) {
+                OrderDao.GetInstance().get(getIntent().getExtras().getString("OrderID"), new RetrievalEventListener<Order>() {
+
+
+                    @Override
+                    public void OnDataRetrieved(Order order) {
+                        FoodBuyerDao.GetInstance().get(order.foodBuyerId, new RetrievalEventListener<FoodBuyer>() {
                             @Override
                             public void OnDataRetrieved(FoodBuyer foodBuyer) {
-                                buyer=foodBuyer;
+                                buyer = foodBuyer;
                                 addMarkerLocation(buyer.location);
                                 gMap.animateCamera(CameraUpdateFactory.newCameraPosition(
                                         new CameraPosition.Builder()
@@ -250,73 +273,27 @@ if(currentOrder.orderStatus==OrderStatus.getValue("Delivering"))
                             }
                         });
                     }
-            });
+                });
 
-    }
-    else
-        {
-        addMarkerLocation(buyer.location);
-        gMap.animateCamera(CameraUpdateFactory.newCameraPosition(
-                new CameraPosition.Builder()
-                        .target(buyer.location)
-                        .zoom(15.0f)
-                        .build()
-        ));
-    }
-}
-else if(currentOrder.orderStatus==OrderStatus.getValue("Accepted"))
-{
-
-    if (maker == null)
-    {
-        OrderDao.GetInstance().get(getIntent().getExtras().getString("OrderID"), new RetrievalEventListener<Order>()
-        {
-
-
-            @Override
-            public void OnDataRetrieved(Order order)
-            {
-
-            FoodMakerDao.GetInstance().get(order.foodMakerId, new RetrievalEventListener<FoodMaker>()
-            {
-                @Override
-                public void OnDataRetrieved(FoodMaker foodMaker) {
-                    maker=foodMaker;
-                    addMarkerLocation(maker.location);
-                    gMap.animateCamera(CameraUpdateFactory.newCameraPosition(
-                            new CameraPosition.Builder()
-                                    .target(maker.location)
-                                    .zoom(15.0f)
-                                    .build()));
-                }
-            }) ;
-
-
-
+            } else {
+                addMarkerLocation(buyer.location);
+                gMap.animateCamera(CameraUpdateFactory.newCameraPosition(
+                        new CameraPosition.Builder()
+                                .target(buyer.location)
+                                .zoom(15.0f)
+                                .build()
+                ));
             }
-        });
-
+        }
     }
-    else
-    {
-        addMarkerLocation(maker.location);
-        gMap.animateCamera(CameraUpdateFactory.newCameraPosition(
-                new CameraPosition.Builder()
-                        .target(maker.location)
-                        .zoom(15.0f)
-                        .build()
-        ));
-    }
-}
 
-
-    }
     private void addMarkerLocation(LatLng latLng) {
         gMap.clear();
 
         markerLocation = latLng;
         gMap.addMarker(new MarkerOptions().position(markerLocation));
     }
+
     @Override
     public void onMapClick(LatLng latLng) {
 
