@@ -1,93 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="16dp">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/foodBuyerOrderDetailedView"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="16dp">
 
-        <RelativeLayout
+        <androidx.cardview.widget.CardView
+            android:id="@+id/foodBuyerOrderDetailedView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="16dp">
+            android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/foodBuyerOrderDetailedMakerImage"
-                android:layout_width="103dp"
-                android:layout_height="101dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginBottom="5dp"
-                android:scaleType="centerCrop" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="16dp">
 
-            <TextView
-                android:id="@+id/foodBuyerOrderDetailedMakerName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_toRightOf="@+id/foodBuyerOrderDetailedMakerImage"
-                android:text="Placeholder Name"
-                android:textSize="24sp" />
+                <ImageView
+                    android:id="@+id/foodBuyerOrderDetailedMakerImage"
+                    android:layout_width="103dp"
+                    android:layout_height="101dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginBottom="5dp"
+                    android:scaleType="centerCrop" />
+
+                <TextView
+                    android:id="@+id/foodBuyerOrderDetailedMakerName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/foodBuyerOrderDetailedMakerImage"
+                    android:text="Placeholder Name"
+                    android:textSize="24sp" />
 
 
-            <TextView
-                android:id="@+id/foodBuyerOrderDetailedID"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/foodBuyerOrderDetailedMakerName"
-                android:layout_marginLeft="5dp"
-                android:layout_toRightOf="@+id/foodBuyerOrderDetailedMakerImage"
-                android:text="Placeholder ID"
-                android:textSize="24sp" />
+                <TextView
+                    android:id="@+id/foodBuyerOrderDetailedID"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/foodBuyerOrderDetailedMakerName"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/foodBuyerOrderDetailedMakerImage"
+                    android:text="Placeholder ID"
+                    android:textSize="24sp" />
 
-            <TextView
-                android:id="@+id/foodBuyerOrderDetailedStatus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/foodBuyerOrderDetailedID"
-                android:layout_marginLeft="5dp"
-                android:layout_toRightOf="@+id/foodBuyerOrderDetailedMakerImage"
-                android:text="Placeholder Status"
-                android:textSize="24sp" />
+                <TextView
+                    android:id="@+id/foodBuyerOrderDetailedStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/foodBuyerOrderDetailedID"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/foodBuyerOrderDetailedMakerImage"
+                    android:text="Placeholder Status"
+                    android:textSize="24sp" />
 
-            <TextView
-                android:id="@+id/foodBuyerOrderDetailsDeliveryBoyName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/foodBuyerOrderDetailedStatus"
-                android:layout_marginLeft="5dp"
-                android:layout_toRightOf="@+id/foodBuyerOrderDetailedMakerImage"
-                android:text="Placeholder DB Name"
-                android:textSize="24sp" />
+                <TextView
+                    android:id="@+id/foodBuyerOrderDetailsDeliveryBoyName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/foodBuyerOrderDetailedStatus"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/foodBuyerOrderDetailedMakerImage"
+                    android:text="Placeholder DB Name"
+                    android:textSize="24sp" />
 
-            <TextView
-                android:id="@+id/foodBuyerOrderDetailsTotalPrice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/foodBuyerOrderDetailsDeliveryBoyName"
-                android:layout_marginLeft="5dp"
-                android:layout_toRightOf="@+id/foodBuyerOrderDetailedMakerImage"
-                android:text="Placeholder Tot. Price"
-                android:textSize="24sp" />
+                <TextView
+                    android:id="@+id/foodBuyerOrderDetailsTotalPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/foodBuyerOrderDetailsDeliveryBoyName"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/foodBuyerOrderDetailedMakerImage"
+                    android:text="Placeholder Tot. Price"
+                    android:textSize="24sp" />
 
-        </RelativeLayout>
+            </RelativeLayout>
 
-    </androidx.cardview.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/foodBuyerOrderDetailedRecyclerView"
-        android:layout_below="@id/foodBuyerOrderDetailedView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/foodBuyerOrderDetailedRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/foodBuyerOrderDetailedMapView" />
 
-    <com.google.android.gms.maps.MapView
-        android:id="@+id/foodBuyerOrderDetailedMapView"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_below="@id/foodBuyerOrderDetailedRecyclerView" />
-
-</RelativeLayout>
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/foodBuyerOrderDetailedMapView"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_below="@id/foodBuyerOrderDetailedView"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"/>
+    </RelativeLayout>
+</ScrollView>

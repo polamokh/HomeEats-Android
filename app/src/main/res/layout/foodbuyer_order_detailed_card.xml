@@ -9,11 +9,9 @@
 
     <TextView
         android:id="@+id/foodBuyerOrderDetailedMealName"
-        android:layout_width="269dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Meal Name"
-        app:layout_constraintEnd_toStartOf="@+id/foodBuyerOrderDetailedMealQty"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -21,15 +19,14 @@
         android:id="@+id/foodBuyerOrderDetailedMealQty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_toEndOf="@id/foodBuyerOrderDetailedMealName"
         android:text="5"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="@+id/foodBuyerOrderDetailedMealName"
-        app:layout_constraintEnd_toStartOf="@+id/foodBuyerOrderDetailedPrice"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/foodBuyerOrderDetailedMealName"
-        app:layout_constraintTop_toTopOf="@+id/foodBuyerOrderDetailedMealName" />
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintTop_toTopOf="@+id/foodBuyerOrderDetailedMealName"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/foodBuyerOrderDetailedPrice"
@@ -39,8 +36,20 @@
         android:text="EGP200"
         app:layout_constraintBottom_toBottomOf="@+id/foodBuyerOrderDetailedMealQty"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/foodBuyerOrderDetailedMealQty"
         app:layout_constraintTop_toTopOf="@+id/foodBuyerOrderDetailedMealQty" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.43" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.64" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
