@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ import com.example.firbasedao.Listeners.TaskListener;
 import com.example.homeeats.UserAuthenticationDatabase;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
@@ -57,12 +59,17 @@ public class FoodMakerActivity extends AppCompatActivity implements NavigationVi
                 .findViewById(R.id.navHeaderTextViewName);
         final TextView textViewNavHeaderEmail = navigationView.getHeaderView(0)
                 .findViewById(R.id.navHeaderTextViewEmail);
+        final ImageView imageViewNavHeader = navigationView.getHeaderView(0)
+                .findViewById(R.id.navHeaderImageView);
         FoodMakerDao.GetInstance().get(getIntent().getExtras().getString("FoodMakerID"),
                 new RetrievalEventListener<FoodMaker>() {
                     @Override
                     public void OnDataRetrieved(FoodMaker foodMaker) {
                         textViewNavHeaderName.setText(foodMaker.name);
                         textViewNavHeaderEmail.setText(foodMaker.emailAddress);
+                        Picasso.get()
+                                .load(foodMaker.photo)
+                                .into(imageViewNavHeader);
                     }
                 });
 

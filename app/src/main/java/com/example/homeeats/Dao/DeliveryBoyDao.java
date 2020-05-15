@@ -79,6 +79,7 @@ public class DeliveryBoyDao extends FirebaseDao<DeliveryBoy> {
         double longitude = Double.parseDouble(dataSnapshot.child("location").child("longitude").getValue().toString());
         deliveryBoy.location = new LatLng(latitude, longitude);
         deliveryBoy.lastSeen = Long.parseLong(dataSnapshot.child("lastSeen").getValue().toString());
+        deliveryBoy.availability = Boolean.parseBoolean(dataSnapshot.child("availability").getValue().toString());
         retrievalEventListener.OnDataRetrieved(deliveryBoy);
     }
 
