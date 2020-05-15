@@ -91,6 +91,11 @@ public class FoodMakerActivity extends AppCompatActivity implements NavigationVi
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        if (item.isChecked()) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+            return true;
+        }
+
         item.setChecked(true);
 
         switch (item.getItemId()) {
@@ -121,7 +126,7 @@ public class FoodMakerActivity extends AppCompatActivity implements NavigationVi
                         new FoodMakerMealsFragment()).commit();
                 break;
         }
-
+        drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 
