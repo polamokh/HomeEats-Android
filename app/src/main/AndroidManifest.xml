@@ -20,6 +20,8 @@
             android:value="AIzaSyDFkseBYmA6FXx256QY0gju-En3rySU3dA"/>
 
         <activity android:name=".Activities.FoodMaker.FoodMakerEditProfileFragment"></activity>
+
+        <activity android:name=".Activities.FoodBuyer.FoodBuyerOrderDetailedActivity"></activity>
         <activity
             android:name=".Activities.FoodMaker.FoodMakerActivity"
             android:theme="@style/AppTheme.NoActionBar" />
