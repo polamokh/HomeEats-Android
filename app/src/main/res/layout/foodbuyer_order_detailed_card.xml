@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="6dp">
+
+    <TextView
+        android:id="@+id/foodBuyerOrderDetailedMealName"
+        android:layout_width="269dp"
+        android:layout_height="wrap_content"
+        android:text="Meal Name"
+        app:layout_constraintEnd_toStartOf="@+id/foodBuyerOrderDetailedMealQty"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/foodBuyerOrderDetailedMealQty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_toEndOf="@id/foodBuyerOrderDetailedMealName"
+        android:text="5"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="@+id/foodBuyerOrderDetailedMealName"
+        app:layout_constraintEnd_toStartOf="@+id/foodBuyerOrderDetailedPrice"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/foodBuyerOrderDetailedMealName"
+        app:layout_constraintTop_toTopOf="@+id/foodBuyerOrderDetailedMealName" />
+
+    <TextView
+        android:id="@+id/foodBuyerOrderDetailedPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/foodBuyerOrderDetailedMealQty"
+        android:text="EGP200"
+        app:layout_constraintBottom_toBottomOf="@+id/foodBuyerOrderDetailedMealQty"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/foodBuyerOrderDetailedMealQty"
+        app:layout_constraintTop_toTopOf="@+id/foodBuyerOrderDetailedMealQty" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

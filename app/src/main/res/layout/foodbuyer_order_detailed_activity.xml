@@ -79,7 +79,7 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/foodBuyerOrdersRecyclerView"
+        android:id="@+id/foodBuyerOrderDetailedRecyclerView"
         android:layout_below="@id/foodBuyerOrderDetailedView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
@@ -88,6 +88,6 @@
         android:id="@+id/foodBuyerOrderDetailedMapView"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:layout_below="@id/foodBuyerOrdersRecyclerView" />
+        android:layout_below="@id/foodBuyerOrderDetailedRecyclerView" />
 
 </RelativeLayout>

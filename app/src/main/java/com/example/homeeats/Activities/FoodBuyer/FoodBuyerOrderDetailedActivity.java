@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,8 +15,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.firbasedao.Listeners.RetrievalEventListener;
+import com.example.homeeats.Adapters.FoodBuyerOrderDetailedItemsRecyclerAdapter;
 import com.example.homeeats.Dao.DeliveryBoyDao;
 import com.example.homeeats.Dao.FoodMakerDao;
 import com.example.homeeats.Dao.OrderDao;
@@ -43,6 +47,9 @@ public class FoodBuyerOrderDetailedActivity extends AppCompatActivity implements
     Order currentOrder;
     MapView mapView;
     GoogleMap googleMap;
+    String deliveryBoyID;
+    FoodBuyerOrderDetailedItemsRecyclerAdapter adapter;
+    RecyclerView recyclerView;
 
     private static final String MAP_VIEW_BUNDLE_KEY = "MapViewBundleKey";
 
@@ -59,7 +66,9 @@ public class FoodBuyerOrderDetailedActivity extends AppCompatActivity implements
             deliveryBoyName = findViewById(R.id.foodBuyerOrderDetailsDeliveryBoyName);
             totalPrice = findViewById(R.id.foodBuyerOrderDetailsTotalPrice);
             mapView = findViewById(R.id.foodBuyerOrderDetailedMapView);
-
+            recyclerView = findViewById(R.id.foodBuyerOrderDetailedRecyclerView);
+            Intent intent = getIntent();
+            String orderID = intent.getStringExtra("orderID");
 
             Bundle mapViewBundle = null;
             if (savedInstanceState != null) {
@@ -70,15 +79,14 @@ public class FoodBuyerOrderDetailedActivity extends AppCompatActivity implements
             mapView.onCreate(mapViewBundle);
             mapView.getMapAsync(this);
 
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+            recyclerView.setLayoutManager(linearLayoutManager);
 
-
-
-            // Setting label values :)
-            Intent intent = getIntent();
-            String orderID = intent.getStringExtra("orderID");
             OrderDao.GetInstance().get(orderID, new RetrievalEventListener<Order>() {
                 @Override
                 public void OnDataRetrieved(Order order) {
+                    adapter = new FoodBuyerOrderDetailedItemsRecyclerAdapter(order.orderItems);
+                    recyclerView.setAdapter(adapter);
                     currentOrder = order;
                     orderId.setText(order.id);
                     orderStatus.setText(order.orderStatus.toString());
@@ -159,6 +167,7 @@ public class FoodBuyerOrderDetailedActivity extends AppCompatActivity implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        DeliveryBoyDao.GetInstance().RemoveDeliveryBoyLiveLocationListener(deliveryBoyID, locationChangeListener);
         mapView.onDestroy();
     }
 
@@ -181,6 +190,7 @@ public class FoodBuyerOrderDetailedActivity extends AppCompatActivity implements
         OrderDao.GetInstance().get(orderID, new RetrievalEventListener<Order>() {
             @Override
             public void OnDataRetrieved(Order order) {
+                deliveryBoyID = order.deliveryBoyId;
                 DeliveryBoyDao.GetInstance().AddDeliveryBoyLiveLocationListener(order.deliveryBoyId, locationChangeListener);
             }
         });
