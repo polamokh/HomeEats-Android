@@ -20,10 +20,14 @@ import com.example.homeeats.Adapters.FoodBuyerCartOrdersRecyclerAdapter;
 import com.example.homeeats.Dao.CartOrderItemDao;
 import com.example.homeeats.Dao.DeliveryBoyDao;
 import com.example.homeeats.Dao.FoodBuyerDao;
+import com.example.homeeats.Dao.FoodMakerDao;
 import com.example.homeeats.Dao.OrderDao;
+import com.example.homeeats.Helpers.EmailHelper;
+import com.example.homeeats.Helpers.NotificationHelper;
 import com.example.homeeats.Models.CartOrderItem;
 import com.example.homeeats.Models.DeliveryBoy;
 import com.example.homeeats.Models.FoodBuyer;
+import com.example.homeeats.Models.FoodMaker;
 import com.example.homeeats.Models.Order;
 import com.example.homeeats.Models.OrderItem;
 import com.example.homeeats.Models.OrderStatus;
@@ -144,7 +148,7 @@ public class FoodBuyerCartFragment extends Fragment {
                             FoodBuyerDao.GetInstance().get(order.foodBuyerId,
                                     new RetrievalEventListener<FoodBuyer>() {
                                         @Override
-                                        public void OnDataRetrieved(FoodBuyer foodBuyer) {
+                                        public void OnDataRetrieved(final FoodBuyer foodBuyer) {
                                             order.buyerLocation = foodBuyer.location;
 
                                             int mealsSize = orders.get(order.foodMakerId).size();
@@ -167,10 +171,49 @@ public class FoodBuyerCartFragment extends Fragment {
                                                             recalculateTotalPrice(orders,
                                                                     foodMakerKeys);
 
+                                                            FoodMakerDao.GetInstance().get(
+                                                                    order.foodMakerId,
+                                                                    new RetrievalEventListener<FoodMaker>() {
+                                                                        @Override
+                                                                        public void OnDataRetrieved(FoodMaker foodMaker) {
+                                                                            NotificationHelper.sendUserNotification(
+                                                                                    order.foodBuyerId,
+                                                                                    foodMaker.name + "'s Order Submitted",
+                                                                                    "Your order is submitted successfully."
+                                                                            );
 
-                                                            Toast.makeText(v.getContext(),
-                                                                    "Your orders made successfully",
-                                                                    Toast.LENGTH_SHORT).show();
+                                                                            EmailHelper.SendUserEmail(
+                                                                                    order.foodBuyerId,
+                                                                                    foodMaker.name + "'s Order Submitted",
+                                                                                    "Your order is submitted successfully."
+                                                                            );
+
+                                                                            NotificationHelper.sendUserNotification(
+                                                                                    order.foodMakerId,
+                                                                                    "New Order from " + foodBuyer.name,
+                                                                                    "You have a new order to make."
+                                                                            );
+
+                                                                            EmailHelper.SendUserEmail(
+                                                                                    order.foodMakerId,
+                                                                                    "New Order from " + foodBuyer.name,
+                                                                                    "You have a new order to make."
+                                                                            );
+
+                                                                            NotificationHelper.sendUserNotification(
+                                                                                    order.deliveryBoyId,
+                                                                                    "New Order",
+                                                                                    "You have a new order to deliver."
+                                                                            );
+
+                                                                            EmailHelper.SendUserEmail(
+                                                                                    order.deliveryBoyId,
+                                                                                    "New Order",
+                                                                                    "You have a new order to deliver."
+                                                                            );
+                                                                        }
+                                                                    }
+                                                            );
                                                         }
 
                                                         @Override
