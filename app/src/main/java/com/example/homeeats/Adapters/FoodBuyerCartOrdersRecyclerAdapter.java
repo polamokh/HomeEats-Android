@@ -54,15 +54,6 @@ public class FoodBuyerCartOrdersRecyclerAdapter extends
 
     @Override
     public void onBindViewHolder(@NonNull final MakersViewHolder holder, final int position) {
-        if (orders.get(foodMakers.get(position)).size() == 0) {
-            orders.remove(foodMakers.get(position));
-            foodMakers.remove(position);
-
-            ((FoodBuyerCartFragment)fragment).recalculateTotalPrice(orders, foodMakers);
-
-            return;
-        }
-
         FoodMakerDao.GetInstance().get(foodMakers.get(position),
                 new RetrievalEventListener<FoodMaker>() {
                     @Override
@@ -126,5 +117,14 @@ public class FoodBuyerCartOrdersRecyclerAdapter extends
             totalPrice = itemView.findViewById(R.id.foodBuyerCartMakerTotalPrice);
             buttonRemoveOrder = itemView.findViewById(R.id.foodBuyerCartMakerRemoveOrder);
         }
+    }
+
+    public void deleteMaker(String foodMakerID) {
+        if (orders.get(foodMakerID).size() == 0) {
+            orders.remove(foodMakerID);
+            foodMakers.remove(foodMakerID);
+        }
+        notifyDataSetChanged();
+        ((FoodBuyerCartFragment)fragment).recalculateTotalPrice(orders, foodMakers);
     }
 }

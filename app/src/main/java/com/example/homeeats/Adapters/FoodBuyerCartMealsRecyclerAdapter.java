@@ -25,6 +25,7 @@ public class FoodBuyerCartMealsRecyclerAdapter extends
 
     private List<CartOrderItem> cartOrderItems;
     private FoodBuyerCartOrdersRecyclerAdapter ordersRecyclerAdapter;
+    private String foodMakerID;
 
     public FoodBuyerCartMealsRecyclerAdapter(List<CartOrderItem> cartOrderItems,
                                              FoodBuyerCartOrdersRecyclerAdapter ordersRecyclerAdapter) {
@@ -47,6 +48,7 @@ public class FoodBuyerCartMealsRecyclerAdapter extends
                     @Override
                     public void OnDataRetrieved(MealItem mealItem) {
                         holder.name.setText(mealItem.name);
+                        foodMakerID = mealItem.foodMakerId;
                     }
                 });
         holder.quantity.setText("Qty. " + cartOrderItems.get(position).quantity.toString());
@@ -63,7 +65,7 @@ public class FoodBuyerCartMealsRecyclerAdapter extends
                                 notifyItemRemoved(position);
                                 notifyItemRangeChanged(position, cartOrderItems.size());
 
-                                ordersRecyclerAdapter.notifyDataSetChanged();
+                                ordersRecyclerAdapter.deleteMaker(foodMakerID);
                             }
 
                             @Override
