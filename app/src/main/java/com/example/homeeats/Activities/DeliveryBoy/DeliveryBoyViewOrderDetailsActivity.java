@@ -48,50 +48,55 @@ public class DeliveryBoyViewOrderDetailsActivity extends AppCompatActivity imple
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delivery_boy_view_order_details);
-        final TextView MakerNumber=(TextView)findViewById(R.id.DeliveryBoyRequestMakerPhoneNumber);
-        final TextView BuyerNumber=(TextView)findViewById(R.id.DeliveryBoyRequestBuyerPhoneNumber);
-        final TextView Status=(TextView)findViewById(R.id.DeliveryBoyRequestMakerStatus);
-         Locations=(MapView)findViewById(R.id.DeliverBoyViewOrderMap);
-        final TextView Price=(TextView)findViewById(R.id.DeliveryBoyRequestPrice);
-        final ImageView Delivering=(ImageView)findViewById(R.id.Delivering);
-        final ImageView Delivered=(ImageView)findViewById(R.id.Delivered);
-        if(currentOrder.orderStatus==OrderStatus.getValue("Delivering"))
+        final TextView MakerNumber = (TextView) findViewById(R.id.DeliveryBoyRequestMakerPhoneNumber);
+        final TextView BuyerNumber = (TextView) findViewById(R.id.DeliveryBoyRequestBuyerPhoneNumber);
+        final TextView Status = (TextView) findViewById(R.id.DeliveryBoyRequestMakerStatus);
+        Locations = (MapView) findViewById(R.id.DeliverBoyViewOrderMap);
+        final TextView Price = (TextView) findViewById(R.id.DeliveryBoyRequestPrice);
+        final ImageView Delivering = (ImageView) findViewById(R.id.Delivering);
+        final ImageView Delivered = (ImageView) findViewById(R.id.Delivered);
+        OrderDao.GetInstance().get(getIntent().getExtras().getString("OrderID"), new RetrievalEventListener<Order>()
         {
-            Delivering.setVisibility(View.INVISIBLE);
-            Delivered.setVisibility(View.VISIBLE);
-        }
-        else if(currentOrder.orderStatus==OrderStatus.getValue("Delivered"))
-        {
-            Delivering.setVisibility(View.INVISIBLE);
-            Delivered.setVisibility(View.INVISIBLE);
-        }
-        Delivering.setOnClickListener(new View.OnClickListener()
-        {
+
+            @Override
+            public void OnDataRetrieved(Order order) {
+                currentOrder=order;
+                if (currentOrder.orderStatus == OrderStatus.Delivering) {
+                    Delivering.setVisibility(View.INVISIBLE);
+                    Delivered.setVisibility(View.VISIBLE);
+                } else if (currentOrder.orderStatus == OrderStatus.Delivered) {
+                    Delivering.setVisibility(View.INVISIBLE);
+                    Delivered.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
+        Delivering.setOnClickListener(new View.OnClickListener() {
             String OrderID = getIntent().getExtras().getString("OrderID");
 
             @Override
             public void onClick(View view) {
                 OrderDao.GetInstance().get(OrderID, new RetrievalEventListener<Order>() {
                     @Override
-                    public void OnDataRetrieved(final Order order)
-                    {
-                        order.orderStatus=OrderStatus.getValue("Delivering");
+                    public void OnDataRetrieved(final Order order) {
+                        order.orderStatus = OrderStatus.getValue("Delivering");
+                        Status.setText("Delivered");
+                        Delivering.setVisibility(View.INVISIBLE);
                         OrderDao.GetInstance().save(order, order.id, new TaskListener() {
                             @Override
                             public void OnSuccess() {
-                                Toast.makeText(getApplicationContext(),"Status Updated Successfully", Toast.LENGTH_LONG).show();
-                                OrderDao.GetInstance().SendOrderNotifications(order.id,"Order Is Delivering","Your Order is Currently on Its way");
+                                Toast.makeText(getApplicationContext(), "Status Updated Successfully", Toast.LENGTH_LONG).show();
+                                OrderDao.GetInstance().SendOrderNotifications(order.id, "Order Is Delivering", "Your Order is Currently on Its way");
                             }
 
                             @Override
                             public void OnFail() {
-                                Toast.makeText(getApplicationContext(),"Failed to Update Status", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "Failed to Update Status", Toast.LENGTH_LONG).show();
                             }
                         });
                     }
                 });
             }
-
 
 
         });
@@ -103,22 +108,24 @@ public class DeliveryBoyViewOrderDetailsActivity extends AppCompatActivity imple
             public void onClick(View view) {
                 OrderDao.GetInstance().get(OrderID, new RetrievalEventListener<Order>() {
                     @Override
-                    public void OnDataRetrieved(final Order order)
-                    {
-                        order.orderStatus=OrderStatus.getValue("Delivered");
+                    public void OnDataRetrieved(final Order order) {
+                        order.orderStatus = OrderStatus.getValue("Delivered");
                         OrderDao.GetInstance().save(order, order.id, new TaskListener() {
                             @Override
                             public void OnSuccess() {
-                                Toast.makeText(getApplicationContext(),"Status Updated Successfully", Toast.LENGTH_LONG).show();
-                                OrderDao.GetInstance().SendOrderNotifications(order.id,"Order Is Delivered","Your Order is Now Here");
+                                Toast.makeText(getApplicationContext(), "Status Updated Successfully", Toast.LENGTH_LONG).show();
+                                Delivered.setVisibility(View.INVISIBLE);
+                                Delivering.setVisibility(View.INVISIBLE);
+                                Status.setText("Delivered");
+                                OrderDao.GetInstance().SendOrderNotifications(order.id, "Order Is Delivered", "Your Order is Now Here");
                                 DeliveryBoyDao.GetInstance().get(order.deliveryBoyId, new RetrievalEventListener<DeliveryBoy>() {
                                     @Override
                                     public void OnDataRetrieved(DeliveryBoy deliveryBoy) {
-                                        deliveryBoy.availability=true;
+                                        deliveryBoy.availability = true;
                                         DeliveryBoyDao.GetInstance().save(deliveryBoy, deliveryBoy.id, new TaskListener() {
                                             @Override
                                             public void OnSuccess() {
-                                                Toast.makeText(getApplicationContext(),"You are now free for another order", Toast.LENGTH_LONG).show();
+                                                Toast.makeText(getApplicationContext(), "You are now free for another order", Toast.LENGTH_LONG).show();
                                             }
 
                                             @Override
@@ -134,13 +141,12 @@ public class DeliveryBoyViewOrderDetailsActivity extends AppCompatActivity imple
 
                             @Override
                             public void OnFail() {
-                                Toast.makeText(getApplicationContext(),"Failed to Update Status", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "Failed to Update Status", Toast.LENGTH_LONG).show();
                             }
                         });
                     }
                 });
             }
-
 
 
         });
@@ -150,30 +156,27 @@ public class DeliveryBoyViewOrderDetailsActivity extends AppCompatActivity imple
 
 
             @Override
-            public void OnDataRetrieved(final Order order)
-            {
-                currentOrder=order;
+            public void OnDataRetrieved(final Order order) {
+                currentOrder = order;
                 Status.setText(order.orderStatus.toString());
                 Price.setText(order.totalPrice.toString());
                 FoodMakerDao.GetInstance().get(order.foodMakerId, new RetrievalEventListener<FoodMaker>() {
                     @Override
                     public void OnDataRetrieved(FoodMaker foodMaker) {
-                        maker=foodMaker;
+                        maker = foodMaker;
                         MakerNumber.setText(foodMaker.phone);
-                        if(order.orderStatus==OrderStatus.Accepted)
-                        {
-                            Location =foodMaker.location;
+                        if (order.orderStatus == OrderStatus.Accepted) {
+                            Location = foodMaker.location;
                         }
                     }
                 });
                 FoodBuyerDao.GetInstance().get(order.foodBuyerId, new RetrievalEventListener<FoodBuyer>() {
                     @Override
                     public void OnDataRetrieved(FoodBuyer foodBuyer) {
-                        buyer=foodBuyer;
+                        buyer = foodBuyer;
                         BuyerNumber.setText(foodBuyer.phone);
-                        if(order.orderStatus==OrderStatus.Delivered)
-                        {
-                            Location =foodBuyer.location;
+                        if (order.orderStatus == OrderStatus.Delivered) {
+                            Location = foodBuyer.location;
                         }
                     }
 
@@ -259,7 +262,6 @@ public class DeliveryBoyViewOrderDetailsActivity extends AppCompatActivity imple
                         .build()));
 
         if (currentOrder.orderStatus == OrderStatus.Accepted || currentOrder.orderStatus == OrderStatus.Pending || currentOrder.orderStatus == OrderStatus.Making) {
-
             if (maker == null) {
                 OrderDao.GetInstance().get(getIntent().getExtras().getString("OrderID"), new RetrievalEventListener<Order>() {
 
@@ -328,13 +330,14 @@ public class DeliveryBoyViewOrderDetailsActivity extends AppCompatActivity imple
         }
     }
 
-    }
+
     private void addMarkerLocation(LatLng latLng) {
         gMap.clear();
 
         markerLocation = latLng;
         gMap.addMarker(new MarkerOptions().position(markerLocation));
     }
+
     @Override
     public void onMapClick(LatLng latLng) {
 
