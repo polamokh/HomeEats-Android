@@ -79,7 +79,7 @@ public class DeliveryBoyViewOrderDetailsActivity extends AppCompatActivity imple
                     @Override
                     public void OnDataRetrieved(final Order order) {
                         order.orderStatus = OrderStatus.getValue("Delivering");
-                        Status.setText("Delivered");
+                        Status.setText("Delivering");
                         Delivering.setVisibility(View.INVISIBLE);
                         OrderDao.GetInstance().save(order, order.id, new TaskListener() {
                             @Override
