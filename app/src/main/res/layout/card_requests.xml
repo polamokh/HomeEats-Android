@@ -4,14 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/cardview_dark_background"
     tools:context=".Activities.MainActivity">
     <LinearLayout
         android:layout_width="match_parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_height="wrap_content"
-        android:background="@color/cardview_dark_background"
         app:layout_constraintTop_toTopOf="parent">
     <androidx.cardview.widget.CardView
         android:id="@+id/Requests_Card_View"
@@ -41,7 +39,7 @@
                 android:elevation="12dp"
                 app:cardCornerRadius="25dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView"></androidx.cardview.widget.CardView>
+                app:layout_constraintTop_toBottomOf="@+id/imageView"/>
 
             <TextView
                 android:id="@+id/textViewRequestName"

@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/colorPrimaryDark"
     tools:context=".Activities.FoodMaker.FoodMakerActivity">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -18,8 +17,8 @@
         android:layout_height="332dp"
         android:layout_alignRight="@id/foodMakerRecyclerView"
         android:layout_alignParentBottom="true"
-        android:layout_marginRight="44dp"
-        android:layout_marginBottom="73dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginBottom="32dp"
         android:clickable="true"
         app:srcCompat="@android:drawable/ic_input_add" />
 

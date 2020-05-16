@@ -52,6 +52,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:src="@drawable/ic_delete"
+        android:background="@color/colorTransparent"
         app:layout_constraintBottom_toBottomOf="@+id/foodBuyerCartMealsPrice"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

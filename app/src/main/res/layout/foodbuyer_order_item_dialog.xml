@@ -46,8 +46,9 @@
         android:layout_alignParentEnd="true"
         android:layout_margin="16dp"
         android:padding="16dp"
-        android:text="Add"
-        android:textColor="#00ff00"
+        android:text="Add to cart"
+        android:textColor="#ffffff"
+        android:background="@color/colorPrimary"
         android:textSize="18sp" />
 
     <TextView

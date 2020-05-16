@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activities.FoodMaker.FoodMakerAddMealActivity">
+
     <EditText
         android:id="@+id/Name_textbox"
         android:layout_width="332dp"
@@ -13,16 +14,15 @@
         android:layout_marginTop="30dp"
         android:layout_marginRight="15dp"
         android:ems="10"
-
         android:hint="Name"
         android:inputType="textPersonName"
         android:text="" />
 
     <EditText
         android:id="@+id/Desc_textbox"
-        android:layout_below="@id/Name_textbox"
         android:layout_width="332dp"
         android:layout_height="55dp"
+        android:layout_below="@id/Name_textbox"
         android:layout_marginLeft="42dp"
         android:layout_marginTop="30dp"
         android:layout_marginRight="15dp"
@@ -33,22 +33,22 @@
 
     <EditText
         android:id="@+id/Price_textbox"
-        android:layout_below="@id/Desc_textbox"
         android:layout_width="332dp"
         android:layout_height="55dp"
+        android:layout_below="@id/Desc_textbox"
         android:layout_marginLeft="42dp"
         android:layout_marginTop="30dp"
         android:layout_marginRight="15dp"
-        android:hint="Price"
         android:ems="10"
+        android:hint="Price"
         android:inputType="numberDecimal"
         android:text="" />
 
     <EditText
         android:id="@+id/Category_textbox"
-        android:layout_below="@id/Price_textbox"
         android:layout_width="332dp"
         android:layout_height="55dp"
+        android:layout_below="@id/Price_textbox"
         android:layout_marginLeft="42dp"
         android:layout_marginTop="30dp"
         android:layout_marginRight="15dp"
@@ -62,10 +62,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/Category_textbox"
+        android:layout_centerHorizontal="true"
         android:layout_marginLeft="126dp"
         android:layout_marginTop="30dp"
-        android:layout_centerHorizontal="true"
-        android:background="@color/colorAccent"
+        android:background="@color/colorPrimary"
+        android:textColor="#ffffff"
         android:padding="16dp"
         android:text="Upload Image" />
 

@@ -70,10 +70,13 @@
 
     <Button
         android:id="@+id/foodBuyerCartMakerRemoveOrder"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:background="#00ffffff"
+        android:padding="8dp"
         android:text="Remove order"
+        android:textColor="#ff0000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/foodBuyerCartMakerTotalPrice" />

@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".Activities.MainActivity"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/cardview_dark_background">
+    android:layout_height="wrap_content">
 <!--
         tools:context=".MainActivity"
 -->
@@ -146,6 +145,7 @@
                     android:id="@+id/Food_Maker_Edit_Meal_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/colorPrimary"
                     app:srcCompat="@android:drawable/ic_menu_edit"
                     tools:layout_editor_absoluteX="212dp"
                     tools:layout_editor_absoluteY="266dp"
