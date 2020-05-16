@@ -55,12 +55,11 @@ public class DeliveryBoyViewOrderDetailsActivity extends AppCompatActivity imple
         final TextView Price = (TextView) findViewById(R.id.DeliveryBoyRequestPrice);
         final ImageView Delivering = (ImageView) findViewById(R.id.Delivering);
         final ImageView Delivered = (ImageView) findViewById(R.id.Delivered);
-        OrderDao.GetInstance().get(getIntent().getExtras().getString("OrderID"), new RetrievalEventListener<Order>()
-        {
+        OrderDao.GetInstance().get(getIntent().getExtras().getString("OrderID"), new RetrievalEventListener<Order>() {
 
             @Override
             public void OnDataRetrieved(Order order) {
-                currentOrder=order;
+                currentOrder = order;
                 if (currentOrder.orderStatus == OrderStatus.Delivering) {
                     Delivering.setVisibility(View.INVISIBLE);
                     Delivered.setVisibility(View.VISIBLE);
@@ -261,73 +260,63 @@ public class DeliveryBoyViewOrderDetailsActivity extends AppCompatActivity imple
                         .zoom(15.0f)
                         .build()));
 
-        if (currentOrder.orderStatus == OrderStatus.Accepted || currentOrder.orderStatus == OrderStatus.Pending || currentOrder.orderStatus == OrderStatus.Making) {
-            if (maker == null) {
-                OrderDao.GetInstance().get(getIntent().getExtras().getString("OrderID"), new RetrievalEventListener<Order>() {
-
-
+        OrderDao.GetInstance().get(getIntent().getExtras().getString("OrderID"),
+                new RetrievalEventListener<Order>() {
                     @Override
                     public void OnDataRetrieved(Order order) {
-
-                        FoodMakerDao.GetInstance().get(order.foodMakerId, new RetrievalEventListener<FoodMaker>() {
-                            @Override
-                            public void OnDataRetrieved(FoodMaker foodMaker) {
-                                maker = foodMaker;
+                        if (currentOrder.orderStatus == OrderStatus.Accepted ||
+                                currentOrder.orderStatus == OrderStatus.Pending ||
+                                currentOrder.orderStatus == OrderStatus.Making) {
+                            if (maker == null) {
+                                FoodMakerDao.GetInstance().get(order.foodMakerId,
+                                        new RetrievalEventListener<FoodMaker>() {
+                                            @Override
+                                            public void OnDataRetrieved(FoodMaker foodMaker) {
+                                                maker = foodMaker;
+                                                addMarkerLocation(maker.location);
+                                                gMap.animateCamera(CameraUpdateFactory.newCameraPosition(
+                                                        new CameraPosition.Builder()
+                                                                .target(maker.location)
+                                                                .zoom(15.0f)
+                                                                .build()));
+                                            }
+                                        });
+                            } else {
                                 addMarkerLocation(maker.location);
                                 gMap.animateCamera(CameraUpdateFactory.newCameraPosition(
                                         new CameraPosition.Builder()
                                                 .target(maker.location)
                                                 .zoom(15.0f)
-                                                .build()));
+                                                .build()
+                                ));
                             }
-                        });
-
-
-                    }
-                });
-
-            } else {
-                addMarkerLocation(maker.location);
-                gMap.animateCamera(CameraUpdateFactory.newCameraPosition(
-                        new CameraPosition.Builder()
-                                .target(maker.location)
-                                .zoom(15.0f)
-                                .build()
-                ));
-            }
-        } else {
-
-            if (buyer == null) {
-                OrderDao.GetInstance().get(getIntent().getExtras().getString("OrderID"), new RetrievalEventListener<Order>() {
-
-
-                    @Override
-                    public void OnDataRetrieved(Order order) {
-                        FoodBuyerDao.GetInstance().get(order.foodBuyerId, new RetrievalEventListener<FoodBuyer>() {
-                            @Override
-                            public void OnDataRetrieved(FoodBuyer foodBuyer) {
-                                buyer = foodBuyer;
+                        } else {
+                            if (buyer == null) {
+                                FoodBuyerDao.GetInstance().get(order.foodBuyerId,
+                                        new RetrievalEventListener<FoodBuyer>() {
+                                            @Override
+                                            public void OnDataRetrieved(FoodBuyer foodBuyer) {
+                                                buyer = foodBuyer;
+                                                addMarkerLocation(buyer.location);
+                                                gMap.animateCamera(CameraUpdateFactory.newCameraPosition(
+                                                        new CameraPosition.Builder()
+                                                                .target(buyer.location)
+                                                                .zoom(15.0f)
+                                                                .build()));
+                                            }
+                                        });
+                            } else {
                                 addMarkerLocation(buyer.location);
                                 gMap.animateCamera(CameraUpdateFactory.newCameraPosition(
                                         new CameraPosition.Builder()
                                                 .target(buyer.location)
                                                 .zoom(15.0f)
-                                                .build()));
+                                                .build()
+                                ));
                             }
-                        });
+                        }
                     }
                 });
-
-            } else {
-                addMarkerLocation(buyer.location);
-                gMap.animateCamera(CameraUpdateFactory.newCameraPosition(
-                        new CameraPosition.Builder()
-                                .target(buyer.location)
-                                .zoom(15.0f)
-                                .build()
-                ));
-            }
-        }
     }
 
 

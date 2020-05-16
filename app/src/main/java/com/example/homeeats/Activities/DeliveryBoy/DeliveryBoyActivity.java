@@ -31,6 +31,7 @@ import com.squareup.picasso.Picasso;
 public class DeliveryBoyActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     DrawerLayout drawerLayout;
     NavigationView navigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,16 +48,16 @@ public class DeliveryBoyActivity extends AppCompatActivity implements Navigation
                 .findViewById(R.id.navHeaderTextViewEmail);
         final ImageView imageViewNavHeader = navigationView.getHeaderView(0)
                 .findViewById(R.id.navHeaderImageView);
-      DeliveryBoyDao.GetInstance().get(getIntent().getExtras().getString("DeliveryBoyID"), new RetrievalEventListener<DeliveryBoy>() {
-          @Override
-          public void OnDataRetrieved(DeliveryBoy deliveryBoy) {
-              textViewNavHeaderName.setText(deliveryBoy.name);
-              textViewNavHeaderEmail.setText(deliveryBoy.emailAddress);
-            /*  Picasso.get()
-                      .load(deliveryBoy.photo)
-                      .into(imageViewNavHeader);*/
-          }
-      }) ;
+        DeliveryBoyDao.GetInstance().get(getIntent().getExtras().getString("DeliveryBoyID"), new RetrievalEventListener<DeliveryBoy>() {
+            @Override
+            public void OnDataRetrieved(DeliveryBoy deliveryBoy) {
+                textViewNavHeaderName.setText(deliveryBoy.name);
+                textViewNavHeaderEmail.setText(deliveryBoy.emailAddress);
+                Picasso.get()
+                        .load(deliveryBoy.photo)
+                        .into(imageViewNavHeader);
+            }
+        });
         navigationView.setNavigationItemSelectedListener(this);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -80,8 +81,7 @@ public class DeliveryBoyActivity extends AppCompatActivity implements Navigation
         item.setChecked(true);
 
         //TODO: Complete FoodBuyer missing fragments
-        switch (item.getItemId())
-        {
+        switch (item.getItemId()) {
             case R.id.DeliveryBoyNavOrders:
                 getSupportFragmentManager().beginTransaction().replace(R.id.DeliveryBoyFragmentContainer,
                         new DeliveryBoyOrdersFragment()).commit();
@@ -98,7 +98,8 @@ public class DeliveryBoyActivity extends AppCompatActivity implements Navigation
                     }
 
                     @Override
-                    public void OnFail() { }
+                    public void OnFail() {
+                    }
                 });
                 break;
         }
